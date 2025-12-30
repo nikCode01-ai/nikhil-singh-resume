@@ -15,27 +15,34 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <Container>
-      <div className="py-10 sm:py-14">
-        <header className="space-y-3">
-          <p className="text-sm font-semibold text-blue-800">Contact</p>
-          <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
-            Get in touch
-          </h1>
-          <p className="max-w-3xl text-sm leading-7 text-slate-700 sm:text-base">
-            Reach out for full-stack engineering, real-time systems, NDC
-            integrations, performance optimization, or infrastructure work.
-          </p>
-        </header>
+    <div className="relative">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 -top-24 h-72 bg-gradient-to-b from-amber-50 to-transparent dark:from-amber-950/30"
+      />
+      <Container>
+        <div className="relative py-10 motion-safe:animate-fade-in sm:py-14">
+          <header className="space-y-3">
+            <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
+              Contact
+            </p>
+            <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl">
+              Get in touch
+            </h1>
+            <p className="max-w-3xl text-sm leading-7 text-slate-700 dark:text-slate-300 sm:text-base">
+              Reach out for full-stack engineering, real-time systems, NDC
+              integrations, performance optimization, or infrastructure work.
+            </p>
+          </header>
 
-        <div className="mt-10 border-t border-slate-200" />
+          <div className="mt-10 border-t border-slate-200 dark:border-slate-800" />
 
         <Section title="Direct" subtitle="Quick links.">
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 text-sm text-slate-700">
-                  <MapPin className="h-4 w-4 text-blue-700" aria-hidden="true" />
+                <div className="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                  <MapPin className="h-4 w-4 text-amber-500 dark:text-amber-400" aria-hidden="true" />
                   <span>{person.location}</span>
                 </div>
                 <IconLink href={`tel:${person.phone.replace(/\s/g, "")}`} icon={Phone}>
@@ -54,15 +61,17 @@ export default function ContactPage() {
             </Card>
 
             <Card>
-              <p className="text-sm font-semibold text-slate-900">Preferred</p>
-              <p className="mt-1 text-sm leading-6 text-slate-700">
+              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                Preferred
+              </p>
+              <p className="mt-1 text-sm leading-6 text-slate-700 dark:text-slate-300">
                 Email is best for detailed requirements. For quick introductions,
                 LinkedIn works well.
               </p>
-              <p className="mt-3 text-sm leading-6 text-slate-700">
+              <p className="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">
                 Include:
               </p>
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700 dark:text-slate-300">
                 <li>Project type and goals</li>
                 <li>Timeline</li>
                 <li>Stack and constraints</li>
@@ -77,7 +86,8 @@ export default function ContactPage() {
             <ContactForm toEmail={person.email} />
           </Card>
         </Section>
-      </div>
-    </Container>
+        </div>
+      </Container>
+    </div>
   );
 }
