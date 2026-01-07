@@ -42,6 +42,25 @@ export default function ProjectsPage() {
 
         <div className="mt-10 border-t border-slate-200 dark:border-slate-800" />
 
+        <Section title="Behance" subtitle="Selected design work.">
+          <Card>
+            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
+              <div className="relative w-full" style={{ aspectRatio: "404 / 316" }}>
+                <iframe
+                  title="Behance project embed"
+                  src="https://www.behance.net/embed/project/199733791?ilo0=1"
+                  className="absolute inset-0 h-full w-full"
+                  allow="clipboard-write"
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  style={{ border: 0 }}
+                />
+              </div>
+            </div>
+          </Card>
+        </Section>
+
         <Section title="Flagship" subtitle="Primary production system and business impact.">
           <Card>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -200,7 +219,7 @@ export default function ProjectsPage() {
           <div className="mt-6">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
+              className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold !text-white shadow-sm transition-colors hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:!bg-white dark:!text-slate-900 dark:hover:bg-slate-50 dark:focus:ring-slate-400"
             >
               Discuss a project
             </Link>

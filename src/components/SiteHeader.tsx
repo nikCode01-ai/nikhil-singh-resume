@@ -7,12 +7,22 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navItems = [
   { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/services", label: "Services" },
+  { href: "/skills", label: "Skills" },
   { href: "/projects", label: "Projects" },
+  { href: "/blogs", label: "Blogs" },
+  { href: "/testimonials", label: "Testimonials" },
+  { href: "/faqs", label: "FAQs" },
   { href: "/contact", label: "Contact" },
 ];
 
 export function SiteHeader() {
   const pathname = usePathname();
+
+  if (pathname === "/") {
+    return null;
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80">
@@ -38,7 +48,7 @@ export function SiteHeader() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100",
+                    "rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:text-slate-300 dark:hover:text-slate-100 dark:focus:ring-slate-400",
                     active &&
                       "bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100",
                   )}

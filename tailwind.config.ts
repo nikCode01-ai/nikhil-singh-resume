@@ -5,6 +5,14 @@ const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
+      colors: {
+        brand: {
+          green: "#1f4d37",
+          greenDark: "#173a2a",
+          yellow: "#f4b400",
+          cream: "#f7f5ef",
+        },
+      },
       keyframes: {
         "fade-in": {
           "0%": { opacity: "0" },
