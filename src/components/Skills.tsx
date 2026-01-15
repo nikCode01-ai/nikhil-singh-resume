@@ -19,8 +19,6 @@ const skillProficiency = {
   "Node.js": 90,
   "Fastify": 85,
   "Express": 88,
-  "PHP 7/8": 75,
-  "Laravel": 70,
   "Strapi CMS": 80,
   "REST APIs": 92,
   "SOAP/XML": 85,

@@ -6,8 +6,8 @@ const services = [
   {
     icon: Code,
     title: "Full Stack Development",
-    description: "End-to-end web application development using modern frameworks like React, Next.js, Node.js, and PHP/Laravel",
-    features: ["React/Next.js", "Node.js/Fastify", "PHP/Laravel", "TypeScript"]
+    description: "End-to-end web application development using modern frameworks like React, Next.js, Node.js, and TypeScript",
+    features: ["React/Next.js", "Node.js/Fastify", "TypeScript"]
   },
   {
     icon: Database,

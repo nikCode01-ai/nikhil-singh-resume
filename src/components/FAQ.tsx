@@ -24,7 +24,7 @@ const faqs = [
   {
     id: 4,
     question: "What tools do you use for your design work?",
-    answer: "I use a comprehensive tech stack including React, Next.js, Node.js, TypeScript, Tailwind CSS for frontend; Fastify, Express, PHP/Laravel for backend; MongoDB, PostgreSQL, MySQL for databases; AWS, Docker for cloud; and various tools for API development and system monitoring."
+    answer: "I use a comprehensive tech stack including React, Next.js, Node.js, TypeScript, Tailwind CSS for frontend; Fastify, Express for backend; MongoDB, PostgreSQL, MySQL for databases; AWS, Docker for cloud; and various tools for API development and system monitoring."
   },
   {
     id: 5,
