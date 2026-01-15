@@ -1,7 +1,7 @@
 export const person = {
   name: "Nikhil Singh",
-  role: "Senior Full Stack Developer & Cloud Infrastructure Specialist",
-  location: "Prakash Puram Colony, 100 Feet Road, Agra – 282006, India",
+  role: "Senior Full Stack Developer, GenAI Developer & Cloud Infrastructure Specialist",
+  location: "Agra, Uttar Pradesh",
   phone: "+91 8532856980",
   email: "nikhilcool974@gmail.com",
   linkedinUrl: "https://linkedin.com/in/nikhil-code05",
@@ -10,7 +10,7 @@ export const person = {
 };
 
 export const professionalSummary =
-  "Accomplished Full Stack Developer with 4+ years of experience building enterprise-grade web applications across aviation, travel, e-commerce, hospitality, and content platforms. Expert in Next.js, React, Node.js, Fastify, PHP/Laravel, and Strapi. Specialized in real-time systems, WebSockets, SSE, and airline NDC API integrations. Delivered 30+ production systems, managed cloud infrastructure with 99.9% uptime, and optimized performance by up to 50%.";
+  "Accomplished Full Stack Developer with 4+ years of experience building enterprise-grade web applications across aviation, travel, e-commerce, hospitality, and content platforms. Expert in Next.js, React, Node.js, Fastify, and Strapi. Specialized in real-time systems, WebSockets, SSE, and airline NDC API integrations. Also experienced in GenAI/LLM integrations (RAG, vector search, and workflow automation). Delivered 30+ production systems, managed cloud infrastructure with 99.9% uptime, and optimized performance by up to 50%.";
 
 export const coreCompetencies = [
   "Full Stack Development",
@@ -41,8 +41,6 @@ export const technicalSkills = {
     "Node.js",
     "Fastify",
     "Express",
-    "PHP 7/8",
-    "Laravel",
     "Strapi CMS",
     "REST APIs",
     "SOAP/XML",
