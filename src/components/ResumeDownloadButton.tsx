@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Download, X } from "lucide-react";
 
 type ResumeTemplateId = "1" | "2";
+type ResumeFormat = "pdf" | "docx";
 
 type Props = {
   variant?: "hero" | "about";
@@ -25,7 +26,8 @@ function extractFilename(contentDisposition: string | null): string | null {
 
 export function ResumeDownloadButton({ variant = "hero", label }: Props) {
   const [open, setOpen] = useState(false);
-  const [downloadingTemplate, setDownloadingTemplate] = useState<ResumeTemplateId | null>(null);
+  const [downloading, setDownloading] = useState<{ template: ResumeTemplateId; format: ResumeFormat } | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<ResumeTemplateId>("1");
   const [error, setError] = useState<string | null>(null);
 
   const templates = useMemo(
@@ -56,10 +58,10 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
       : "inline-flex h-9 w-9 items-center justify-center rounded-full bg-brand-yellow text-brand-green";
 
   const close = useCallback(() => {
-    if (downloadingTemplate) return;
+    if (downloading) return;
     setOpen(false);
     setError(null);
-  }, [downloadingTemplate]);
+  }, [downloading]);
 
   useEffect(() => {
     if (!open) return;
@@ -72,12 +74,12 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [close, open]);
 
-  const download = useCallback(async (template: ResumeTemplateId) => {
+  const download = useCallback(async (template: ResumeTemplateId, format: ResumeFormat) => {
     setError(null);
-    setDownloadingTemplate(template);
+    setDownloading({ template, format });
 
     try {
-      const res = await fetch(`/api/resume?template=${template}`, {
+      const res = await fetch(`/api/resume?template=${template}&format=${format}&disposition=attachment`, {
         cache: "no-store",
       });
 
@@ -87,7 +89,7 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
 
       const blob = await res.blob();
       const filename =
-        extractFilename(res.headers.get("content-disposition")) ?? `Resume-Template-${template}.pdf`;
+        extractFilename(res.headers.get("content-disposition")) ?? `Resume-Template-${template}.${format}`;
 
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -102,9 +104,14 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
     } catch (e) {
       setError(e instanceof Error ? e.message : "Resume download failed");
     } finally {
-      setDownloadingTemplate(null);
+      setDownloading(null);
     }
   }, []);
+
+  const previewUrl = useMemo(
+    () => `/api/resume?template=${selectedTemplate}&format=pdf&disposition=inline`,
+    [selectedTemplate],
+  );
 
   return (
     <>
@@ -112,6 +119,7 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
         type="button"
         onClick={() => {
           setError(null);
+          setSelectedTemplate("1");
           setOpen(true);
         }}
         className={triggerClasses}
@@ -136,7 +144,7 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
               <div>
                 <h3 className="text-xl font-bold text-slate-900">Choose a Resume Template</h3>
                 <p className="mt-1 text-sm text-slate-600">
-                  Select a template and the PDF will download automatically.
+                  Select a template to preview, then download as PDF or DOCX.
                 </p>
               </div>
               <button
@@ -153,19 +161,21 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
 
             <div className="mt-5 grid gap-3">
               {templates.map((t) => {
-                const isBusy = downloadingTemplate === t.id;
-                const isDisabled = downloadingTemplate !== null;
+                const isSelected = selectedTemplate === t.id;
+                const isDisabled = downloading !== null;
 
                 return (
                   <button
                     key={t.id}
                     type="button"
                     disabled={isDisabled}
-                    onClick={() => download(t.id)}
+                    onClick={() => setSelectedTemplate(t.id)}
                     className={`w-full rounded-xl border px-4 py-4 text-left transition-colors ${
                       isDisabled
                         ? "cursor-not-allowed border-slate-200 bg-slate-50"
-                        : "border-slate-200 bg-white hover:bg-slate-50"
+                        : isSelected
+                          ? "border-brand-green/40 bg-brand-cream"
+                          : "border-slate-200 bg-white hover:bg-slate-50"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-4">
@@ -173,18 +183,52 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
                         <div className="text-sm font-semibold text-slate-900">{t.name}</div>
                         <div className="mt-1 text-sm text-slate-600">{t.description}</div>
                       </div>
-                      <div className="text-sm font-semibold text-brand-green">{isBusy ? "Downloading..." : "Download"}</div>
+                      <div className="text-sm font-semibold text-brand-green">{isSelected ? "Selected" : "Preview"}</div>
                     </div>
                   </button>
                 );
               })}
             </div>
 
+            <div className="mt-5 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+              <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-2">
+                <div className="text-sm font-semibold text-slate-900">Preview (PDF)</div>
+                <a
+                  href={previewUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm font-semibold text-brand-green"
+                >
+                  Open in new tab
+                </a>
+              </div>
+              <iframe title="Resume preview" src={previewUrl} className="h-[420px] w-full bg-white" />
+            </div>
+
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <button
+                type="button"
+                disabled={downloading !== null}
+                onClick={() => download(selectedTemplate, "pdf")}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-greenDark disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {downloading?.template === selectedTemplate && downloading.format === "pdf" ? "Downloading PDF..." : "Download PDF"}
+              </button>
+              <button
+                type="button"
+                disabled={downloading !== null}
+                onClick={() => download(selectedTemplate, "docx")}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {downloading?.template === selectedTemplate && downloading.format === "docx" ? "Downloading DOCX..." : "Download DOCX"}
+              </button>
+            </div>
+
             <div className="mt-5 flex justify-end">
               <button
                 type="button"
                 onClick={close}
-                disabled={downloadingTemplate !== null}
+                disabled={downloading !== null}
                 className="rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Cancel
