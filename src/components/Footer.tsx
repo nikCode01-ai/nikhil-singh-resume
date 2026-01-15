@@ -44,15 +44,18 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-brand-green text-white">
       {/* Connect Section */}
-      <section className="py-16 bg-gradient-to-r from-orange-600 to-orange-700">
+      <section className="bg-gradient-to-r from-brand-green to-brand-greenDark py-16">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Let's Connect there</h2>
+          <h2 className="text-3xl font-bold mb-4">Let&apos;s Connect there</h2>
           <p className="text-xl mb-8 opacity-90">
-            Ready to start your next project? Let's discuss how I can help bring your ideas to life.
+            Ready to start your next project? Let&apos;s discuss how I can help bring your ideas to life.
           </p>
-          <Link href="/contact" className="bg-white text-orange-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center rounded-full bg-brand-yellow px-8 py-3 font-semibold text-brand-green shadow-sm transition-colors hover:bg-brand-cream"
+          >
             Get Started
           </Link>
         </div>
@@ -63,8 +66,8 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand & Social */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-orange-500">Olivia</h3>
-            <p className="text-gray-400 leading-relaxed">
+            <h3 className="text-2xl font-bold text-brand-yellow">{person.name}</h3>
+            <p className="text-white/80 leading-relaxed">
               Full Stack Developer & Cloud Infrastructure Specialist, 
               building scalable web applications and real-time systems.
             </p>
@@ -74,7 +77,7 @@ export function Footer() {
                   key={index}
                   href={social.href}
                   aria-label={social.label}
-                  className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-brand-yellow hover:text-brand-green"
                 >
                   <social.icon className="w-5 h-5" />
                 </a>
@@ -90,7 +93,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-orange-500 transition-colors"
+                    className="text-white/80 transition-colors hover:text-brand-yellow"
                   >
                     {link.name}
                   </Link>
@@ -104,16 +107,16 @@ export function Footer() {
             <h4 className="text-lg font-semibold mb-4">Contact Info</h4>
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-orange-500 flex-shrink-0" />
-                <span className="text-gray-400">{person.phone}</span>
+                <Phone className="w-5 h-5 text-brand-yellow flex-shrink-0" />
+                <span className="text-white/80">{person.phone}</span>
               </div>
               <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-orange-500 flex-shrink-0" />
-                <span className="text-gray-400">{person.email}</span>
+                <Mail className="w-5 h-5 text-brand-yellow flex-shrink-0" />
+                <span className="text-white/80">{person.email}</span>
               </div>
               <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-orange-500 flex-shrink-0 mt-1" />
-                <span className="text-gray-400">{person.location}</span>
+                <MapPin className="w-5 h-5 text-brand-yellow flex-shrink-0 mt-1" />
+                <span className="text-white/80">{person.location}</span>
               </div>
             </div>
           </div>
@@ -121,7 +124,7 @@ export function Footer() {
           {/* Newsletter */}
           <div>
             <h4 className="text-lg font-semibold mb-4">Newsletter</h4>
-            <p className="text-gray-400 mb-4">
+            <p className="text-white/80 mb-4">
               Get the latest information about my projects and tech insights.
             </p>
             <form onSubmit={handleNewsletterSubmit} className="space-y-3">
@@ -130,12 +133,12 @@ export function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:border-orange-500 focus:outline-none transition-colors"
+                className="w-full rounded-lg border border-white/15 bg-white/10 px-4 py-2 text-white placeholder:text-white/60 focus:border-brand-yellow focus:outline-none transition-colors"
                 required
               />
               <button
                 type="submit"
-                className="w-full bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors flex items-center justify-center gap-2"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-yellow px-4 py-2 text-brand-green transition-colors hover:bg-brand-cream"
               >
                 <Send className="w-4 h-4" />
                 Subscribe
@@ -145,17 +148,17 @@ export function Footer() {
         </div>
 
         {/* Bottom Footer */}
-        <div className="border-t border-gray-800 mt-12 pt-8">
+        <div className="border-t border-white/15 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400">
-              © 2024 {person.name}. All rights reserved.
+            <p className="text-white/80">
+              © {new Date().getFullYear()} {person.name}. All rights reserved.
             </p>
             <div className="flex gap-6">
-              <a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">
+              <a href="#" className="text-white/80 hover:text-brand-yellow transition-colors">
                 User Terms & Conditions
               </a>
-              <span className="text-gray-600">|</span>
-              <a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">
+              <span className="text-white/50">|</span>
+              <a href="#" className="text-white/80 hover:text-brand-yellow transition-colors">
                 Privacy Policy
               </a>
             </div>

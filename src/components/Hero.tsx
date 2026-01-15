@@ -1,11 +1,10 @@
  import Link from "next/link";
 
- import { person, professionalSummary } from "@/lib/resume-data";
- import { MapPin, Phone, Mail, Linkedin, ArrowRight } from "lucide-react";
- 
- export function Hero() {
-  const basedIn = person.location.split(",").slice(-1)[0]?.trim() || "";
+import { person, professionalSummary } from "@/lib/resume-data";
+import { MapPin, Phone, Mail, Linkedin, ArrowRight } from "lucide-react";
+import { ResumeDownloadButton } from "@/components/ResumeDownloadButton";
 
+export function Hero() {
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden bg-brand-cream pt-24">
       <div className="container mx-auto px-4 py-16">
@@ -22,7 +21,7 @@
               <br />
               {person.role}
               <br />
-              <span className="text-slate-900">Based in {basedIn || "India"}.</span>
+              <span className="text-slate-900">{person.location}.</span>
             </h1>
             
             <p className="text-lg text-gray-600 leading-relaxed max-w-2xl">
@@ -39,6 +38,7 @@
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </span>
               </Link>
+              <ResumeDownloadButton variant="hero" label="Download Resume" />
               <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 rounded-full border border-brand-green/30 bg-white px-6 py-3 text-sm font-semibold text-brand-green shadow-sm transition-colors hover:bg-brand-cream"

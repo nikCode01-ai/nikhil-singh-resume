@@ -1,3 +1,7 @@
+"use client";
+
+import { useMemo, useState } from "react";
+
 import { technicalSkills } from "@/lib/resume-data";
 
 const skillProficiency = {
@@ -75,10 +79,19 @@ const getToolsByCategory = () => {
 };
 
 export function Skills() {
-  const tools = getToolsByCategory();
-  
+  const tools = useMemo(() => getToolsByCategory(), []);
+
   // Get unique categories for filtering
-  const categories = Object.keys(technicalSkills);
+  const categories = useMemo(() => Object.keys(technicalSkills), []);
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+
+  const filteredTools = useMemo(() => {
+    const list =
+      activeCategory === "All"
+        ? tools
+        : tools.filter((t) => t.category === activeCategory);
+    return [...list].sort((a, b) => b.proficiency - a.proficiency);
+  }, [activeCategory, tools]);
   
   return (
     <section className="bg-brand-cream py-20">
@@ -96,38 +109,61 @@ export function Skills() {
         </div>
         
         {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {categories.map((category) => (
+        <div className="flex flex-col items-center gap-4 mb-12">
+          <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/80 p-2 shadow-sm backdrop-blur">
             <button
-              key={category}
-              className="rounded-full border-2 border-brand-green px-6 py-2 font-medium text-brand-green transition-colors hover:bg-brand-green hover:text-white"
+              type="button"
+              onClick={() => setActiveCategory("All")}
+              className={
+                activeCategory === "All"
+                  ? "rounded-full bg-brand-green px-5 py-2 text-sm font-semibold text-white shadow"
+                  : "rounded-full px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100"
+              }
             >
-              {category}
+              All
             </button>
-          ))}
+            {categories.map((category) => (
+              <button
+                type="button"
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className={
+                  activeCategory === category
+                    ? "rounded-full bg-brand-green px-5 py-2 text-sm font-semibold text-white shadow"
+                    : "rounded-full px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100"
+                }
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+          <div className="text-sm text-slate-600">
+            Showing <span className="font-semibold text-slate-900">{filteredTools.length}</span> of{" "}
+            <span className="font-semibold text-slate-900">{tools.length}</span>
+          </div>
         </div>
         
         {/* Skills Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {tools.map((tool, index) => (
+          {filteredTools.map((tool, index) => (
             <div
               key={index}
-              className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5 transition-shadow hover:shadow-lg"
+              className="group rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
             >
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h4 className="font-semibold text-gray-900">{tool.name}</h4>
+                  <h4 className="font-semibold text-gray-900 group-hover:text-slate-950">{tool.name}</h4>
                   <p className="text-sm text-gray-500">{tool.category}</p>
                 </div>
-                <div className="text-2xl font-bold text-brand-green">
+                <div className="rounded-full bg-brand-cream px-3 py-1 text-sm font-bold text-brand-green ring-1 ring-slate-900/5">
                   {tool.proficiency}%
                 </div>
               </div>
               
               {/* Progress Bar */}
-              <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="w-full rounded-full bg-slate-200/70 h-2">
                 <div
-                  className="h-2 rounded-full bg-brand-yellow transition-all duration-1000 ease-out"
+                  className="h-2 rounded-full bg-brand-yellow transition-all duration-700 ease-out"
                   style={{ width: `${tool.proficiency}%` }}
                 ></div>
               </div>

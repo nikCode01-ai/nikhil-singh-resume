@@ -226,7 +226,6 @@ export function ContactSection() {
                     <option value="uk">United Kingdom</option>
                     <option value="ca">Canada</option>
                     <option value="au">Australia</option>
-                    <option value="in">India</option>
                     <option value="other">Other</option>
                   </select>
                 </div>

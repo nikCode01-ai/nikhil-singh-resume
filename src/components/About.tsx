@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { person, professionalSummary, keyAchievements, education } from "@/lib/resume-data";
-import { Download, Award, Target, Users, Code } from "lucide-react";
+import { person, professionalSummary, keyAchievements } from "@/lib/resume-data";
+import { Award, Target, Users, Code } from "lucide-react";
+import { ResumeDownloadButton } from "@/components/ResumeDownloadButton";
 
 const statistics = [
   {
@@ -89,15 +89,7 @@ export function About() {
 
             {/* Download CV Button */}
             <div className="flex flex-wrap items-center gap-4 pt-2">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-3 rounded-full border border-white/25 bg-transparent px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-              >
-                Download CV
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-brand-yellow text-brand-green">
-                  <Download className="h-4 w-4" aria-hidden="true" />
-                </span>
-              </Link>
+              <ResumeDownloadButton variant="about" label="Download CV" />
             </div>
 
             <div className="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10">
