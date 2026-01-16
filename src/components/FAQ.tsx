@@ -121,7 +121,7 @@ export function FAQ() {
               Still have questions?
             </h3>
             <p className="text-white/80 mb-6">
-              Can't find the answer you're looking for? Feel free to reach out 
+              Can&apos;t find the answer you&apos;re looking for? Feel free to reach out 
               directly through the contact form or email.
             </p>
             <ButtonLink href="/contact" variant="accent" size="lg" className="focus-visible:!ring-offset-brand-green">

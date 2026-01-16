@@ -1,7 +1,7 @@
 export const person = {
   name: "Nikhil Singh",
   role: "Senior Full Stack Developer, GenAI Developer & Cloud Infrastructure Specialist",
-  location: "Agra, Uttar Pradesh",
+  location: "",
   phone: "+91 8532856980",
   email: "nikhilcool974@gmail.com",
   linkedinUrl: "https://linkedin.com/in/nikhil-code05",

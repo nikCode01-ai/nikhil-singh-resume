@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Menu, X } from "lucide-react";
 
 import { Button, ButtonLink } from "@/components/Button";
@@ -15,6 +15,7 @@ const navItems = [
   { href: "/about", label: "About" },
   { href: "/skills", label: "Tools" },
   { href: "/projects", label: "Projects" },
+  { href: "/jobs", label: "Jobs" },
   { href: "/blogs", label: "Blogs" },
   { href: "/testimonials", label: "Testimonials" },
   { href: "/faqs", label: "FAQs" },
@@ -23,10 +24,6 @@ const navItems = [
 export function HomeHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
 
   const initials = useMemo(() => {
     return person.name
@@ -47,7 +44,7 @@ export function HomeHeader() {
                 {initials}
               </div>
               <div className="text-base font-semibold tracking-tight text-white">
-                {person.name.split(" ")[0]}.
+                {person.name.split(" ")[0]}
               </div>
             </Link>
 
@@ -58,6 +55,7 @@ export function HomeHeader() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={() => setOpen(false)}
                     className={cn(
                       "transition-colors hover:text-brand-yellow",
                       active && "text-brand-yellow",
@@ -124,6 +122,7 @@ export function HomeHeader() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={() => setOpen(false)}
                     className={cn(
                       "flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50",
                       active && "bg-slate-100",

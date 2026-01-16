@@ -20,8 +20,12 @@ export function Hero() {
               <span className="text-brand-yellow">{person.name}</span>,
               <br />
               {person.role}
-              <br />
-              <span className="text-slate-900">{person.location}.</span>
+              {person.location ? (
+                <>
+                  <br />
+                  <span className="text-slate-900">{person.location}</span>
+                </>
+              ) : null}
             </h1>
             
             <p className="text-lg text-gray-600 leading-relaxed max-w-2xl">
@@ -40,10 +44,12 @@ export function Hero() {
             </div>
             
             <div className="space-y-3 pt-4">
-              <div className="flex items-center gap-3 text-slate-700">
-                <MapPin className="w-5 h-5 text-brand-green" />
-                <span>{person.location}</span>
-              </div>
+              {person.location ? (
+                <div className="flex items-center gap-3 text-slate-700">
+                  <MapPin className="w-5 h-5 text-brand-green" />
+                  <span>{person.location}</span>
+                </div>
+              ) : null}
               <div className="flex items-center gap-3 text-slate-700">
                 <Phone className="w-5 h-5 text-brand-green" />
                 <span>{person.phone}</span>

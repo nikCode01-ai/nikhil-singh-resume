@@ -16,18 +16,24 @@ import {
 
 export const runtime = "nodejs";
 
-function ensureSpace(doc: any, neededHeight: number) {
+type PdfDoc = PDFKit.PDFDocument;
+
+type SafeTextOptions = PDFKit.Mixins.TextOptions & {
+  paragraphGap?: number;
+};
+
+function ensureSpace(doc: PdfDoc, neededHeight: number) {
   const bottomY = doc.page.height - doc.page.margins.bottom;
   if (doc.y + neededHeight > bottomY) {
     doc.addPage();
   }
 }
 
-function contentWidth(doc: any) {
+function contentWidth(doc: PdfDoc) {
   return doc.page.width - doc.page.margins.left - doc.page.margins.right;
 }
 
-function safeText(doc: any, text: string, options: Record<string, any> = {}) {
+function safeText(doc: PdfDoc, text: string, options: SafeTextOptions = {}) {
   const width = options.width ?? contentWidth(doc);
   const height = doc.heightOfString(text, { ...options, width });
   const paragraphGap = typeof options.paragraphGap === "number" ? options.paragraphGap : 0;
@@ -36,7 +42,7 @@ function safeText(doc: any, text: string, options: Record<string, any> = {}) {
   doc.text(text, { ...options, width });
 }
 
-function sectionTitle(doc: any, title: string) {
+function sectionTitle(doc: PdfDoc, title: string) {
   ensureSpace(doc, 28);
   doc.moveDown(0.8);
   doc.fontSize(12).font("Helvetica-Bold").fillColor("#111111").text(title);
@@ -49,7 +55,7 @@ function sectionTitle(doc: any, title: string) {
   doc.moveDown(0.6);
 }
 
-function bulletList(doc: any, items: string[]) {
+function bulletList(doc: PdfDoc, items: string[]) {
   doc.font("Helvetica").fontSize(10).fillColor("#111111");
   for (const item of items) {
     const text = `- ${item}`;
@@ -60,7 +66,7 @@ function bulletList(doc: any, items: string[]) {
   }
 }
 
-function renderTemplate1(doc: any) {
+function renderTemplate1(doc: PdfDoc) {
   doc.font("Helvetica-Bold").fontSize(18).fillColor("#111111").text(person.name, {
     align: "center",
   });
@@ -70,9 +76,11 @@ function renderTemplate1(doc: any) {
     .fillColor("#374151")
     .text(person.role, { align: "center" });
 
+  doc.fontSize(9);
+  if (person.location) {
+    doc.text(person.location, { align: "center" });
+  }
   doc
-    .fontSize(9)
-    .text(person.location, { align: "center" })
     .text(`${person.phone} | ${person.email}`, { align: "center" })
     .text(person.linkedinUrl, { align: "center" })
     .moveDown(0.5);
@@ -163,7 +171,7 @@ function renderTemplate1(doc: any) {
   }
 }
 
-function renderTemplate2(doc: any) {
+function renderTemplate2(doc: PdfDoc) {
   doc.font("Helvetica-Bold").fontSize(20).fillColor("#111111").text(person.name);
   doc.font("Helvetica").fontSize(10).fillColor("#374151").text(person.role);
   doc
@@ -171,8 +179,11 @@ function renderTemplate2(doc: any) {
     .fontSize(9)
     .text(`${person.phone} | ${person.email} | ${person.linkedinUrl}`, {
       lineGap: 2,
-    })
-    .text(person.location, { lineGap: 2 });
+    });
+
+  if (person.location) {
+    doc.text(person.location, { lineGap: 2 });
+  }
 
   doc.moveDown(0.3);
   doc

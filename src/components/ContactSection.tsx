@@ -37,11 +37,11 @@ export function ContactSection() {
             Contact Us
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Let's Talk for Your Next Projects
+            Let&apos;s Talk for Your Next Projects
           </p>
           <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-            Have a project in mind? I'd love to hear about it. Fill out the form below 
-            and I'll get back to you as soon as possible.
+            Have a project in mind? I&apos;d love to hear about it. Fill out the form below 
+            and I&apos;ll get back to you as soon as possible.
           </p>
         </div>
         
@@ -94,16 +94,18 @@ export function ContactSection() {
                     </a>
                   </div>
                 </div>
-                
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center ring-1 ring-brand-green/10">
-                    <MapPin className="w-6 h-6 text-brand-green" />
+
+                {person.location ? (
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center ring-1 ring-brand-green/10">
+                      <MapPin className="w-6 h-6 text-brand-green" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900">Address</p>
+                      <p className="text-gray-600">{person.location}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">Address</p>
-                    <p className="text-gray-600">{person.location}</p>
-                  </div>
-                </div>
+                ) : null}
               </div>
             </div>
             
@@ -170,7 +172,7 @@ export function ContactSection() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    I'm Interested in *
+                    I&apos;m Interested in *
                   </label>
                   <select
                     name="interest"

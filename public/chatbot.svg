@@ -1,0 +1,51 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bubbleFill" x1="156" y1="88" x2="356" y2="424" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F2F5F9"/>
+      <stop offset="1" stop-color="#D7E0EA"/>
+    </linearGradient>
+    <linearGradient id="faceFill" x1="160" y1="190" x2="352" y2="346" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#071A3A"/>
+      <stop offset="1" stop-color="#0B1E49"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="188" y1="208" x2="284" y2="336" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="faceClip">
+      <rect x="164" y="186" width="184" height="176" rx="44"/>
+    </clipPath>
+  </defs>
+
+  <!-- Ears -->
+  <rect x="106" y="224" width="64" height="112" rx="28" fill="#2D7CFF"/>
+  <rect x="342" y="224" width="64" height="112" rx="28" fill="#2D7CFF"/>
+
+  <!-- Antenna -->
+  <rect x="250" y="70" width="12" height="74" rx="6" fill="#2D7CFF"/>
+  <circle cx="256" cy="70" r="22" fill="#5BC0FF"/>
+  <rect x="206" y="132" width="100" height="44" rx="22" fill="#2D7CFF"/>
+
+  <!-- Speech bubble body -->
+  <path d="M124 188C124 139.399 163.399 100 212 100H366C414.601 100 454 139.399 454 188V320C454 368.601 414.601 408 366 408H252L192 458V408H212C163.399 408 124 368.601 124 320V188Z" fill="url(#bubbleFill)"/>
+
+  <!-- Face frame -->
+  <rect x="148" y="164" width="252" height="220" rx="72" fill="#E7EDF4"/>
+
+  <!-- Face screen -->
+  <rect x="164" y="186" width="184" height="176" rx="44" fill="url(#faceFill)"/>
+
+  <!-- Screen shine -->
+  <g clip-path="url(#faceClip)">
+    <path d="M148 150L270 392H320L198 150H148Z" fill="url(#shine)"/>
+  </g>
+
+  <!-- Eyes -->
+  <rect x="204" y="238" width="56" height="84" rx="24" fill="#49B8FF"/>
+  <rect x="292" y="238" width="56" height="84" rx="24" fill="#49B8FF"/>
+
+  <!-- Chat dots -->
+  <circle cx="372" cy="154" r="14" fill="#0B2B5B"/>
+  <circle cx="410" cy="154" r="14" fill="#0B2B5B"/>
+  <circle cx="448" cy="154" r="14" fill="#0B2B5B"/>
+</svg>

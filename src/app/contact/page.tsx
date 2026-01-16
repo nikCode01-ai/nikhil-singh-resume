@@ -41,10 +41,12 @@ export default function ContactPage() {
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-                  <MapPin className="h-4 w-4 text-amber-500 dark:text-amber-400" aria-hidden="true" />
-                  <span>{person.location}</span>
-                </div>
+                {person.location ? (
+                  <div className="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                    <MapPin className="h-4 w-4 text-amber-500 dark:text-amber-400" aria-hidden="true" />
+                    <span>{person.location}</span>
+                  </div>
+                ) : null}
                 <IconLink href={`tel:${person.phone.replace(/\s/g, "")}`} icon={Phone}>
                   {person.phone}
                 </IconLink>

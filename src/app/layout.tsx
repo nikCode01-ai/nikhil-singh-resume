@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { Chatbot } from "@/components/Chatbot";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -67,6 +68,7 @@ export default function RootLayout({
             {children}
           </main>
           <SiteFooter />
+          <Chatbot />
         </div>
       </body>
     </html>

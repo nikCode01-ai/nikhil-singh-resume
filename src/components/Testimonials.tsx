@@ -106,7 +106,7 @@ export function Testimonials() {
                 
                 {/* Testimonial Content */}
                 <p className="text-gray-700 mb-6 leading-relaxed">
-                  "{testimonial.content}"
+                  &quot;{testimonial.content}&quot;
                 </p>
                 
                 {/* Author Info */}
