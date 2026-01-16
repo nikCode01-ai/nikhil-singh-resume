@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import { Button } from "@/components/Button";
 import { technicalSkills } from "@/lib/resume-data";
 
 const skillProficiency = {
@@ -109,30 +110,24 @@ export function Skills() {
         {/* Category Filter */}
         <div className="flex flex-col items-center gap-4 mb-12">
           <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/80 p-2 shadow-sm backdrop-blur">
-            <button
+            <Button
               type="button"
               onClick={() => setActiveCategory("All")}
-              className={
-                activeCategory === "All"
-                  ? "rounded-full bg-brand-green px-5 py-2 text-sm font-semibold text-white shadow"
-                  : "rounded-full px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100"
-              }
+              variant={activeCategory === "All" ? "primary" : "pill"}
+              size="sm"
             >
               All
-            </button>
+            </Button>
             {categories.map((category) => (
-              <button
+              <Button
                 type="button"
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={
-                  activeCategory === category
-                    ? "rounded-full bg-brand-green px-5 py-2 text-sm font-semibold text-white shadow"
-                    : "rounded-full px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100"
-                }
+                variant={activeCategory === category ? "primary" : "pill"}
+                size="sm"
               >
                 {category}
-              </button>
+              </Button>
             ))}
           </div>
           <div className="text-sm text-slate-600">

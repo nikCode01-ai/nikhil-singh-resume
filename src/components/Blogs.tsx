@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { experience } from "@/lib/resume-data";
+import { ButtonLink } from "@/components/Button";
 import { ArrowUpRight } from "lucide-react";
 
 type Post = {
@@ -33,15 +34,9 @@ export function Blogs() {
             </p>
           </div>
 
-          <Link
-            href="/blogs"
-            className="inline-flex items-center gap-3 rounded-full bg-brand-green px-5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-greenDark"
-          >
+          <ButtonLink href="/blogs" variant="primary" size="sm">
             View All Blogs
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-yellow text-brand-green">
-              +
-            </span>
-          </Link>
+          </ButtonLink>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">

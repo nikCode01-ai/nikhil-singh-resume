@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
-
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { ButtonLink } from "@/components/Button";
 
 const faqs = [
   {
@@ -52,10 +51,10 @@ export function FAQ() {
   const [openItems, setOpenItems] = useState<number[]>([2]); // FAQ 2 is open by default
 
   const toggleItem = (id: number) => {
-    setOpenItems(prev => 
-      prev.includes(id) 
-        ? prev.filter(item => item !== id)
-        : [...prev, id]
+    setOpenItems((prev: number[]) =>
+      prev.includes(id)
+        ? prev.filter((item: number) => item !== id)
+        : [...prev, id],
     );
   };
 
@@ -125,12 +124,9 @@ export function FAQ() {
               Can't find the answer you're looking for? Feel free to reach out 
               directly through the contact form or email.
             </p>
-            <Link
-              href="/contact"
-              className="inline-flex rounded-full bg-brand-yellow px-8 py-3 font-semibold text-brand-green transition-colors hover:brightness-95"
-            >
+            <ButtonLink href="/contact" variant="accent" size="lg" className="focus-visible:!ring-offset-brand-green">
               Contact Me
-            </Link>
+            </ButtonLink>
           </div>
         </div>
       </div>

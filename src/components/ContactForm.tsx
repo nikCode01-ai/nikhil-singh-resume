@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 
+import { Button } from "@/components/Button";
+
 export function ContactForm({
   toEmail,
 }: {
@@ -64,12 +66,9 @@ export function ContactForm({
         />
       </label>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <button
-          type="submit"
-          className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold !text-white shadow-sm transition-colors hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:!bg-white dark:!text-slate-900 dark:hover:bg-slate-50 dark:focus:ring-slate-400"
-        >
+        <Button type="submit" variant="primary" size="sm">
           Send email
-        </button>
+        </Button>
         <a
           className="text-sm font-medium text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100"
           href={mailtoHref}

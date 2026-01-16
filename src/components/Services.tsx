@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Button, ButtonLink } from "@/components/Button";
 
 import { Code, Database, Cloud, Globe, Smartphone, Settings } from "lucide-react";
 
@@ -56,15 +56,9 @@ export function Services() {
             </p>
           </div>
 
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-3 rounded-full bg-brand-green px-5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-greenDark"
-          >
+          <ButtonLink href="/contact" variant="primary" size="sm">
             View All Services
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-yellow text-brand-green">
-              +
-            </span>
-          </Link>
+          </ButtonLink>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -94,12 +88,12 @@ export function Services() {
                 ))}
               </div>
               
-              <button className="mt-6 flex items-center gap-2 font-semibold text-brand-green transition-colors hover:text-brand-greenDark">
+              <Button type="button" variant="ghost" size="sm" className="mt-6">
                 Learn more
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
-              </button>
+              </Button>
             </div>
           ))}
         </div>

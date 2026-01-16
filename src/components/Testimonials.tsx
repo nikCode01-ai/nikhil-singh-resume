@@ -2,6 +2,7 @@
 
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/Button";
 
 const testimonials = [
   {
@@ -129,21 +130,23 @@ export function Testimonials() {
           </div>
           
           {/* Navigation Arrows */}
-          <button
+          <Button
             onClick={prevTestimonial}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-brand-cream transition-colors z-10"
+            variant="icon"
+            className="absolute left-0 top-1/2 z-10 h-12 w-12 -translate-x-4 -translate-y-1/2 rounded-full bg-white shadow-lg hover:bg-brand-cream"
             aria-label="Previous testimonial"
           >
             <ChevronLeft className="w-6 h-6 text-brand-green" />
-          </button>
+          </Button>
           
-          <button
+          <Button
             onClick={nextTestimonial}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-brand-cream transition-colors z-10"
+            variant="icon"
+            className="absolute right-0 top-1/2 z-10 h-12 w-12 translate-x-4 -translate-y-1/2 rounded-full bg-white shadow-lg hover:bg-brand-cream"
             aria-label="Next testimonial"
           >
             <ChevronRight className="w-6 h-6 text-brand-green" />
-          </button>
+          </Button>
         </div>
         
         {/* Dots Indicator */}

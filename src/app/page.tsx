@@ -1,7 +1,6 @@
-import Link from "next/link";
-
 import { Hero } from "@/components/Hero";
 import { Footer } from "@/components/Footer";
+import { HomeHeader } from "@/components/HomeHeader";
 import { Services } from "@/components/Services";
 import { About } from "@/components/About";
 import { Skills } from "@/components/Skills";
@@ -10,51 +9,12 @@ import { Testimonials } from "@/components/Testimonials";
 import { Blogs } from "@/components/Blogs";
 import { FAQ } from "@/components/FAQ";
 import { ContactSection } from "@/components/ContactSection";
-import { person } from "@/lib/resume-data";
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Navigation Header */}
-      <header className="fixed top-0 z-50 w-full">
-        <div className="mx-auto w-full max-w-6xl px-4 pt-4">
-          <div className="rounded-full bg-brand-green px-4 py-3 shadow-lg">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-yellow text-brand-green font-bold">
-                  {person.name
-                    .split(" ")
-                    .filter(Boolean)
-                    .slice(0, 2)
-                    .map((n) => n[0])
-                    .join("")}
-                </div>
-                <div className="text-base font-semibold tracking-tight text-white">
-                  {person.name.split(" ")[0]}.
-                </div>
-              </div>
-
-              <nav className="hidden items-center gap-6 text-sm font-medium text-white/90 md:flex">
-                <Link href="/" className="transition-colors hover:text-brand-yellow">Home</Link>
-                <Link href="/services" className="transition-colors hover:text-brand-yellow">Services</Link>
-                <Link href="/about" className="transition-colors hover:text-brand-yellow">About</Link>
-                <Link href="/skills" className="transition-colors hover:text-brand-yellow">Tools</Link>
-                <Link href="/projects" className="transition-colors hover:text-brand-yellow">Projects</Link>
-                <Link href="/blogs" className="transition-colors hover:text-brand-yellow">Blogs</Link>
-                <Link href="/testimonials" className="transition-colors hover:text-brand-yellow">Testimonials</Link>
-                <Link href="/faqs" className="transition-colors hover:text-brand-yellow">FAQs</Link>
-              </nav>
-
-              <Link
-                href="/contact"
-                className="hidden rounded-full bg-white px-4 py-2 text-sm font-semibold text-brand-green shadow-sm transition-colors hover:bg-brand-cream md:inline-flex"
-              >
-                Contact Me
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <HomeHeader />
 
       {/* Hero Section */}
       <section id="home" className="scroll-mt-24">

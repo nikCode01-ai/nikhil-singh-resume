@@ -1,4 +1,4 @@
- import Link from "next/link";
+ import { ButtonLink } from "@/components/Button";
 
 import { person, professionalSummary } from "@/lib/resume-data";
 import { MapPin, Phone, Mail, Linkedin, ArrowRight } from "lucide-react";
@@ -29,22 +29,14 @@ export function Hero() {
             </p>
             
             <div className="flex flex-wrap items-center gap-4">
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-3 rounded-full bg-brand-green px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-greenDark"
-              >
+              <ButtonLink href="/projects" variant="primary" size="md">
                 View My Portfolio
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-brand-yellow text-brand-green">
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </span>
-              </Link>
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </ButtonLink>
               <ResumeDownloadButton variant="hero" label="Download Resume" />
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 rounded-full border border-brand-green/30 bg-white px-6 py-3 text-sm font-semibold text-brand-green shadow-sm transition-colors hover:bg-brand-cream"
-              >
+              <ButtonLink href="/contact" variant="secondary" size="md">
                 Hire Me
-              </Link>
+              </ButtonLink>
             </div>
             
             <div className="space-y-3 pt-4">

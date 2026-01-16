@@ -16,14 +16,27 @@ import {
 
 export const runtime = "nodejs";
 
-function ensureSpace(doc: PDFDocument, neededHeight: number) {
+function ensureSpace(doc: any, neededHeight: number) {
   const bottomY = doc.page.height - doc.page.margins.bottom;
   if (doc.y + neededHeight > bottomY) {
     doc.addPage();
   }
 }
 
-function sectionTitle(doc: PDFDocument, title: string) {
+function contentWidth(doc: any) {
+  return doc.page.width - doc.page.margins.left - doc.page.margins.right;
+}
+
+function safeText(doc: any, text: string, options: Record<string, any> = {}) {
+  const width = options.width ?? contentWidth(doc);
+  const height = doc.heightOfString(text, { ...options, width });
+  const paragraphGap = typeof options.paragraphGap === "number" ? options.paragraphGap : 0;
+
+  ensureSpace(doc, height + paragraphGap + 4);
+  doc.text(text, { ...options, width });
+}
+
+function sectionTitle(doc: any, title: string) {
   ensureSpace(doc, 28);
   doc.moveDown(0.8);
   doc.fontSize(12).font("Helvetica-Bold").fillColor("#111111").text(title);
@@ -36,18 +49,18 @@ function sectionTitle(doc: PDFDocument, title: string) {
   doc.moveDown(0.6);
 }
 
-function bulletList(doc: PDFDocument, items: string[]) {
+function bulletList(doc: any, items: string[]) {
   doc.font("Helvetica").fontSize(10).fillColor("#111111");
   for (const item of items) {
-    ensureSpace(doc, 16);
-    doc.text(`- ${item}`, {
+    const text = `- ${item}`;
+    safeText(doc, text, {
       indent: 12,
       paragraphGap: 2,
     });
   }
 }
 
-function renderTemplate1(doc: PDFDocument) {
+function renderTemplate1(doc: any) {
   doc.font("Helvetica-Bold").fontSize(18).fillColor("#111111").text(person.name, {
     align: "center",
   });
@@ -72,56 +85,39 @@ function renderTemplate1(doc: PDFDocument) {
     .stroke();
 
   sectionTitle(doc, "Professional Summary");
-  doc.font("Helvetica").fontSize(10).fillColor("#111111").text(professionalSummary, {
-    lineGap: 2,
-  });
+  doc.font("Helvetica").fontSize(10).fillColor("#111111");
+  safeText(doc, professionalSummary, { lineGap: 2 });
 
   sectionTitle(doc, "Core Competencies");
   bulletList(doc, coreCompetencies);
 
   sectionTitle(doc, "Technical Skills");
   for (const [category, skills] of Object.entries(technicalSkills)) {
-    ensureSpace(doc, 22);
-    doc.font("Helvetica-Bold").fontSize(10).fillColor("#111111").text(category);
-    doc
-      .font("Helvetica")
-      .fontSize(10)
-      .fillColor("#111111")
-      .text(skills.join(", "), {
-        lineGap: 2,
-      });
+    doc.font("Helvetica-Bold").fontSize(10).fillColor("#111111");
+    safeText(doc, category);
+    doc.font("Helvetica").fontSize(10).fillColor("#111111");
+    safeText(doc, skills.join(", "), { lineGap: 2 });
     doc.moveDown(0.3);
   }
 
   sectionTitle(doc, "Experience");
   for (const exp of experience) {
-    ensureSpace(doc, 60);
-    doc
-      .font("Helvetica-Bold")
-      .fontSize(11)
-      .fillColor("#111111")
-      .text(`${exp.title} — ${exp.company}`);
-    doc
-      .font("Helvetica")
-      .fontSize(10)
-      .fillColor("#374151")
-      .text(`${exp.location} | ${exp.start} – ${exp.end}`);
+    doc.font("Helvetica-Bold").fontSize(11).fillColor("#111111");
+    safeText(doc, `${exp.title} — ${exp.company}`);
+    doc.font("Helvetica").fontSize(10).fillColor("#374151");
+    safeText(doc, `${exp.location} | ${exp.start} – ${exp.end}`);
     bulletList(doc, exp.highlights);
     doc.moveDown(0.2);
   }
 
   sectionTitle(doc, "Flagship Project");
-  ensureSpace(doc, 70);
-  doc.font("Helvetica-Bold").fontSize(11).fillColor("#111111").text(flagshipProject.name);
-  doc.font("Helvetica").fontSize(10).fillColor("#111111").text(flagshipProject.description, {
-    lineGap: 2,
-  });
+  doc.font("Helvetica-Bold").fontSize(11).fillColor("#111111");
+  safeText(doc, flagshipProject.name);
+  doc.font("Helvetica").fontSize(10).fillColor("#111111");
+  safeText(doc, flagshipProject.description, { lineGap: 2 });
   doc.moveDown(0.3);
-  doc
-    .font("Helvetica")
-    .fontSize(10)
-    .fillColor("#111111")
-    .text(`Architecture: ${flagshipProject.architecture}`, { lineGap: 2 });
+  doc.font("Helvetica").fontSize(10).fillColor("#111111");
+  safeText(doc, `Architecture: ${flagshipProject.architecture}`, { lineGap: 2 });
   doc.moveDown(0.3);
   doc.font("Helvetica-Bold").fontSize(10).text("Supported Airlines");
   bulletList(doc, flagshipProject.supportedAirlines);
@@ -130,17 +126,18 @@ function renderTemplate1(doc: PDFDocument) {
 
   sectionTitle(doc, "Featured Projects");
   for (const project of featuredProjects.slice(0, 2)) {
-    ensureSpace(doc, 70);
-    doc.font("Helvetica-Bold").fontSize(11).fillColor("#111111").text(project.name);
+    doc.font("Helvetica-Bold").fontSize(11).fillColor("#111111");
+    safeText(doc, project.name);
     if ("url" in project && project.url) {
-      doc.font("Helvetica").fontSize(10).fillColor("#374151").text(project.url);
+      doc.font("Helvetica").fontSize(10).fillColor("#374151");
+      safeText(doc, project.url);
     }
     if ("date" in project && project.date) {
-      doc.font("Helvetica").fontSize(10).fillColor("#374151").text(project.date);
+      doc.font("Helvetica").fontSize(10).fillColor("#374151");
+      safeText(doc, project.date);
     }
-    doc.font("Helvetica").fontSize(10).fillColor("#111111").text(project.description, {
-      lineGap: 2,
-    });
+    doc.font("Helvetica").fontSize(10).fillColor("#111111");
+    safeText(doc, project.description, { lineGap: 2 });
     if (project.features?.length) {
       bulletList(doc, project.features);
     }
@@ -158,14 +155,15 @@ function renderTemplate1(doc: PDFDocument) {
 
   sectionTitle(doc, "Education");
   for (const edu of education) {
-    ensureSpace(doc, 30);
-    doc.font("Helvetica-Bold").fontSize(10).fillColor("#111111").text(edu.degree);
-    doc.font("Helvetica").fontSize(10).fillColor("#374151").text(edu.school);
+    doc.font("Helvetica-Bold").fontSize(10).fillColor("#111111");
+    safeText(doc, edu.degree);
+    doc.font("Helvetica").fontSize(10).fillColor("#374151");
+    safeText(doc, edu.school);
     doc.moveDown(0.2);
   }
 }
 
-function renderTemplate2(doc: PDFDocument) {
+function renderTemplate2(doc: any) {
   doc.font("Helvetica-Bold").fontSize(20).fillColor("#111111").text(person.name);
   doc.font("Helvetica").fontSize(10).fillColor("#374151").text(person.role);
   doc
@@ -185,19 +183,15 @@ function renderTemplate2(doc: PDFDocument) {
     .stroke();
 
   sectionTitle(doc, "Summary");
-  doc.font("Helvetica").fontSize(10).fillColor("#111111").text(professionalSummary, {
-    lineGap: 2,
-  });
+  doc.font("Helvetica").fontSize(10).fillColor("#111111");
+  safeText(doc, professionalSummary, { lineGap: 2 });
 
   sectionTitle(doc, "Experience");
   for (const exp of experience) {
-    ensureSpace(doc, 60);
-    doc
-      .font("Helvetica-Bold")
-      .fontSize(11)
-      .fillColor("#111111")
-      .text(`${exp.company} — ${exp.title}`);
-    doc.font("Helvetica").fontSize(10).fillColor("#374151").text(`${exp.start} – ${exp.end}`);
+    doc.font("Helvetica-Bold").fontSize(11).fillColor("#111111");
+    safeText(doc, `${exp.company} — ${exp.title}`);
+    doc.font("Helvetica").fontSize(10).fillColor("#374151");
+    safeText(doc, `${exp.start} – ${exp.end}`);
     bulletList(doc, exp.highlights);
     doc.moveDown(0.2);
   }
@@ -210,22 +204,21 @@ function renderTemplate2(doc: PDFDocument) {
   bulletList(doc, condensed);
 
   sectionTitle(doc, "Projects");
-  ensureSpace(doc, 70);
-  doc.font("Helvetica-Bold").fontSize(11).fillColor("#111111").text(flagshipProject.name);
-  doc.font("Helvetica").fontSize(10).fillColor("#111111").text(flagshipProject.description, {
-    lineGap: 2,
-  });
+  doc.font("Helvetica-Bold").fontSize(11).fillColor("#111111");
+  safeText(doc, flagshipProject.name);
+  doc.font("Helvetica").fontSize(10).fillColor("#111111");
+  safeText(doc, flagshipProject.description, { lineGap: 2 });
   doc.moveDown(0.2);
   bulletList(doc, flagshipProject.impact);
 
   for (const project of featuredProjects.slice(0, 2)) {
-    ensureSpace(doc, 60);
-    doc.font("Helvetica-Bold").fontSize(11).fillColor("#111111").text(project.name);
-    doc.font("Helvetica").fontSize(10).fillColor("#111111").text(project.description, {
-      lineGap: 2,
-    });
+    doc.font("Helvetica-Bold").fontSize(11).fillColor("#111111");
+    safeText(doc, project.name);
+    doc.font("Helvetica").fontSize(10).fillColor("#111111");
+    safeText(doc, project.description, { lineGap: 2 });
     if (project.tech?.length) {
-      doc.font("Helvetica").fontSize(10).fillColor("#374151").text(`Tech: ${project.tech.join(", ")}`);
+      doc.font("Helvetica").fontSize(10).fillColor("#374151");
+      safeText(doc, `Tech: ${project.tech.join(", ")}`);
     }
     doc.moveDown(0.2);
   }
@@ -235,9 +228,10 @@ function renderTemplate2(doc: PDFDocument) {
 
   sectionTitle(doc, "Education");
   for (const edu of education) {
-    ensureSpace(doc, 26);
-    doc.font("Helvetica-Bold").fontSize(10).fillColor("#111111").text(edu.degree);
-    doc.font("Helvetica").fontSize(10).fillColor("#374151").text(edu.school);
+    doc.font("Helvetica-Bold").fontSize(10).fillColor("#111111");
+    safeText(doc, edu.degree);
+    doc.font("Helvetica").fontSize(10).fillColor("#374151");
+    safeText(doc, edu.school);
   }
 }
 

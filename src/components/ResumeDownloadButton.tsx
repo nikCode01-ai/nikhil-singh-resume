@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Download, X } from "lucide-react";
 
+import { Button } from "@/components/Button";
+
 type ResumeTemplateId = "1" | "2";
 type ResumeFormat = "pdf" | "docx";
 
@@ -47,15 +49,7 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
     [],
   );
 
-  const triggerClasses =
-    variant === "about"
-      ? "inline-flex items-center gap-3 rounded-full border border-white/25 bg-transparent px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-      : "inline-flex items-center gap-3 rounded-full border border-brand-green/30 bg-white px-6 py-3 text-sm font-semibold text-brand-green shadow-sm transition-colors hover:bg-brand-cream";
-
-  const bubbleClasses =
-    variant === "about"
-      ? "inline-flex h-9 w-9 items-center justify-center rounded-full bg-brand-yellow text-brand-green"
-      : "inline-flex h-9 w-9 items-center justify-center rounded-full bg-brand-yellow text-brand-green";
+  const triggerVariant = variant === "about" ? "inverse" : "secondary";
 
   const close = useCallback(() => {
     if (downloading) return;
@@ -115,20 +109,19 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
 
   return (
     <>
-      <button
+      <Button
         type="button"
         onClick={() => {
           setError(null);
           setSelectedTemplate("1");
           setOpen(true);
         }}
-        className={triggerClasses}
+        variant={triggerVariant}
+        size="md"
       >
         {label ?? "Download Resume"}
-        <span className={bubbleClasses}>
-          <Download className="h-4 w-4" aria-hidden="true" />
-        </span>
-      </button>
+        <Download className="h-4 w-4" aria-hidden="true" />
+      </Button>
 
       {open ? (
         <div className="fixed inset-0 z-[100]">
@@ -147,14 +140,15 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
                   Select a template to preview, then download as PDF or DOCX.
                 </p>
               </div>
-              <button
+              <Button
                 type="button"
                 onClick={close}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200"
+                variant="icon"
+                className="rounded-full bg-slate-100 text-slate-700 shadow-sm hover:bg-slate-200"
                 aria-label="Close"
               >
                 <X className="h-5 w-5" />
-              </button>
+              </Button>
             </div>
 
             {error ? <div className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div> : null}
@@ -206,33 +200,38 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
             </div>
 
             <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <button
+              <Button
                 type="button"
                 disabled={downloading !== null}
                 onClick={() => download(selectedTemplate, "pdf")}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-greenDark disabled:cursor-not-allowed disabled:opacity-60"
+                variant="primary"
+                size="md"
+                fullWidth
               >
                 {downloading?.template === selectedTemplate && downloading.format === "pdf" ? "Downloading PDF..." : "Download PDF"}
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
                 disabled={downloading !== null}
                 onClick={() => download(selectedTemplate, "docx")}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+                variant="secondary"
+                size="md"
+                fullWidth
               >
                 {downloading?.template === selectedTemplate && downloading.format === "docx" ? "Downloading DOCX..." : "Download DOCX"}
-              </button>
+              </Button>
             </div>
 
             <div className="mt-5 flex justify-end">
-              <button
+              <Button
                 type="button"
                 onClick={close}
                 disabled={downloading !== null}
-                className="rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+                variant="secondary"
+                size="sm"
               >
                 Cancel
-              </button>
+              </Button>
             </div>
           </div>
         </div>

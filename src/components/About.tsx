@@ -25,15 +25,47 @@ const statistics = [
   }
 ];
 
-const skills = [
-  "UI/UX Design",
-  "Mobile App Design", 
-  "Website Design",
-  "Design System",
-  "Prototype",
-  "Dashboard",
-  "Wireframe Design",
-  "Full Stack Development"
+const orbitBadges = [
+  {
+    label: "Full Stack",
+    className:
+      "absolute bottom-10 left-1/2 -translate-x-1/2 rounded-full bg-brand-greenDark px-4 py-2 text-xs font-semibold text-white shadow",
+  },
+  {
+    label: "Web Apps",
+    className:
+      "absolute left-6 top-12 rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-green shadow",
+  },
+  {
+    label: "Cloud",
+    className:
+      "absolute right-6 top-24 rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-green shadow",
+  },
+  {
+    label: "APIs",
+    className:
+      "absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-green shadow",
+  },
+  {
+    label: "Databases",
+    className:
+      "absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-green shadow",
+  },
+  {
+    label: "DevOps",
+    className:
+      "absolute left-16 bottom-20 rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-green shadow",
+  },
+  {
+    label: "CI/CD",
+    className:
+      "absolute right-16 bottom-24 rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-green shadow",
+  },
+  {
+    label: "Microservices",
+    className:
+      "absolute left-1/2 top-8 -translate-x-1/2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-green shadow",
+  },
 ];
 
 export function About() {
@@ -56,15 +88,11 @@ export function About() {
                 </span>
               </div>
 
-              <div className="absolute bottom-10 left-1/2 -translate-x-1/2 rounded-full bg-brand-greenDark px-4 py-2 text-xs font-semibold text-white shadow">
-                Full Stack
-              </div>
-              <div className="absolute left-6 top-12 rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-green shadow">
-                Web Apps
-              </div>
-              <div className="absolute right-6 top-24 rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-green shadow">
-                Cloud
-              </div>
+              {orbitBadges.map((badge) => (
+                <div key={badge.label} className={badge.className}>
+                  {badge.label}
+                </div>
+              ))}
             </div>
           </div>
 

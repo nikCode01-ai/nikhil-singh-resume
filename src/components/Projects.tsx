@@ -1,7 +1,6 @@
-import Link from "next/link";
-
+import { Button, ButtonLink } from "@/components/Button";
 import { additionalProjects, featuredProjects, flagshipProject, person } from "@/lib/resume-data";
-import { ExternalLink, Calendar, Code } from "lucide-react";
+import { ExternalLink, Calendar, Code, ArrowRight } from "lucide-react";
 
 const projectImages = [
   "/api/placeholder/400/300?text=NDC+Terminal",
@@ -61,16 +60,14 @@ export function Projects() {
         {/* Category Filter */}
         <div className="flex flex-wrap justify-center gap-2 mb-12">
           {["All Projects", "App Design", "Website Design", "Dashboard", "Wireframe", "Repository"].map((category) => (
-            <button
+            <Button
+              type="button"
               key={category}
-              className={`px-6 py-2 rounded-full font-medium transition-colors ${
-                category === "All Projects"
-                  ? "bg-brand-green text-white"
-                  : "bg-white text-brand-green hover:bg-brand-yellow hover:text-brand-green border border-brand-green/20"
-              }`}
+              variant={category === "All Projects" ? "primary" : "pill"}
+              size="sm"
             >
               {category}
-            </button>
+            </Button>
           ))}
         </div>
         
@@ -153,17 +150,10 @@ export function Projects() {
         
         {/* View All Button */}
         <div className="text-center mt-12">
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-3 rounded-full bg-brand-green px-8 py-3 font-semibold text-white transition-colors hover:bg-brand-greenDark"
-          >
+          <ButtonLink href="/projects" variant="primary" size="lg">
             View All Projects
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-brand-yellow text-brand-green">
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </span>
-          </Link>
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </ButtonLink>
         </div>
       </div>
     </section>

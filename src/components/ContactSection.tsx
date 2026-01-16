@@ -3,6 +3,7 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { person } from "@/lib/resume-data";
 import { Phone, Mail, MapPin, Send, Linkedin, Gitlab } from "lucide-react";
+import { Button } from "@/components/Button";
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
@@ -246,15 +247,10 @@ export function ContactSection() {
                 />
               </div>
               
-              <button
-                type="submit"
-                className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-brand-green px-8 py-4 font-semibold text-white transition-colors hover:bg-brand-greenDark"
-              >
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-brand-yellow text-brand-green">
-                  <Send className="h-4 w-4" />
-                </span>
+              <Button type="submit" variant="primary" size="lg" fullWidth>
+                <Send className="h-4 w-4" aria-hidden="true" />
                 Submit
-              </button>
+              </Button>
             </form>
           </div>
         </div>

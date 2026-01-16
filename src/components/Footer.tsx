@@ -4,6 +4,8 @@ import Link from "next/link";
 
 import { useState, type FormEvent } from "react";
 import { person } from "@/lib/resume-data";
+import { Button, ButtonLink } from "@/components/Button";
+import { ResumeDownloadButton } from "@/components/ResumeDownloadButton";
 import { 
   Facebook, 
   Youtube, 
@@ -52,12 +54,17 @@ export function Footer() {
           <p className="text-xl mb-8 opacity-90">
             Ready to start your next project? Let&apos;s discuss how I can help bring your ideas to life.
           </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center justify-center rounded-full bg-brand-yellow px-8 py-3 font-semibold text-brand-green shadow-sm transition-colors hover:bg-brand-cream"
-          >
-            Get Started
-          </Link>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <ButtonLink
+              href="/contact"
+              variant="accent"
+              size="lg"
+              className="focus-visible:!ring-offset-brand-green"
+            >
+              Get Started
+            </ButtonLink>
+            <ResumeDownloadButton variant="about" label="Download Resume" />
+          </div>
         </div>
       </section>
 
@@ -136,13 +143,16 @@ export function Footer() {
                 className="w-full rounded-lg border border-white/15 bg-white/10 px-4 py-2 text-white placeholder:text-white/60 focus:border-brand-yellow focus:outline-none transition-colors"
                 required
               />
-              <button
+              <Button
                 type="submit"
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-yellow px-4 py-2 text-brand-green transition-colors hover:bg-brand-cream"
+                variant="accent"
+                size="md"
+                fullWidth
+                className="focus-visible:!ring-offset-brand-green"
               >
                 <Send className="w-4 h-4" />
                 Subscribe
-              </button>
+              </Button>
             </form>
           </div>
         </div>
