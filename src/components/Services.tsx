@@ -1,40 +1,40 @@
 import { Button, ButtonLink } from "@/components/Button";
 
-import { Code, Database, Cloud, Globe, Smartphone, Settings } from "lucide-react";
+import { ApiUiIcon } from "@/components/ApiUiIcon";
 
 const services = [
   {
-    icon: Code,
+    iconName: "Code",
     title: "Full Stack Development",
     description: "End-to-end web application development using modern frameworks like React, Next.js, Node.js, and TypeScript",
     features: ["React/Next.js", "Node.js/Fastify", "TypeScript"]
   },
   {
-    icon: Database,
+    iconName: "Database",
     title: "Database Design & Optimization",
     description: "Efficient database architecture, query optimization, and data management solutions",
     features: ["MongoDB", "PostgreSQL", "MySQL", "Redis", "Query Optimization"]
   },
   {
-    icon: Cloud,
+    iconName: "Cloud",
     title: "Cloud & DevOps",
     description: "Cloud infrastructure setup, deployment automation, and server management",
     features: ["AWS Services", "Docker", "CI/CD", "Server Management", "99.9% Uptime"]
   },
   {
-    icon: Globe,
+    iconName: "Globe",
     title: "API Integration",
     description: "Third-party API integrations, NDC/GDS systems, and custom API development",
     features: ["REST/SOAP APIs", "NDC APIs", "GraphQL", "WebSockets", "SSE"]
   },
   {
-    icon: Smartphone,
+    iconName: "Smartphone",
     title: "Real-Time Systems",
     description: "Building real-time applications with WebSockets and Server-Sent Events",
     features: ["WebSockets", "SSE", "Live Updates", "Sub-500ms Response"]
   },
   {
-    icon: Settings,
+    iconName: "Settings",
     title: "Performance Optimization",
     description: "Application performance tuning and optimization for better user experience",
     features: ["50% Faster Load", "Caching Strategies", "Code Optimization", "Monitoring"]
@@ -43,56 +43,64 @@ const services = [
 
 export function Services() {
   return (
-    <section className="bg-brand-cream py-20">
+    <section className="bg-white py-20">
       <div className="container mx-auto px-4">
-        <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold text-brand-green">Services</p>
-            <h2 className="mt-2 text-4xl font-extrabold text-slate-900">
-              <span className="text-brand-yellow">Services</span> I Provide
-            </h2>
-            <p className="mt-3 text-base text-slate-600">
-              Comprehensive development solutions from frontend to backend, with expertise in modern technologies and best practices.
-            </p>
-          </div>
+        <div className="mb-14 text-center">
+          <p className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-500">
+            <span className="h-px w-5 bg-brand-yellow" />
+            <span className="text-brand-green">Services</span>
+          </p>
+          <h2 className="mt-3 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+            <span className="text-brand-yellow">Services</span> I Provide
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base text-slate-600">
+            Comprehensive development solutions from frontend to backend, with expertise in modern technologies and best practices.
+          </p>
 
-          <ButtonLink href="/contact" variant="primary" size="sm">
-            View All Services
-          </ButtonLink>
+          <div className="mt-7 flex justify-center">
+            <ButtonLink href="/contact" variant="primary" size="sm">
+              View All Services
+            </ButtonLink>
+          </div>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => (
             <div
               key={index}
-              className="group rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-900/5 transition-all hover:-translate-y-1 hover:shadow-lg"
+              className="group relative rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-900/5 transition-all hover:-translate-y-1 hover:shadow-lg"
             >
-              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-cream ring-1 ring-brand-green/10 transition-colors group-hover:bg-brand-yellow">
-                <service.icon className="h-7 w-7 text-brand-green" />
+              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-brand-cream ring-1 ring-slate-900/5 transition-colors group-hover:bg-brand-yellow/25">
+                <ApiUiIcon name={service.iconName} size={28} className="h-7 w-7" />
               </div>
-              
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                {service.title}
-              </h3>
-              
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                {service.description}
-              </p>
-              
-              <div className="space-y-2">
+
+              <h3 className="text-xl font-bold text-slate-900">{service.title}</h3>
+
+              <p className="mt-3 text-sm leading-relaxed text-slate-600">{service.description}</p>
+
+              <div className="mt-5 flex flex-wrap gap-2">
                 {service.features.map((feature, featureIndex) => (
-                  <div key={featureIndex} className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-brand-green"></div>
-                    <span className="text-sm text-gray-700">{feature}</span>
-                  </div>
+                  <span
+                    key={featureIndex}
+                    className="rounded-full bg-brand-cream px-3 py-1 text-xs font-semibold text-brand-green ring-1 ring-brand-green/10"
+                  >
+                    {feature}
+                  </span>
                 ))}
               </div>
-              
-              <Button type="button" variant="ghost" size="sm" className="mt-6">
+
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="mt-7 h-auto rounded-none bg-transparent px-0 py-0 text-sm font-semibold text-brand-green hover:bg-transparent"
+              >
                 Learn more
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                <ApiUiIcon
+                  name="ArrowRight"
+                  size={16}
+                  className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                />
               </Button>
             </div>
           ))}

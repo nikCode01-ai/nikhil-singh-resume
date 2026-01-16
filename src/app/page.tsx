@@ -1,6 +1,4 @@
 import { Hero } from "@/components/Hero";
-import { Footer } from "@/components/Footer";
-import { HomeHeader } from "@/components/HomeHeader";
 import { Services } from "@/components/Services";
 import { About } from "@/components/About";
 import { Skills } from "@/components/Skills";
@@ -14,8 +12,6 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Navigation Header */}
-      <HomeHeader />
-
       {/* Hero Section */}
       <section id="home" className="scroll-mt-24">
         <Hero />
@@ -75,9 +71,6 @@ export default function Home() {
       <section id="contact" className="scroll-mt-24">
         <ContactSection />
       </section>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }

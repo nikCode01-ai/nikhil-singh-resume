@@ -1,15 +1,17 @@
 import { cn } from "@/lib/utils";
-import type { LucideIcon } from "lucide-react";
+
+import { ApiUiIcon } from "@/components/ApiUiIcon";
+import type { ReactNode } from "react";
 
 export function IconLink({
   href,
-  icon: Icon,
+  iconName,
   children,
   className,
 }: {
   href: string;
-  icon: LucideIcon;
-  children: React.ReactNode;
+  iconName: string;
+  children: ReactNode;
   className?: string;
 }) {
   return (
@@ -22,7 +24,13 @@ export function IconLink({
       target={href.startsWith("http") ? "_blank" : undefined}
       rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
     >
-      <Icon className="h-4 w-4 text-amber-500 dark:text-amber-400" aria-hidden="true" />
+      <ApiUiIcon
+        name={iconName}
+        size={16}
+        color="amber-500"
+        darkColor="amber-400"
+        className="h-4 w-4"
+      />
       <span>{children}</span>
     </a>
   );

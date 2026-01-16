@@ -1,5 +1,7 @@
 import { cn } from "@/lib/utils";
 
+import type { ReactNode } from "react";
+
 export function Section({
   id,
   title,
@@ -10,7 +12,7 @@ export function Section({
   id?: string;
   title: string;
   subtitle?: string;
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
 }) {
   return (

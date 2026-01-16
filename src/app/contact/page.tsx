@@ -4,8 +4,8 @@ import { ContactForm } from "@/components/ContactForm";
 import { Container } from "@/components/Container";
 import { IconLink } from "@/components/IconLink";
 import { Section } from "@/components/Section";
+import { ApiUiIcon } from "@/components/ApiUiIcon";
 import { person } from "@/lib/resume-data";
-import { Gitlab, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -43,20 +43,26 @@ export default function ContactPage() {
               <div className="space-y-3">
                 {person.location ? (
                   <div className="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-                    <MapPin className="h-4 w-4 text-amber-500 dark:text-amber-400" aria-hidden="true" />
+                    <ApiUiIcon
+                      name="MapPin"
+                      size={16}
+                      color="amber-500"
+                      darkColor="amber-400"
+                      className="h-4 w-4"
+                    />
                     <span>{person.location}</span>
                   </div>
                 ) : null}
-                <IconLink href={`tel:${person.phone.replace(/\s/g, "")}`} icon={Phone}>
+                <IconLink href={`tel:${person.phone.replace(/\s/g, "")}`} iconName="Phone">
                   {person.phone}
                 </IconLink>
-                <IconLink href={`mailto:${person.email}`} icon={Mail}>
+                <IconLink href={`mailto:${person.email}`} iconName="Mail">
                   {person.email}
                 </IconLink>
-                <IconLink href={person.linkedinUrl} icon={Linkedin}>
+                <IconLink href={person.linkedinUrl} iconName="Linkedin">
                   LinkedIn
                 </IconLink>
-                <IconLink href={person.gitlabUrl} icon={Gitlab}>
+                <IconLink href={person.gitlabUrl} iconName="Gitlab">
                   GitLab {person.gitlabHandle}
                 </IconLink>
               </div>

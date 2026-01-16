@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-
-import { Skills } from "@/components/Skills";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Skills",
@@ -8,5 +7,6 @@ export const metadata: Metadata = {
 };
 
 export default function SkillsPage() {
-  return <Skills />;
+  redirect("/tools");
+  return null;
 }

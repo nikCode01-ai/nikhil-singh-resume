@@ -1,6 +1,7 @@
 import { person, professionalSummary, keyAchievements } from "@/lib/resume-data";
 import { Award, Target, Users, Code } from "lucide-react";
 import { ResumeDownloadButton } from "@/components/ResumeDownloadButton";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 const statistics = [
   {
@@ -109,7 +110,13 @@ export function About() {
             <div className="grid grid-cols-2 gap-6 pt-2 sm:grid-cols-4">
               {statistics.map((stat, index) => (
                 <div key={index} className="text-center">
-                  <div className="text-3xl font-extrabold text-brand-yellow">{stat.value}</div>
+                  <div className="text-3xl font-extrabold text-brand-yellow">
+                    <AnimatedCounter
+                      to={Number.parseFloat(stat.value)}
+                      decimals={stat.value.includes(".") ? (stat.value.split(".")[1]?.replace(/\D/g, "").length || 0) : 0}
+                      suffix={stat.value.replace(/[0-9.]/g, "")}
+                    />
+                  </div>
                   <div className="mt-1 text-xs font-semibold text-white/80">{stat.label}</div>
                 </div>
               ))}

@@ -9,7 +9,8 @@ const navItems = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
-  { href: "/skills", label: "Skills" },
+  { href: "/price", label: "Price" },
+  { href: "/tools", label: "Tools" },
   { href: "/projects", label: "Projects" },
   { href: "/jobs", label: "Jobs" },
   { href: "/blogs", label: "Blogs" },
@@ -20,10 +21,6 @@ const navItems = [
 
 export function SiteHeader() {
   const pathname = usePathname();
-
-  if (pathname === "/") {
-    return null;
-  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80">

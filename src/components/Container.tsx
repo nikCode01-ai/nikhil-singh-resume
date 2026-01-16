@@ -1,10 +1,12 @@
 import { cn } from "@/lib/utils";
 
+import type { ReactNode } from "react";
+
 export function Container({
   children,
   className,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
 }) {
   return (

@@ -3,7 +3,24 @@
 import { useMemo, useState } from "react";
 
 import { Button } from "@/components/Button";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { technicalSkills } from "@/lib/resume-data";
+
+function iconQueryFromName(name: string) {
+  const withoutParens = name.replace(/\s*\([^)]*\)\s*/g, " ").trim();
+  const withoutDigits = withoutParens.replace(/\b\d+\b/g, " ");
+  return withoutDigits.replace(/[^a-zA-Z0-9#+. ]+/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function initialsFromName(name: string) {
+  const parts = name
+    .replace(/\([^)]*\)/g, " ")
+    .replace(/[^a-zA-Z0-9 ]+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean);
+  const letters = parts.slice(0, 2).map((p) => p[0]?.toUpperCase() || "").join("");
+  return letters || name.slice(0, 2).toUpperCase();
+}
 
 const skillProficiency = {
   "HTML5": 95,
@@ -83,6 +100,7 @@ export function Skills() {
   // Get unique categories for filtering
   const categories = useMemo(() => Object.keys(technicalSkills), []);
   const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [brokenIcons, setBrokenIcons] = useState<Record<string, boolean>>({});
 
   const filteredTools = useMemo(() => {
     const list =
@@ -93,23 +111,23 @@ export function Skills() {
   }, [activeCategory, tools]);
   
   return (
-    <section className="bg-brand-cream py-20">
+    <section className="bg-brand-cream py-20 dark:bg-slate-950">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <p className="text-sm font-semibold text-brand-green">My Favorite Tools</p>
-          <h2 className="mt-2 text-4xl font-extrabold text-slate-900">
+          <p className="text-sm font-semibold text-brand-green dark:text-brand-yellow">My Favorite Tools</p>
+          <h2 className="mt-2 text-4xl font-extrabold text-slate-900 dark:text-slate-100">
             <span className="text-brand-yellow">Exploring the Tools</span>
             <br />
             Behind My Designs
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto dark:text-slate-300">
             Technologies and tools I work with daily, with proficiency levels based on real project experience.
           </p>
         </div>
         
         {/* Category Filter */}
         <div className="flex flex-col items-center gap-4 mb-12">
-          <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/80 p-2 shadow-sm backdrop-blur">
+          <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/80 p-2 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-950/60">
             <Button
               type="button"
               onClick={() => setActiveCategory("All")}
@@ -130,53 +148,65 @@ export function Skills() {
               </Button>
             ))}
           </div>
-          <div className="text-sm text-slate-600">
-            Showing <span className="font-semibold text-slate-900">{filteredTools.length}</span> of{" "}
-            <span className="font-semibold text-slate-900">{tools.length}</span>
+          <div className="text-sm text-slate-600 dark:text-slate-400">
+            Showing <span className="font-semibold text-slate-900 dark:text-slate-100">{filteredTools.length}</span> of{" "}
+            <span className="font-semibold text-slate-900 dark:text-slate-100">{tools.length}</span>
           </div>
         </div>
         
         {/* Skills Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredTools.map((tool, index) => (
-            <div
-              key={index}
-              className="group rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h4 className="font-semibold text-gray-900 group-hover:text-slate-950">{tool.name}</h4>
-                  <p className="text-sm text-gray-500">{tool.category}</p>
+        <div className="grid grid-cols-2 justify-items-center gap-x-6 gap-y-10 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+          {filteredTools.map((tool) => {
+            const iconQuery = iconQueryFromName(tool.name);
+            const key = `${tool.category}:${tool.name}`;
+            const isBroken = !!brokenIcons[key];
+            const initials = initialsFromName(tool.name);
+
+            return (
+              <div
+                key={key}
+                className="group flex w-full max-w-[170px] flex-col items-center rounded-3xl bg-white px-4 py-6 shadow-sm ring-1 ring-slate-900/5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg dark:bg-slate-900/60 dark:ring-white/10"
+              >
+                <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-slate-100 ring-8 ring-white shadow-sm transition-transform duration-200 group-hover:scale-[1.03] dark:bg-slate-800 dark:ring-slate-950">
+                  {isBroken ? (
+                    <div className="text-xl font-extrabold tracking-tight text-brand-green dark:text-brand-yellow">{initials}</div>
+                  ) : (
+                    <img
+                      src={`/api/icon?name=${encodeURIComponent(iconQuery || tool.name)}`}
+                      alt={tool.name}
+                      className="h-10 w-10 object-contain"
+                      loading="lazy"
+                      onError={() => setBrokenIcons((prev) => ({ ...prev, [key]: true }))}
+                    />
+                  )}
                 </div>
-                <div className="rounded-full bg-brand-cream px-3 py-1 text-sm font-bold text-brand-green ring-1 ring-slate-900/5">
-                  {tool.proficiency}%
-                </div>
+
+                <div className="mt-4 text-2xl font-extrabold text-slate-900 dark:text-slate-100">{tool.proficiency}%</div>
+                <div className="mt-2 text-center text-sm font-medium text-slate-600 dark:text-slate-300">{tool.name}</div>
               </div>
-              
-              {/* Progress Bar */}
-              <div className="w-full rounded-full bg-slate-200/70 h-2">
-                <div
-                  className="h-2 rounded-full bg-brand-yellow transition-all duration-700 ease-out"
-                  style={{ width: `${tool.proficiency}%` }}
-                ></div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         
         {/* Key Skills Summary */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="text-center">
-            <div className="text-4xl font-extrabold text-brand-green mb-2">50+</div>
-            <div className="text-gray-600">Technologies Mastered</div>
+            <div className="text-4xl font-extrabold text-brand-green mb-2 dark:text-brand-yellow">
+              <AnimatedCounter to={50} suffix="+" />
+            </div>
+            <div className="text-gray-600 dark:text-slate-300">Technologies Mastered</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-extrabold text-brand-green mb-2">30+</div>
-            <div className="text-gray-600">Production Systems</div>
+            <div className="text-4xl font-extrabold text-brand-green mb-2 dark:text-brand-yellow">
+              <AnimatedCounter to={30} suffix="+" />
+            </div>
+            <div className="text-gray-600 dark:text-slate-300">Production Systems</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-extrabold text-brand-green mb-2">4+</div>
-            <div className="text-gray-600">Years Experience</div>
+            <div className="text-4xl font-extrabold text-brand-green mb-2 dark:text-brand-yellow">
+              <AnimatedCounter to={4} suffix="+" />
+            </div>
+            <div className="text-gray-600 dark:text-slate-300">Years Experience</div>
           </div>
         </div>
       </div>

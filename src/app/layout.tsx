@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import type { ReactNode } from "react";
 import "./globals.css";
-import { SiteFooter } from "@/components/SiteFooter";
-import { SiteHeader } from "@/components/SiteHeader";
+import { HomeHeader } from "@/components/HomeHeader";
 import { Chatbot } from "@/components/Chatbot";
+import { Footer } from "@/components/Footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en" className="h-full scroll-smooth" suppressHydrationWarning>
@@ -63,11 +64,12 @@ export default function RootLayout({
   } catch (_) {}
 })();`}</Script>
         <div className="flex min-h-screen flex-col">
-          <SiteHeader />
+          <HomeHeader />
+          <div className="h-24" aria-hidden="true" />
           <main id="content" className="flex-1">
             {children}
           </main>
-          <SiteFooter />
+          <Footer />
           <Chatbot />
         </div>
       </body>
