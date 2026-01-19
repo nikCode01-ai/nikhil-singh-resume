@@ -108,6 +108,7 @@ export const flagshipProject = {
   name: "NDC Terminal",
   description:
     "A cryptic command-line airline booking system for travel agents enabling full booking flows in under 30 seconds using short commands.",
+  image: "/images/flightbooking.png",
   architecture:
     "React UI → WebSocket → Command Parser → Executor → NDC Clients → Airline APIs → PostgreSQL",
   supportedAirlines: [
@@ -136,6 +137,7 @@ export const featuredProjects = [
     name: "Panama Kosher Fest 2026",
     url: "https://panamakosherfest.com",
     date: "January 20, 2026",
+    image: "/images/panamakosherfest.png",
     description:
       "Next.js event platform with integrated real-time flight booking using NDC APIs.",
     features: [
@@ -148,6 +150,7 @@ export const featuredProjects = [
   },
   {
     name: "Fresh Kosher Cruises",
+    image: "/images/freshkosher.png",
     description:
       "Static marketing & lead-generation website for kosher cruise dining experiences.",
     features: [
@@ -171,89 +174,58 @@ export const featuredProjects = [
 
 export const additionalProjects = [
   {
-    name: "kosherfest",
-    description: "Event and booking related work for Kosher Fest ecosystem.",
-    role: "Maintainer",
-  },
-  {
     name: "Fresh Kosher Cruises (FE & BE)",
+    image: "/images/freshkosher.png",
     description: "Frontend + backend systems supporting lead capture and workflows.",
     role: "Developer",
   },
   {
-    name: "invitationstreet / dreamyinvite",
+    name: "invitationstreet",
+    image: "/images/invitationstreet.png",
+    description: "Invitation/landing-page experiences and supporting services.",
+    role: "Developer",
+  },
+  {
+    name: "dreamyinvite",
+    image: "/images/dreamyinvites.png",
     description: "Invitation/landing-page experiences and supporting services.",
     role: "Developer",
   },
   {
     name: "muffleit (FE & BE)",
+    image: "/images/muffleit.png",
     description: "Full-stack work across client and backend components.",
     role: "Developer",
   },
   {
     name: "barrymcguigan.com",
+    image: "/images/barrymcguigan.png",
     description: "Content-focused website build and optimization.",
     role: "Developer",
   },
   {
     name: "businessmatters.net",
+    image: "/images/businessmatters.png",
     description: "Content platform development and performance improvements.",
     role: "Developer",
   },
   {
     name: "agrosafpharmaceuticals (FE & BE)",
+    image: "/images/agrosafpharmaceuticals.png",
     description: "Business website and supporting backend services.",
     role: "Developer",
   },
   {
     name: "laladecorators.com",
+    image: "/images/laladecorators.png",
     description: "Business site build with modern responsive UI.",
     role: "Developer",
   },
   {
-    name: "randorapi",
-    description: "API development and integrations.",
-    role: "Developer",
-  },
-  {
-    name: "guidecase",
-    description: "Web application development and feature delivery.",
-    role: "Developer",
-  },
-  {
-    name: "shimon / simon",
-    description: "Product development across frontend and backend modules.",
-    role: "Developer",
-  },
-  {
     name: "ultimatesportstrainer",
+    image: "/images/ultimatesportstrainer.png",
     description: "Web platform implementation and enhancements.",
     role: "Developer",
-  },
-  {
-    name: "startupfixers",
-    description: "Landing pages and marketing-oriented builds.",
-    role: "Developer",
-  },
-  {
-    name: "cnnmexico",
-    description: "Content publishing and platform work.",
-    role: "Developer",
-  },
-  {
-    name: "goodname (FE & BE)",
-    description: "Full-stack development and deployment work.",
-    role: "Developer",
-  },
-  {
-    name: "Strapi projects",
-    description: "Headless CMS implementations and API customization.",
-    role: "Developer",
-  },
-  {
-    name: "portfolio websites",
-    description: "Multiple portfolio builds for different clients and roles.",
-    role: "Owner",
   },
 ];
 

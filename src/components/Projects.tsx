@@ -1,11 +1,13 @@
 import { Button, ButtonLink } from "@/components/Button";
 import { additionalProjects, featuredProjects, flagshipProject, person } from "@/lib/resume-data";
 import { ExternalLink, Calendar, Code, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 const projectImages = [
-  "/api/placeholder/400/300?text=NDC+Terminal",
-  "/api/placeholder/400/300?text=Panama+Kosher+Fest",
-  "/api/placeholder/400/300?text=Fresh+Kosher+Cruises",
+  "/images/flightbooking.png",
+  "/images/panamakosherfest.png",
+  "/images/freshkosher.png",
   "/api/placeholder/400/300?text=Travel+Platform",
   "/api/placeholder/400/300?text=E-commerce+Solution",
   "/api/placeholder/400/300?text=Event+Management"
@@ -15,27 +17,28 @@ const allProjects = [
   {
     name: flagshipProject.name,
     description: flagshipProject.description,
-    image: projectImages[0],
+    image: ("image" in flagshipProject && flagshipProject.image) ? flagshipProject.image : projectImages[0],
     category: "Application Design",
     tags: ["UI/UX Design", "App Design", "Backend"],
-    url: "#",
+    url: "/projects/ndcterm",
+    href: "/projects/ndcterm",
     date: "2024",
     tech: flagshipProject.tech.slice(0, 3)
   },
   ...featuredProjects.map((project, index) => ({
     name: project.name,
     description: project.description,
-    image: projectImages[index + 1],
+    image: ("image" in project && project.image) ? project.image : projectImages[index + 1],
     category: index === 0 ? "Website Design" : index === 1 ? "Dashboard" : "Wireframe",
     tags: (project.features ?? []).slice(0, 2).map((f) => f.split(" ")[0]),
     url: project.url || "#",
     date: project.date,
     tech: project.tech.slice(0, 3)
   })),
-  ...additionalProjects.map((project, index) => ({
+  ...additionalProjects.map((project) => ({
     name: project.name,
     description: project.description,
-    image: projectImages[(index + featuredProjects.length + 1) % projectImages.length],
+    image: ("image" in project && project.image) ? project.image : undefined,
     category: "Repository",
     tags: [project.role],
     url: person.gitlabUrl,
@@ -76,17 +79,36 @@ export function Projects() {
           {allProjects.map((project, index) => (
             <div
               key={index}
-              className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+              className="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
             >
+              {"href" in project && project.href ? (
+                <Link
+                  href={project.href}
+                  aria-label={`Open ${project.name} project page`}
+                  className="absolute inset-0 z-10 cursor-pointer"
+                >
+                  <span className="sr-only">Open project</span>
+                </Link>
+              ) : null}
               {/* Project Image */}
               <div className="relative h-48 bg-gradient-to-br from-brand-yellow/20 to-brand-yellow/40 overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <Code className="w-12 h-12 text-brand-green mx-auto mb-2" />
-                    <p className="text-brand-green font-medium">{project.name}</p>
+                {project.image ? (
+                  <Image
+                    src={project.image}
+                    alt={project.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <Code className="w-12 h-12 text-brand-green mx-auto mb-2" />
+                      <p className="text-brand-green font-medium">{project.name}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-colors"></div>
+                )}
+                <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10"></div>
               </div>
               
               {/* Project Content */}
@@ -136,13 +158,20 @@ export function Projects() {
                 </div>
                 
                 {/* View Project Link */}
-                <a
-                  href={project.url}
-                  className="inline-flex items-center gap-2 text-brand-green font-semibold hover:text-brand-greenDark transition-colors"
-                >
-                  View Project
-                  <ExternalLink className="w-4 h-4" />
-                </a>
+                {"href" in project && project.href ? (
+                  <span className="inline-flex items-center gap-2 text-brand-green font-semibold">
+                    View Project
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                ) : (
+                  <a
+                    href={project.url}
+                    className="inline-flex items-center gap-2 text-brand-green font-semibold hover:text-brand-greenDark transition-colors"
+                  >
+                    View Project
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                )}
               </div>
             </div>
           ))}

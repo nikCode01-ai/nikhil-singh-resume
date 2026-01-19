@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Badge } from "@/components/Badge";
 import { ButtonLink } from "@/components/Button";
 import { Card } from "@/components/Card";
@@ -63,6 +64,20 @@ export default function ProjectsPage() {
 
         <Section title="Flagship" subtitle="Primary production system and business impact.">
           <Card>
+            {"image" in flagshipProject && flagshipProject.image ? (
+              <div className="mb-5 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
+                <div className="relative w-full" style={{ aspectRatio: "404 / 260" }}>
+                  <Image
+                    src={flagshipProject.image}
+                    alt={flagshipProject.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    priority
+                  />
+                </div>
+              </div>
+            ) : null}
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div className="space-y-1">
                 <p className="text-base font-semibold text-slate-900 dark:text-slate-100">
@@ -117,6 +132,19 @@ export default function ProjectsPage() {
           <div className="grid gap-4 md:grid-cols-2">
             {featuredProjects.map((p) => (
               <Card key={p.name}>
+                {"image" in p && p.image ? (
+                  <div className="mb-4 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
+                    <div className="relative w-full" style={{ aspectRatio: "404 / 260" }}>
+                      <Image
+                        src={p.image}
+                        alt={p.name}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                      />
+                    </div>
+                  </div>
+                ) : null}
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-1">
                     <p className="text-base font-semibold text-slate-900 dark:text-slate-100">
@@ -196,6 +224,19 @@ export default function ProjectsPage() {
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {additionalProjects.map((p) => (
               <Card key={p.name} className="p-4">
+                {"image" in p && p.image ? (
+                  <div className="mb-4 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
+                    <div className="relative w-full" style={{ aspectRatio: "404 / 260" }}>
+                      <Image
+                        src={p.image}
+                        alt={p.name}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 1024px) 100vw, 33vw"
+                      />
+                    </div>
+                  </div>
+                ) : null}
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-1">
                     <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
