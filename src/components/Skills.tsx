@@ -4,23 +4,8 @@ import { useMemo, useState } from "react";
 
 import { Button } from "@/components/Button";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
+import { ApiUiIcon } from "@/components/ApiUiIcon";
 import { technicalSkills } from "@/lib/resume-data";
-
-function iconQueryFromName(name: string) {
-  const withoutParens = name.replace(/\s*\([^)]*\)\s*/g, " ").trim();
-  const withoutDigits = withoutParens.replace(/\b\d+\b/g, " ");
-  return withoutDigits.replace(/[^a-zA-Z0-9#+. ]+/g, " ").replace(/\s+/g, " ").trim();
-}
-
-function initialsFromName(name: string) {
-  const parts = name
-    .replace(/\([^)]*\)/g, " ")
-    .replace(/[^a-zA-Z0-9 ]+/g, " ")
-    .split(/\s+/)
-    .filter(Boolean);
-  const letters = parts.slice(0, 2).map((p) => p[0]?.toUpperCase() || "").join("");
-  return letters || name.slice(0, 2).toUpperCase();
-}
 
 const skillProficiency = {
   "HTML5": 95,
@@ -76,6 +61,41 @@ const skillProficiency = {
   "Google Apps Script": 80,
 };
 
+const skillLogoSrcMap: Record<string, string> = {
+  "HTML5": "/icons/skills/html5.svg",
+  "CSS3": "/icons/skills/css3.svg",
+  "JavaScript (ES6+)": "/icons/skills/javascript.svg",
+  "TypeScript": "/icons/skills/typescript.svg",
+  "React": "/icons/skills/react.svg",
+  "Next.js 16 (App Router)": "/icons/skills/nextjs.svg",
+  "Tailwind CSS": "/icons/skills/tailwindcss.svg",
+  "Node.js": "/icons/skills/nodejs.svg",
+  "Fastify": "/icons/skills/fastify.svg",
+  "Express": "/icons/skills/express.svg",
+  "MongoDB": "/icons/skills/mongodb.svg",
+  "Docker": "/icons/skills/docker.svg",
+  "Git": "/icons/skills/git.svg",
+};
+
+function fallbackIconNameFromCategory(category: string) {
+  switch (category) {
+    case "Frontend":
+      return "Code";
+    case "Backend":
+      return "Layers";
+    case "Databases":
+      return "Database";
+    case "Cloud & DevOps":
+      return "Cloud";
+    case "Travel & Aviation":
+      return "Globe";
+    case "Analytics & Marketing":
+      return "Target";
+    default:
+      return "Code";
+  }
+}
+
 const getToolsByCategory = () => {
   const tools: Array<{
     name: string;
@@ -100,7 +120,6 @@ export function Skills() {
   // Get unique categories for filtering
   const categories = useMemo(() => Object.keys(technicalSkills), []);
   const [activeCategory, setActiveCategory] = useState<string>("All");
-  const [brokenIcons, setBrokenIcons] = useState<Record<string, boolean>>({});
 
   const filteredTools = useMemo(() => {
     const list =
@@ -109,7 +128,7 @@ export function Skills() {
         : tools.filter((t) => t.category === activeCategory);
     return [...list].sort((a, b) => b.proficiency - a.proficiency);
   }, [activeCategory, tools]);
-  
+
   return (
     <section className="bg-brand-cream py-20 dark:bg-slate-950">
       <div className="container mx-auto px-4">
@@ -124,7 +143,7 @@ export function Skills() {
             Technologies and tools I work with daily, with proficiency levels based on real project experience.
           </p>
         </div>
-        
+
         {/* Category Filter */}
         <div className="flex flex-col items-center gap-4 mb-12">
           <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/80 p-2 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-950/60">
@@ -153,32 +172,38 @@ export function Skills() {
             <span className="font-semibold text-slate-900 dark:text-slate-100">{tools.length}</span>
           </div>
         </div>
-        
+
         {/* Skills Grid */}
         <div className="grid grid-cols-2 justify-items-center gap-x-6 gap-y-10 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {filteredTools.map((tool) => {
-            const iconQuery = iconQueryFromName(tool.name);
             const key = `${tool.category}:${tool.name}`;
-            const isBroken = !!brokenIcons[key];
-            const initials = initialsFromName(tool.name);
+            const logoSrc = skillLogoSrcMap[tool.name];
+            const fallbackIconName = fallbackIconNameFromCategory(tool.category);
 
             return (
               <div
                 key={key}
                 className="group flex w-full max-w-[170px] flex-col items-center rounded-3xl bg-white px-4 py-6 shadow-sm ring-1 ring-slate-900/5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg dark:bg-slate-900/60 dark:ring-white/10"
               >
-                <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-slate-100 ring-8 ring-white shadow-sm transition-transform duration-200 group-hover:scale-[1.03] dark:bg-slate-800 dark:ring-slate-950">
-                  {isBroken ? (
-                    <div className="text-xl font-extrabold tracking-tight text-brand-green dark:text-brand-yellow">{initials}</div>
-                  ) : (
-                    <img
-                      src={`/api/icon?name=${encodeURIComponent(iconQuery || tool.name)}`}
-                      alt={tool.name}
-                      className="h-10 w-10 object-contain"
-                      loading="lazy"
-                      onError={() => setBrokenIcons((prev) => ({ ...prev, [key]: true }))}
-                    />
-                  )}
+                <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-brand-green/20 to-brand-yellow/20 ring-8 ring-white shadow-sm transition-transform duration-200 group-hover:scale-[1.03] dark:from-brand-green/10 dark:to-brand-yellow/10 dark:ring-slate-950">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 shadow-sm">
+                    {logoSrc ? (
+                      <img
+                        src={logoSrc}
+                        alt={tool.name}
+                        className="h-10 w-10"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <ApiUiIcon
+                        name={fallbackIconName}
+                        size={40}
+                        color="brand-green"
+                        className="h-10 w-10"
+                        decorative
+                      />
+                    )}
+                  </div>
                 </div>
 
                 <div className="mt-4 text-2xl font-extrabold text-slate-900 dark:text-slate-100">{tool.proficiency}%</div>
@@ -187,6 +212,7 @@ export function Skills() {
             );
           })}
         </div>
+
         
         {/* Key Skills Summary */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">

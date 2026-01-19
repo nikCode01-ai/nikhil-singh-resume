@@ -34,7 +34,11 @@ function escapeXml(input: string) {
     .replaceAll("'", "&apos;");
 }
 
-export async function GET(request: NextRequest, { params }: { params: Params }) {
+export async function GET(
+  request: NextRequest,
+  context: { params: Promise<{ width: string; height: string }> }
+) {
+  const params = await context.params;
   const wRaw = Number(params.width);
   const hRaw = Number(params.height);
   const w = clampInt(Number.isFinite(wRaw) ? wRaw : 400, 1, 2000);
