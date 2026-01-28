@@ -30,16 +30,16 @@ export function ContactSection() {
   };
 
   return (
-    <section className="bg-brand-cream py-20">
+    <section className="bg-brand-cream py-20 dark:bg-slate-950">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4 dark:text-slate-100">
             Contact Us
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto dark:text-slate-300">
             Let&apos;s Talk for Your Next Projects
           </p>
-          <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+          <p className="text-gray-600 mt-4 max-w-2xl mx-auto dark:text-slate-300">
             Have a project in mind? I&apos;d love to hear about it. Fill out the form below 
             and I&apos;ll get back to you as soon as possible.
           </p>
@@ -49,47 +49,47 @@ export function ContactSection() {
           {/* Contact Information */}
           <div className="space-y-8">
             <div>
-              <h3 className="text-2xl font-bold text-brand-green mb-6">Get in Touch</h3>
+              <h3 className="text-2xl font-bold text-brand-green mb-6 dark:text-brand-yellow">Get in Touch</h3>
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center ring-1 ring-brand-green/10">
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center ring-1 ring-brand-green/10 dark:bg-slate-900 dark:ring-white/10">
                     <Phone className="w-6 h-6 text-brand-green" />
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">Phone</p>
-                    <p className="text-gray-600">{person.phone}</p>
+                    <p className="font-semibold text-gray-900 dark:text-slate-100">Phone</p>
+                    <p className="text-gray-600 dark:text-slate-300">{person.phone}</p>
                   </div>
                 </div>
                 
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center ring-1 ring-brand-green/10">
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center ring-1 ring-brand-green/10 dark:bg-slate-900 dark:ring-white/10">
                     <Mail className="w-6 h-6 text-brand-green" />
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">Email</p>
-                    <p className="text-gray-600">{person.email}</p>
+                    <p className="font-semibold text-gray-900 dark:text-slate-100">Email</p>
+                    <p className="text-gray-600 dark:text-slate-300">{person.email}</p>
                   </div>
                 </div>
                 
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center ring-1 ring-brand-green/10">
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center ring-1 ring-brand-green/10 dark:bg-slate-900 dark:ring-white/10">
                     <Linkedin className="w-6 h-6 text-brand-green" />
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">LinkedIn</p>
-                    <a className="text-gray-600 hover:text-brand-green transition-colors" href={person.linkedinUrl}>
+                    <p className="font-semibold text-gray-900 dark:text-slate-100">LinkedIn</p>
+                    <a className="text-gray-600 hover:text-brand-green transition-colors dark:text-slate-300 dark:hover:text-brand-yellow" href={person.linkedinUrl}>
                       {person.linkedinUrl}
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center ring-1 ring-brand-green/10">
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center ring-1 ring-brand-green/10 dark:bg-slate-900 dark:ring-white/10">
                     <Gitlab className="w-6 h-6 text-brand-green" />
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">GitLab</p>
-                    <a className="text-gray-600 hover:text-brand-green transition-colors" href={person.gitlabUrl}>
+                    <p className="font-semibold text-gray-900 dark:text-slate-100">GitLab</p>
+                    <a className="text-gray-600 hover:text-brand-green transition-colors dark:text-slate-300 dark:hover:text-brand-yellow" href={person.gitlabUrl}>
                       {person.gitlabHandle}
                     </a>
                   </div>
@@ -97,12 +97,12 @@ export function ContactSection() {
 
                 {person.location ? (
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center ring-1 ring-brand-green/10">
+                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center ring-1 ring-brand-green/10 dark:bg-slate-900 dark:ring-white/10">
                       <MapPin className="w-6 h-6 text-brand-green" />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900">Address</p>
-                      <p className="text-gray-600">{person.location}</p>
+                      <p className="font-semibold text-gray-900 dark:text-slate-100">Address</p>
+                      <p className="text-gray-600 dark:text-slate-300">{person.location}</p>
                     </div>
                   </div>
                 ) : null}
@@ -110,9 +110,9 @@ export function ContactSection() {
             </div>
             
             {/* Response Time */}
-            <div className="rounded-2xl bg-white p-6 ring-1 ring-slate-900/5">
-              <h4 className="font-bold text-gray-900 mb-2">Response Time</h4>
-              <p className="text-gray-700">
+            <div className="rounded-2xl bg-white p-6 ring-1 ring-slate-900/5 dark:bg-slate-900/60 dark:ring-white/10">
+              <h4 className="font-bold text-gray-900 mb-2 dark:text-slate-100">Response Time</h4>
+              <p className="text-gray-700 dark:text-slate-300">
                 I typically respond to inquiries within 24 hours. For urgent projects, 
                 please mention it in your message.
               </p>
@@ -120,11 +120,11 @@ export function ContactSection() {
           </div>
           
           {/* Contact Form */}
-          <div className="bg-white rounded-2xl shadow-xl p-8 ring-1 ring-slate-900/5">
+          <div className="bg-white rounded-2xl shadow-xl p-8 ring-1 ring-slate-900/5 dark:bg-slate-900/60 dark:ring-white/10">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-slate-200">
                     Your Name *
                   </label>
                   <input
@@ -133,13 +133,13 @@ export function ContactSection() {
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-brand-yellow"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-slate-900 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-brand-yellow dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
                     placeholder="John Doe"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-slate-200">
                     Email *
                   </label>
                   <input
@@ -148,7 +148,7 @@ export function ContactSection() {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-brand-yellow"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-slate-900 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-brand-yellow dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -156,7 +156,7 @@ export function ContactSection() {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-slate-200">
                     Phone *
                   </label>
                   <input
@@ -165,13 +165,13 @@ export function ContactSection() {
                     value={formData.phone}
                     onChange={handleInputChange}
                     required
-                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-brand-yellow"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-slate-900 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-brand-yellow dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
                     placeholder="+1 234 567 8900"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-slate-200">
                     I&apos;m Interested in *
                   </label>
                   <select
@@ -179,7 +179,7 @@ export function ContactSection() {
                     value={formData.interest}
                     onChange={handleInputChange}
                     required
-                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-brand-yellow"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-slate-900 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-brand-yellow dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
                   >
                     <option value="">Select a service</option>
                     <option value="web-development">Web Development</option>
@@ -194,7 +194,7 @@ export function ContactSection() {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-slate-200">
                     Budget Range (USD) *
                   </label>
                   <select
@@ -202,7 +202,7 @@ export function ContactSection() {
                     value={formData.budget}
                     onChange={handleInputChange}
                     required
-                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-brand-yellow"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-slate-900 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-brand-yellow dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
                   >
                     <option value="">Select budget range</option>
                     <option value="1000-5000">$1,000 - $5,000</option>
@@ -214,7 +214,7 @@ export function ContactSection() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-slate-200">
                     Country *
                   </label>
                   <select
@@ -222,7 +222,7 @@ export function ContactSection() {
                     value={formData.country}
                     onChange={handleInputChange}
                     required
-                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-brand-yellow"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-slate-900 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-brand-yellow dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
                   >
                     <option value="">Select country</option>
                     <option value="us">United States</option>
@@ -235,7 +235,7 @@ export function ContactSection() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-slate-200">
                   Your Message *
                 </label>
                 <textarea
@@ -244,7 +244,7 @@ export function ContactSection() {
                   onChange={handleInputChange}
                   required
                   rows={5}
-                  className="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-brand-yellow"
+                  className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-slate-900 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-brand-yellow dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
                   placeholder="Tell me about your project..."
                 />
               </div>

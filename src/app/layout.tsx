@@ -6,6 +6,7 @@ import "./globals.css";
 import { HomeHeader } from "@/components/HomeHeader";
 import { Chatbot } from "@/components/Chatbot";
 import { Footer } from "@/components/Footer";
+import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -71,6 +72,7 @@ export default function RootLayout({
           </main>
           <Footer />
           <Chatbot />
+          <ScrollToTopButton />
         </div>
       </body>
     </html>

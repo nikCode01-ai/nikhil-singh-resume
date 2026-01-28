@@ -19,15 +19,12 @@ function buttonClassName({ variant = "primary", size = "md", fullWidth }: Button
     "inline-flex items-center justify-center gap-2 font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60 dark:focus-visible:ring-offset-slate-950";
 
   const variants: Record<ButtonVariant, string> = {
-    primary:
-      "border border-brand-yellow/50 bg-brand-green text-brand-yellow shadow-sm hover:bg-brand-greenDark hover:border-brand-yellow/70",
-    secondary:
-      "border border-brand-green/30 bg-white text-brand-green shadow-sm hover:border-brand-yellow/40 hover:bg-brand-yellow/10 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900",
-    accent: "bg-brand-yellow text-brand-green shadow-sm hover:brightness-95",
-    inverse: "border border-white/25 bg-transparent text-white hover:bg-white/10",
-    ghost: "bg-transparent text-brand-green hover:bg-brand-cream dark:text-slate-100 dark:hover:bg-slate-900",
-    pill:
-      "border border-brand-green/20 bg-white text-brand-green hover:bg-brand-yellow dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900",
+    primary: "btn-brand",
+    secondary: "btn-brand-secondary",
+    accent: "btn-brand",
+    inverse: "btn-brand-inverse",
+    ghost: "btn-brand-ghost",
+    pill: "btn-brand-pill",
     icon: "border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-slate-100",
   };
 

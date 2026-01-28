@@ -7,23 +7,23 @@ import { ApiAvatar } from "@/components/ApiAvatar";
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden bg-brand-cream">
+    <section className="relative flex min-h-screen items-center overflow-hidden bg-brand-cream dark:bg-slate-950">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="space-y-6">
-            <div className="inline-flex items-center rounded-full border border-brand-green/25 bg-white px-4 py-2 text-sm font-semibold text-brand-green shadow-sm">
+            <div className="inline-flex items-center rounded-full border border-brand-green/25 bg-white px-4 py-2 text-sm font-semibold text-brand-green shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100">
               Hello There!
             </div>
             
-            <h1 className="text-4xl font-extrabold leading-tight text-slate-900 sm:text-5xl">
+            <h1 className="text-4xl font-extrabold leading-tight text-slate-900 dark:text-slate-100 sm:text-5xl">
               I’m{" "}
               <span className="text-brand-yellow">{person.name}</span>,
               <br />
               {person.role}
             </h1>
             
-            <p className="text-lg text-gray-600 leading-relaxed max-w-2xl">
+            <p className="text-lg text-gray-600 leading-relaxed max-w-2xl dark:text-slate-300">
               {professionalSummary}
             </p>
             
@@ -39,17 +39,17 @@ export function Hero() {
             </div>
             
             <div className="space-y-3 pt-4">
-              <div className="flex items-center gap-3 text-slate-700">
+              <div className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
                 <ApiUiIcon name="Phone" size={20} className="w-5 h-5" />
                 <span>{person.phone}</span>
               </div>
-              <div className="flex items-center gap-3 text-slate-700">
+              <div className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
                 <ApiUiIcon name="Mail" size={20} className="w-5 h-5" />
                 <span>{person.email}</span>
               </div>
-              <div className="flex items-center gap-3 text-slate-700">
+              <div className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
                 <ApiUiIcon name="Linkedin" size={20} className="w-5 h-5" />
-                <a href={person.linkedinUrl} className="hover:text-brand-greenDark transition-colors">
+                <a href={person.linkedinUrl} className="hover:text-brand-greenDark transition-colors dark:hover:text-brand-yellow">
                   LinkedIn Profile
                 </a>
               </div>
@@ -60,9 +60,9 @@ export function Hero() {
           <div className="relative">
             <div className="relative mx-auto flex min-h-[420px] w-full max-w-md items-center justify-center">
               <div className="absolute -right-10 top-10 h-72 w-72 rounded-full bg-brand-yellow"></div>
-              <div className="relative w-full rounded-[2rem] bg-white p-8 shadow-2xl">
+              <div className="relative w-full rounded-[2rem] bg-white p-8 shadow-2xl dark:bg-slate-900/60 dark:ring-1 dark:ring-white/10">
                 <div className="relative">
-                  <div className="mx-auto flex h-72 w-72 items-center justify-center overflow-hidden rounded-full bg-slate-100">
+                  <div className="mx-auto flex h-72 w-72 items-center justify-center overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
                     <ApiAvatar name={person.name} size={288} className="h-72 w-72" alt={person.name} />
                   </div>
 

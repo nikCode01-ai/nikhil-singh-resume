@@ -71,7 +71,7 @@ export function HomeHeader() {
             <div className="flex items-center gap-2">
               <ButtonLink
                 href="/contact"
-                variant="secondary"
+                variant="primary"
                 size="sm"
                 className="hidden md:inline-flex focus-visible:!ring-offset-brand-green"
               >

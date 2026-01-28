@@ -1,6 +1,10 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
 import { Button, ButtonLink } from "@/components/Button";
 import { additionalProjects, featuredProjects, flagshipProject, person } from "@/lib/resume-data";
-import { ExternalLink, Calendar, Code, ArrowRight } from "lucide-react";
+import { ExternalLink, Calendar, Code, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -47,26 +51,56 @@ const allProjects = [
   }))
 ];
 
+const INITIAL_VISIBLE_PROJECTS = 6;
+
+const categories = ["All Projects", "App Design", "Website Design", "Dashboard", "Wireframe", "Repository"] as const;
+
 export function Projects() {
+  const [activeCategory, setActiveCategory] = useState<(typeof categories)[number]>("All Projects");
+  const [showAll, setShowAll] = useState(false);
+
+  const filterCategory = activeCategory === "App Design" ? "Application Design" : activeCategory;
+  const filteredProjects =
+    activeCategory === "All Projects" ? allProjects : allProjects.filter((project) => project.category === filterCategory);
+
+  const visibleProjects = showAll ? filteredProjects : filteredProjects.slice(0, INITIAL_VISIBLE_PROJECTS);
+  const canToggle = filteredProjects.length > INITIAL_VISIBLE_PROJECTS;
+
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const prevShowAllRef = useRef(showAll);
+
+  useEffect(() => {
+    const wasExpanded = prevShowAllRef.current;
+    prevShowAllRef.current = showAll;
+
+    if (wasExpanded && !showAll) {
+      sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [showAll]);
+
   return (
-    <section className="bg-brand-cream py-20">
+    <section ref={sectionRef} className="bg-brand-cream scroll-mt-24 py-20 dark:bg-slate-950">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4 dark:text-slate-100">
             My Latest Projects
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto dark:text-slate-300">
             Explore my recent work across different industries and technologies.
           </p>
         </div>
         
         {/* Category Filter */}
         <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {["All Projects", "App Design", "Website Design", "Dashboard", "Wireframe", "Repository"].map((category) => (
+          {categories.map((category) => (
             <Button
               type="button"
               key={category}
-              variant={category === "All Projects" ? "primary" : "pill"}
+              onClick={() => {
+                setActiveCategory(category);
+                setShowAll(false);
+              }}
+              variant={category === activeCategory ? "primary" : "pill"}
               size="sm"
             >
               {category}
@@ -76,10 +110,10 @@ export function Projects() {
         
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {allProjects.map((project, index) => (
+          {visibleProjects.map((project, index) => (
             <div
               key={index}
-              className="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+              className="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden dark:bg-slate-900/60 dark:ring-1 dark:ring-white/10"
             >
               {"href" in project && project.href ? (
                 <Link
@@ -103,8 +137,8 @@ export function Projects() {
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <Code className="w-12 h-12 text-brand-green mx-auto mb-2" />
-                      <p className="text-brand-green font-medium">{project.name}</p>
+                      <Code className="w-12 h-12 text-brand-green mx-auto mb-2 dark:text-brand-yellow" />
+                      <p className="text-brand-green font-medium dark:text-brand-yellow">{project.name}</p>
                     </div>
                   </div>
                 )}
@@ -114,22 +148,22 @@ export function Projects() {
               {/* Project Content */}
               <div className="p-6">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="rounded-full bg-brand-green/10 px-3 py-1 text-sm font-medium text-brand-green">
+                  <span className="rounded-full bg-brand-green/10 px-3 py-1 text-sm font-medium text-brand-green dark:bg-brand-yellow/15 dark:text-brand-yellow">
                     {project.category}
                   </span>
                   {project.date ? (
-                    <div className="flex items-center gap-1 text-gray-500">
+                    <div className="flex items-center gap-1 text-gray-500 dark:text-slate-400">
                       <Calendar className="w-4 h-4" />
                       <span className="text-sm">{project.date}</span>
                     </div>
                   ) : null}
                 </div>
                 
-                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-brand-green transition-colors">
+                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-brand-green transition-colors dark:text-slate-100 dark:group-hover:text-brand-yellow">
                   {project.name}
                 </h3>
                 
-                <p className="text-gray-600 mb-4 line-clamp-2">
+                <p className="text-gray-600 mb-4 line-clamp-2 dark:text-slate-300">
                   {project.description}
                 </p>
                 
@@ -138,7 +172,7 @@ export function Projects() {
                   {project.tech.map((tech, techIndex) => (
                     <span
                       key={techIndex}
-                      className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded"
+                      className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded dark:bg-slate-800 dark:text-slate-200"
                     >
                       {tech}
                     </span>
@@ -150,7 +184,7 @@ export function Projects() {
                   {project.tags.map((tag, tagIndex) => (
                     <span
                       key={tagIndex}
-                      className="rounded bg-brand-yellow/25 px-2 py-1 text-xs text-brand-green"
+                      className="rounded bg-brand-yellow/25 px-2 py-1 text-xs text-brand-green dark:bg-brand-yellow/15 dark:text-brand-yellow"
                     >
                       {tag}
                     </span>
@@ -159,14 +193,14 @@ export function Projects() {
                 
                 {/* View Project Link */}
                 {"href" in project && project.href ? (
-                  <span className="inline-flex items-center gap-2 text-brand-green font-semibold">
+                  <span className="inline-flex items-center gap-2 text-brand-green font-semibold dark:text-brand-yellow">
                     View Project
                     <ArrowRight className="w-4 h-4" />
                   </span>
                 ) : (
                   <a
                     href={project.url}
-                    className="inline-flex items-center gap-2 text-brand-green font-semibold hover:text-brand-greenDark transition-colors"
+                    className="inline-flex items-center gap-2 text-brand-green font-semibold hover:text-brand-greenDark transition-colors dark:text-brand-yellow dark:hover:text-brand-yellow/80"
                   >
                     View Project
                     <ExternalLink className="w-4 h-4" />
@@ -176,6 +210,25 @@ export function Projects() {
             </div>
           ))}
         </div>
+
+        {canToggle ? (
+          <div className="mt-10 flex justify-center">
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              aria-expanded={showAll}
+              onClick={() => setShowAll((prev) => !prev)}
+            >
+              {showAll ? "Show less" : "Show more"}
+              {showAll ? (
+                <ChevronUp className="h-4 w-4" aria-hidden="true" />
+              ) : (
+                <ChevronDown className="h-4 w-4" aria-hidden="true" />
+              )}
+            </Button>
+          </div>
+        ) : null}
         
         {/* View All Button */}
         <div className="text-center mt-12">

@@ -20,13 +20,13 @@ export default function Home() {
       {/* Skills Categories Bar */}
       <section className="bg-brand-yellow py-4">
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center items-center gap-2 text-sm font-medium">
+          <div className="flex flex-wrap justify-center items-center gap-2 text-sm font-medium text-brand-green">
             <span>App Design</span>
-            <span className="text-gray-600">*</span>
+            <span className="text-brand-green/70">*</span>
             <span>Website Design</span>
-            <span className="text-gray-600">*</span>
+            <span className="text-brand-green/70">*</span>
             <span>Dashboard</span>
-            <span className="text-gray-600">*</span>
+            <span className="text-brand-green/70">*</span>
             <span>Wireframe</span>
           </div>
         </div>
