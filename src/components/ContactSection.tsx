@@ -32,16 +32,16 @@ export function ContactSection() {
   return (
     <section className="bg-brand-cream py-20 dark:bg-slate-950">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4 dark:text-slate-100">
-            Contact Us
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto dark:text-slate-300">
-            Let&apos;s Talk for Your Next Projects
+        <div className="mb-16 text-center">
+          <p className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
+            <span className="h-px w-5 bg-brand-yellow" />
+            <span className="text-brand-green dark:text-brand-yellow">Contact</span>
           </p>
-          <p className="text-gray-600 mt-4 max-w-2xl mx-auto dark:text-slate-300">
-            Have a project in mind? I&apos;d love to hear about it. Fill out the form below 
-            and I&apos;ll get back to you as soon as possible.
+          <h2 className="mt-3 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-5xl">
+            Let’s Talk
+          </h2>
+          <p className="mx-auto mt-4 max-w-3xl text-base text-slate-600 dark:text-slate-300">
+            Have a project in mind? I’d love to hear about it. Fill out the form below and I’ll get back to you as soon as possible.
           </p>
         </div>
         

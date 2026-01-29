@@ -81,11 +81,15 @@ export function Projects() {
   return (
     <section ref={sectionRef} className="bg-brand-cream scroll-mt-24 py-20 dark:bg-slate-950">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4 dark:text-slate-100">
-            My Latest Projects
+        <div className="mb-16 text-center">
+          <p className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
+            <span className="h-px w-5 bg-brand-yellow" />
+            <span className="text-brand-green dark:text-brand-yellow">Projects</span>
+          </p>
+          <h2 className="mt-3 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-5xl">
+            Featured Work
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto dark:text-slate-300">
+          <p className="mx-auto mt-4 max-w-3xl text-base text-slate-600 dark:text-slate-300">
             Explore my recent work across different industries and technologies.
           </p>
         </div>

@@ -11,17 +11,26 @@ type Post = {
   image?: string;
 };
 
-const posts: Post[] = (experience[0]?.highlights ?? []).slice(0, 3).map((highlight, index) => {
-  const category = index === 0 ? "App Design" : index === 1 ? "Dashboard" : "Website Design";
-  const image = index === 0 ? "/images/blog-1.png" : index === 1 ? "/images/blog-2.png" : undefined;
-
-  return {
-    title: highlight.split(".")[0] ?? highlight,
-    excerpt: highlight,
-    category,
-    image,
-  };
-});
+const posts: Post[] = [
+  {
+    title: "Building Real-Time Airline Booking Systems with NDC APIs",
+    excerpt: "Learn how I built a command-line airline booking system that reduces booking time from 5-10 minutes to under 30 seconds using WebSocket architecture and direct NDC API integrations.",
+    category: "App Design",
+    image: "/images/flightbooking.png",
+  },
+  {
+    title: "Next.js Event Platforms with Integrated Flight Booking",
+    excerpt: "Deep dive into creating Panama Kosher Fest 2026 platform using Next.js 16, Server-Sent Events, and real-time flight search with advanced filtering and caching strategies.",
+    category: "Dashboard",
+    image: "/images/panamakosherfest.png",
+  },
+  {
+    title: "Optimizing Content Platforms for Performance",
+    excerpt: "How I improved businessmatters.net and other content platforms with modern web technologies, achieving 50% performance improvements and better user engagement metrics.",
+    category: "Website Design",
+    image: "/images/businessmatters.png",
+  },
+];
 
 export function Blogs() {
   return (
