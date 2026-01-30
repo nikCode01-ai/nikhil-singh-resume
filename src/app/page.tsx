@@ -59,7 +59,7 @@ export default function Home() {
 
       {/* Blogs Section */}
       <section id="blogs" className="scroll-mt-24">
-        <Blogs />
+        <Blogs limit={3} />
       </section>
 
       {/* FAQ Section */}
