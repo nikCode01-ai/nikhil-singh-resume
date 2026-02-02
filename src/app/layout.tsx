@@ -51,6 +51,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full scroll-smooth" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${inter.variable} ${geistMono.variable} min-h-screen bg-brand-cream font-sans text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100`}
       >
         <Script

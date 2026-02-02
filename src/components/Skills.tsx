@@ -164,7 +164,7 @@ export function Skills() {
             <span className="text-brand-green dark:text-brand-yellow">Skills</span>
           </p>
           <h2 className="mt-3 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-5xl">
-            Technical Skills & Tooling
+            Technical Skills & Tools
           </h2>
           <p className="mx-auto mt-4 max-w-3xl text-base text-slate-600 dark:text-slate-300">
             Core technologies I use to build modern products, with proficiency levels based on real project experience.

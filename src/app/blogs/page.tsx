@@ -4,7 +4,7 @@ import { Blogs } from "@/components/Blogs";
 
 export const metadata: Metadata = {
   title: "Blogs",
-  description: "Highlights and learnings from recent builds by Nikhil Singh.",
+  description: "Technical insights, case studies, and best practices from recent projects.",
 };
 
 export default function BlogsPage() {

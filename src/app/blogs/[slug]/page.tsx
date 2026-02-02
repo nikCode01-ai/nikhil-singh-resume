@@ -62,10 +62,10 @@ export default async function BlogPostPage({ params }: PageProps) {
             <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
               {post.category}
             </p>
-            <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl">
+            <h1 className="text-3xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
               {post.title}
             </h1>
-            <p className="max-w-3xl text-sm leading-7 text-slate-700 dark:text-slate-300 sm:text-base">
+            <p className="max-w-3xl text-sm leading-7 text-slate-700 dark:text-slate-300 lg:text-base">
               {post.excerpt}
             </p>
 
@@ -107,10 +107,33 @@ export default async function BlogPostPage({ params }: PageProps) {
                 return (
                   <h2
                     key={`${block.type}-${index}`}
-                    className="mt-10 text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100 sm:text-xl"
+                    className="mt-10 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl"
                   >
                     {block.text}
                   </h2>
+                );
+              }
+
+              if (block.type === "image") {
+                return (
+                  <div key={`${block.type}-${index}`} className="mt-8 mb-8">
+                    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
+                      <div className="relative w-full" style={{ aspectRatio: "16 / 9" }}>
+                        <Image
+                          src={block.src}
+                          alt={block.alt}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 1024px) 100vw, 80vw"
+                        />
+                      </div>
+                    </div>
+                    {block.caption && (
+                      <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 text-center">
+                        {block.caption}
+                      </p>
+                    )}
+                  </div>
                 );
               }
 

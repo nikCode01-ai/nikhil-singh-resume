@@ -5,14 +5,9 @@ import { ButtonLink } from "@/components/Button";
 import { Card } from "@/components/Card";
 import { Container } from "@/components/Container";
 import { Section } from "@/components/Section";
-import {
-  additionalProjects,
-  featuredProjects,
-  flagshipProject,
-  person,
-} from "@/lib/resume-data";
+import { flagshipProject } from "@/lib/resume-data";
 import { projectSlugs } from "@/lib/project-slugs";
-import { ExternalLink, Gitlab, Layers, Trophy, ArrowRight } from "lucide-react";
+import { ExternalLink, Gitlab, Trophy, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -44,25 +39,6 @@ export default function ProjectsPage() {
           </header>
 
         <div className="mt-10 border-t border-slate-200 dark:border-slate-800" />
-
-        <Section title="Behance" subtitle="Selected design work.">
-          <Card>
-            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
-              <div className="relative w-full" style={{ aspectRatio: "404 / 316" }}>
-                <iframe
-                  title="Behance project embed"
-                  src="https://www.behance.net/embed/project/199733791?ilo0=1"
-                  className="absolute inset-0 h-full w-full"
-                  allow="clipboard-write"
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  style={{ border: 0 }}
-                />
-              </div>
-            </div>
-          </Card>
-        </Section>
 
         <Section title="Flagship" subtitle="Primary production system and business impact.">
           <Card>
@@ -132,7 +108,7 @@ export default function ProjectsPage() {
 
         <Section title="Featured Projects" subtitle="Detailed case studies and implementations.">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {projectSlugs.map((project) => (
+            {projectSlugs.slice(0, 3).map((project) => (
               <Card key={project.id} className="group overflow-hidden hover:shadow-lg transition-shadow">
                 {"image" in project && project.image ? (
                   <div className="relative h-48 overflow-hidden">
@@ -154,7 +130,7 @@ export default function ProjectsPage() {
                       <span className="text-sm text-slate-500 dark:text-slate-400">{project.date}</span>
                     )}
                   </div>
-                  
+                   
                   <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-brand-green dark:group-hover:text-brand-yellow transition-colors">
                     {project.name}
                   </h3>
@@ -194,65 +170,67 @@ export default function ProjectsPage() {
           </div>
         </Section>
 
-        <Section
-          title="Additional Repositories"
-          subtitle="A broader list of active work and maintained codebases (GitLab)."
-        >
-          <div className="flex items-center justify-between gap-4">
-            <p className="text-sm leading-6 text-slate-700 dark:text-slate-300">
-              GitLab profile: <span className="font-semibold">{person.gitlabHandle}</span>
-            </p>
-            <a
-              href={person.gitlabUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-amber-700 hover:text-amber-800 dark:text-amber-300 dark:hover:text-amber-200"
-            >
-              <Gitlab className="h-4 w-4" aria-hidden="true" />
-              <span>Open GitLab</span>
-            </a>
-          </div>
-
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {additionalProjects.map((p) => (
-              <Card key={p.name} className="p-4">
-                {"image" in p && p.image ? (
-                  <div className="mb-4 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
-                    <div className="relative w-full" style={{ aspectRatio: "404 / 260" }}>
-                      <Image
-                        src={p.image}
-                        alt={p.name}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 1024px) 100vw, 33vw"
-                      />
-                    </div>
+        <Section title="All Projects" subtitle="Complete portfolio of work.">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {projectSlugs.slice(3).map((project) => (
+              <Card key={project.id} className="group overflow-hidden hover:shadow-lg transition-shadow">
+                {"image" in project && project.image ? (
+                  <div className="relative h-48 overflow-hidden">
+                    <Image
+                      src={project.image}
+                      alt={project.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 1024px) 100vw, 33vw"
+                    />
                   </div>
                 ) : null}
-                <div className="flex items-start justify-between gap-3">
-                  <div className="space-y-1">
-                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                      {p.name}
-                    </p>
-                    <p className="text-xs font-semibold text-amber-700 dark:text-amber-300">
-                      {p.role}
-                    </p>
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="rounded-full bg-brand-green/10 px-3 py-1 text-sm font-medium text-brand-green dark:bg-brand-yellow/15 dark:text-brand-yellow capitalize">
+                      {project.category.replace('-', ' ')}
+                    </span>
+                    {project.date && (
+                      <span className="text-sm text-slate-500 dark:text-slate-400">{project.date}</span>
+                    )}
                   </div>
-                  <span className="text-xs text-slate-400" aria-hidden="true">
-                    •
-                  </span>
+                   
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-brand-green dark:group-hover:text-brand-yellow transition-colors">
+                    {project.name}
+                  </h3>
+                  
+                  <p className="text-slate-600 dark:text-slate-300 mb-4 line-clamp-3">
+                    {project.description}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.tech.slice(0, 3).map((tech) => (
+                      <Badge key={tech}>{tech}</Badge>
+                    ))}
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <Link
+                      href={`/projects/${project.slug}`}
+                      className="inline-flex items-center gap-2 text-brand-green font-semibold hover:text-brand-greenDark dark:text-brand-yellow dark:hover:text-brand-yellow/80 transition-colors"
+                    >
+                      View Details
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                    {project.url && (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    )}
+                  </div>
                 </div>
-                <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">
-                  {p.description}
-                </p>
               </Card>
             ))}
-          </div>
-
-          <div className="mt-6">
-            <ButtonLink href="/contact" variant="primary" size="sm">
-              Discuss a project
-            </ButtonLink>
           </div>
         </Section>
         </div>

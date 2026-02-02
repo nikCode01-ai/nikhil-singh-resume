@@ -10,6 +10,12 @@ export type BlogPostBodyBlock =
   | {
       type: "list";
       items: string[];
+    }
+  | {
+      type: "image";
+      src: string;
+      alt: string;
+      caption?: string;
     };
 
 export type BlogPost = {
@@ -39,6 +45,12 @@ export const blogPosts: BlogPost[] = [
       {
         type: "paragraph",
         text: "Most airline booking tools are built for slow, click-heavy workflows. For travel agents, that friction is expensive: every extra minute is lost productivity, and every extra screen is a chance to make mistakes. I wanted a faster model—something closer to a terminal where skilled agents can complete full booking flows with short commands.",
+      },
+      {
+        type: "image",
+        src: "/images/flightbooking.png",
+        alt: "Airline booking terminal interface",
+        caption: "Real-time airline booking terminal with command-line interface"
       },
       { type: "heading", text: "The goal: speed without sacrificing correctness" },
       {
@@ -123,6 +135,12 @@ export const blogPosts: BlogPost[] = [
         type: "paragraph",
         text: "Event websites usually look simple from the outside: show dates, passes, hotels, and a booking form. But the moment you integrate real-time flight search and booking, the platform becomes a high-throughput system with UX constraints.",
       },
+      {
+        type: "image",
+        src: "/images/panamakosherfest.png",
+        alt: "Panama Kosher Fest event platform interface",
+        caption: "Event platform with integrated flight booking system"
+      },
       { type: "heading", text: "Why SSE is perfect for real-time flight search" },
       {
         type: "paragraph",
@@ -184,6 +202,12 @@ export const blogPosts: BlogPost[] = [
         type: "paragraph",
         text: "Content platforms succeed or fail on speed. If pages load slowly, users bounce—and ad/SEO performance drops with them. The interesting part is that performance is rarely one fix; it is a set of small, disciplined decisions across the stack.",
       },
+      {
+        type: "image",
+        src: "/images/businessmatters.png",
+        alt: "Optimized content platform interface",
+        caption: "High-performance content platform with modern image loading"
+      },
       { type: "heading", text: "Start with measurement, not guesswork" },
       {
         type: "paragraph",
@@ -219,6 +243,504 @@ export const blogPosts: BlogPost[] = [
       {
         type: "paragraph",
         text: "When these practices are applied consistently, content platforms can see meaningful performance gains (often 30-50%) and improved engagement because the site feels instant.",
+      },
+    ],
+  },
+  {
+    slug: "react-performance-optimization-techniques",
+    title: "React Performance Optimization: Techniques and Patterns",
+    excerpt:
+      "Deep dive into React performance optimization strategies including virtualization, memoization, code splitting, and advanced rendering techniques for large-scale applications.",
+    category: "Frontend Development",
+    image: "/images/ultimatesportstrainer.png",
+    date: "Nov 2025",
+    readingTime: "8 min read",
+    tags: ["React", "Performance", "Optimization", "Virtualization", "Code Splitting"],
+    body: [
+      {
+        type: "paragraph",
+        text: "React applications can become slow as they grow. The key is to identify bottlenecks early and apply targeted optimizations. This article covers proven techniques that have worked in production applications handling thousands of components.",
+      },
+      {
+        type: "image",
+        src: "/images/ultimatesportstrainer.png",
+        alt: "React performance optimization dashboard",
+        caption: "Performance monitoring dashboard showing optimization results"
+      },
+      { type: "heading", text: "Virtualization: When and How to Use It" },
+      {
+        type: "paragraph",
+        text: "Virtualization (or windowing) is essential for lists with hundreds or thousands of items. Instead of rendering everything at once, only render what's visible in the viewport.",
+      },
+      {
+        type: "list",
+        items: [
+          "Use libraries like react-window or react-virtualized",
+          "Measure before and after performance impact",
+          "Consider item height variability",
+          "Test with different screen sizes and devices",
+        ],
+      },
+      { type: "heading", text: "Memoization: Beyond useMemo and useCallback" },
+      {
+        type: "paragraph",
+        text: "Memoization is more than just React hooks. Understanding when to memoize, what to memoize, and the trade-offs involved is crucial for effective optimization.",
+      },
+      {
+        type: "list",
+        items: [
+          "Memoize expensive calculations with useMemo",
+          "Prevent unnecessary re-renders with React.memo",
+          "Use custom memoization for complex objects",
+          "Be aware of memory usage trade-offs",
+        ],
+      },
+      { type: "heading", text: "Code Splitting and Lazy Loading" },
+      {
+        type: "paragraph",
+        text: "Modern React with Next.js makes code splitting straightforward. The goal is to load only what's needed, when it's needed.",
+      },
+      {
+        type: "list",
+        items: [
+          "Route-based code splitting with Next.js",
+          "Component-level lazy loading",
+          "Preloading critical assets",
+          "Analyzing bundle sizes with webpack-bundle-analyzer",
+        ],
+      },
+      { type: "heading", text: "Advanced Patterns for Large Apps" },
+      {
+        type: "paragraph",
+        text: "For truly large applications, consider these patterns to maintain performance and developer experience.",
+      },
+      {
+        type: "list",
+        items: [
+          "Component composition over inheritance",
+          "Custom hooks for shared logic",
+          "Context API with caution (avoid overuse)",
+          "Server Components for heavy computations",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "The right combination of these techniques can transform a slow React app into a performant, scalable application that users love.",
+      },
+    ],
+  },
+  {
+    slug: "nodejs-microservices-architecture",
+    title: "Node.js Microservices: Architecture and Best Practices",
+    excerpt:
+      "A comprehensive guide to building scalable microservices with Node.js, covering service discovery, communication patterns, and operational excellence.",
+    category: "Backend Development",
+    image: "/images/muffleit.png",
+    date: "Oct 2025",
+    readingTime: "9 min read",
+    tags: ["Node.js", "Microservices", "Architecture", "Scalability", "DevOps"],
+    body: [
+      {
+        type: "paragraph",
+        text: "Microservices offer many benefits but come with their own set of challenges. This guide covers the architecture patterns and best practices I've learned while building production microservices with Node.js.",
+      },
+      {
+        type: "image",
+        src: "/images/muffleit.png",
+        alt: "Microservices architecture diagram",
+        caption: "Node.js microservices architecture with service discovery"
+      },
+      { type: "heading", text: "Service Design Principles" },
+      {
+        type: "paragraph",
+        text: "Good microservice design starts with clear boundaries and responsibilities. Each service should have a single purpose and be independently deployable.",
+      },
+      {
+        type: "list",
+        items: [
+          "Define clear service boundaries and contracts",
+          "Implement proper error handling and circuit breaking",
+          "Use environment variables for configuration",
+          "Implement health checks and monitoring",
+        ],
+      },
+      { type: "heading", text: "Communication Patterns" },
+      {
+        type: "paragraph",
+        text: "How services communicate is as important as what they do. Different patterns work for different use cases.",
+      },
+      {
+        type: "list",
+        items: [
+          "REST APIs for synchronous communication",
+          "Message queues for asynchronous workflows",
+          "Event sourcing and CQRS patterns",
+          "gRPC for high-performance internal services",
+        ],
+      },
+      { type: "heading", text: "Operational Excellence" },
+      {
+        type: "paragraph",
+        text: "Microservices require different operational approaches than monoliths. Key considerations include deployment, monitoring, and scaling.",
+      },
+      {
+        type: "list",
+        items: [
+          "Containerization with Docker and Kubernetes",
+          "Centralized logging and distributed tracing",
+          "Service mesh for observability",
+          "Automated CI/CD pipelines",
+        ],
+      },
+      { type: "heading", text: "Lessons Learned" },
+      {
+        type: "paragraph",
+        text: "After building multiple microservice architectures, I've learned several important lessons about what works and what doesn't.",
+      },
+      {
+        type: "list",
+        items: [
+          "Start with a monolith when possible, migrate to microservices",
+          "Invest in good service discovery early",
+          "Standardize on communication protocols",
+          "Plan for eventual consistency",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "When implemented correctly, Node.js microservices can deliver exceptional performance and scalability for modern applications.",
+      },
+    ],
+  },
+  {
+    slug: "nextjs-14-app-router-guide",
+    title: "Next.js 14 App Router: A Complete Guide",
+    excerpt:
+      "Master the Next.js 14 App Router with this comprehensive guide covering routing, data fetching, server components, and best practices for modern web development.",
+    category: "Frontend Development",
+    image: "/images/invitationstreet.png",
+    date: "Sep 2025",
+    readingTime: "7 min read",
+    tags: ["Next.js", "App Router", "Server Components", "Data Fetching", "Modern Web Dev"],
+    body: [
+      {
+        type: "paragraph",
+        text: "Next.js 14 introduced the App Router, a new routing and data fetching system built on React Server Components. This guide covers everything you need to know to build modern, performant applications.",
+      },
+      {
+        type: "image",
+        src: "/images/invitationstreet.png",
+        alt: "Next.js App Router architecture diagram",
+        caption: "Next.js 14 App Router architecture and component structure"
+      },
+      { type: "heading", text: "Understanding the App Router" },
+      {
+        type: "paragraph",
+        text: "The App Router changes how we think about routing and data fetching in Next.js. It introduces server components, layout, and a new file-based routing system.",
+      },
+      {
+        type: "list",
+        items: [
+          "File-based routing with nested layouts",
+          "Server Components for better performance",
+          "Streaming and Suspense for loading states",
+          "Parallel and sequential data fetching",
+        ],
+      },
+      { type: "heading", text: "Data Fetching Strategies" },
+      {
+        type: "paragraph",
+        text: "The App Router offers multiple ways to fetch data, each with different trade-offs. Choosing the right strategy is key to performance.",
+      },
+      {
+        type: "list",
+        items: [
+          "Server Components for static and dynamic data",
+          "Client Components with use hooks",
+          "Streaming responses with Suspense",
+          "Caching and revalidation strategies",
+        ],
+      },
+      { type: "heading", text: "Best Practices and Patterns" },
+      {
+        type: "paragraph",
+        text: "To get the most out of the App Router, follow these patterns and best practices.",
+      },
+      {
+        type: "list",
+        items: [
+          "Use layouts for shared UI and state",
+          "Leverage server components for data-heavy parts",
+          "Implement proper error boundaries",
+          "Optimize images and assets",
+        ],
+      },
+      { type: "heading", text: "Migration Tips" },
+      {
+        type: "paragraph",
+        text: "Migrating from Pages Router to App Router? Here are some tips to make the transition smoother.",
+      },
+      {
+        type: "list",
+        items: [
+          "Start with new pages, migrate old ones gradually",
+          "Use the Pages Router for existing routes",
+          "Leverage the @next/font package",
+          "Test thoroughly in production-like environments",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "The Next.js 14 App Router represents a significant evolution in web development, enabling better performance and developer experience.",
+      },
+    ],
+  },
+  {
+    slug: "database-optimization-techniques",
+    title: "Database Optimization: From Queries to Architecture",
+    excerpt:
+      "Comprehensive guide to database optimization covering query optimization, indexing strategies, schema design, and architectural patterns for high-performance applications.",
+    category: "Database",
+    image: "/images/agrosafpharmaceuticals.png",
+    date: "Aug 2025",
+    readingTime: "6 min read",
+    tags: ["Database", "Optimization", "SQL", "NoSQL", "Performance"],
+    body: [
+      {
+        type: "paragraph",
+        text: "Database performance is often the bottleneck in modern applications. This guide covers the optimization techniques I've used to achieve sub-100ms query times in production systems.",
+      },
+      {
+        type: "image",
+        src: "/images/agrosafpharmaceuticals.png",
+        alt: "Database optimization dashboard",
+        caption: "Database performance monitoring and optimization results"
+      },
+      { type: "heading", text: "Query Optimization Fundamentals" },
+      {
+        type: "paragraph",
+        text: "The first step in database optimization is writing efficient queries. Small changes can lead to significant performance improvements.",
+      },
+      {
+        type: "list",
+        items: [
+          "Use EXPLAIN ANALYZE to understand query plans",
+          "Avoid N+1 queries with proper joins",
+          "Limit result sets and use pagination",
+          "Batch operations when possible",
+        ],
+      },
+      { type: "heading", text: "Indexing Strategies" },
+      {
+        type: "paragraph",
+        text: "Indexes are critical for database performance, but they come with trade-offs. Understanding when and how to use them is essential.",
+      },
+      {
+        type: "list",
+        items: [
+          "Create indexes on frequently queried columns",
+          "Use composite indexes strategically",
+          "Consider partial and functional indexes",
+          "Monitor index usage and remove unused indexes",
+        ],
+      },
+      { type: "heading", text: "Schema Design Patterns" },
+      {
+        type: "paragraph",
+        text: "Good schema design prevents many performance problems before they occur. These patterns have proven effective in production systems.",
+      },
+      {
+        type: "list",
+        items: [
+          "Normalize for consistency, denormalize for performance",
+          "Use appropriate data types",
+          "Implement proper foreign key constraints",
+          "Consider materialized views for complex queries",
+        ],
+      },
+      { type: "heading", text: "Advanced Optimization Techniques" },
+      {
+        type: "paragraph",
+        text: "For truly high-performance systems, consider these advanced techniques.",
+      },
+      {
+        type: "list",
+        items: [
+          "Query caching with Redis or similar",
+          "Read replicas for scaling reads",
+          "Connection pooling",
+          "Database sharding for horizontal scaling",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Database optimization is an ongoing process, but these techniques provide a solid foundation for high-performance applications.",
+      },
+    ],
+  },
+  {
+    slug: "websockets-real-time-applications",
+    title: "WebSockets: Building Real-Time Applications",
+    excerpt:
+      "Complete guide to WebSockets including connection management, message handling, security, and best practices for building real-time applications.",
+    category: "Real-Time Systems",
+    image: "/images/dreamyinvites.png",
+    date: "Jul 2025",
+    readingTime: "8 min read",
+    tags: ["WebSockets", "Real-Time", "Node.js", "Socket.io", "Performance"],
+    body: [
+      {
+        type: "paragraph",
+        text: "Real-time applications have become essential for modern web experiences. WebSockets provide a persistent connection that enables instant communication between client and server.",
+      },
+      {
+        type: "image",
+        src: "/images/dreamyinvites.png",
+        alt: "Real-time application interface using WebSockets",
+        caption: "Real-time chat and collaboration interface powered by WebSockets"
+      },
+      { type: "heading", text: "WebSocket Basics" },
+      {
+        type: "paragraph",
+        text: "Understanding the fundamentals of WebSockets is crucial before building complex applications.",
+      },
+      {
+        type: "list",
+        items: [
+          "Connection lifecycle and handshake",
+          "Message types: text, binary, ping/pong",
+          "Connection limits and scaling",
+          "Browser compatibility considerations",
+        ],
+      },
+      { type: "heading", text: "Server-Side Implementation" },
+      {
+        type: "paragraph",
+        text: "Choosing the right WebSocket library and implementing robust server-side logic is key to success.",
+      },
+      {
+        type: "list",
+        items: [
+          "Node.js with Socket.io or ws library",
+          "Connection management and room handling",
+          "Message broadcasting and targeted messaging",
+          "Error handling and reconnection logic",
+        ],
+      },
+      { type: "heading", text: "Client-Side Implementation" },
+      {
+        type: "paragraph",
+        text: "The client-side needs to handle connections, messages, and UI updates efficiently.",
+      },
+      {
+        type: "list",
+        items: [
+          "Connection status management",
+          "Message parsing and validation",
+          "UI updates based on message types",
+          "Offline fallback strategies",
+        ],
+      },
+      { type: "heading", text: "Security Considerations" },
+      {
+        type: "paragraph",
+        text: "Security is paramount in real-time applications. These practices help protect your application and users.",
+      },
+      {
+        type: "list",
+        items: [
+          "Authentication and authorization",
+          "Input validation and sanitization",
+          "Rate limiting and abuse prevention",
+          "Secure WebSocket connections (wss)",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "WebSockets enable powerful real-time experiences when implemented correctly with attention to performance and security.",
+      },
+    ],
+  },
+  {
+    slug: "tailwindcss-advanced-techniques",
+    title: "Tailwind CSS: Advanced Techniques and Patterns",
+    excerpt:
+      "Master Tailwind CSS with advanced techniques including custom plugins, component composition, design systems, and performance optimization.",
+    category: "Frontend Development",
+    image: "/images/laladecorators.png",
+    date: "Jun 2025",
+    readingTime: "6 min read",
+    tags: ["Tailwind CSS", "Styling", "CSS", "Design Systems", "Performance"],
+    body: [
+      {
+        type: "paragraph",
+        text: "Tailwind CSS has become the go-to utility-first CSS framework. This guide covers advanced techniques to take your Tailwind skills to the next level.",
+      },
+      {
+        type: "image",
+        src: "/images/laladecorators.png",
+        alt: "Tailwind CSS design system interface",
+        caption: "Modern design system built with Tailwind CSS utilities"
+      },
+      { type: "heading", text: "Custom Plugins and Configuration" },
+      {
+        type: "paragraph",
+        text: "Tailwind's true power comes from customization. Learn how to extend Tailwind with custom plugins and configuration.",
+      },
+      {
+        type: "list",
+        items: [
+          "Creating custom utilities and components",
+          "Extending the theme with custom colors and spacing",
+          "Building custom plugins for complex patterns",
+          "Optimizing the build with purge and JIT",
+        ],
+      },
+      { type: "heading", text: "Component Composition Patterns" },
+      {
+        type: "paragraph",
+        text: "Building reusable components with Tailwind requires specific patterns and best practices.",
+      },
+      {
+        type: "list",
+        items: [
+          "Component-based design with utilities",
+          "Creating design tokens and variables",
+          "Managing component states and variants",
+          "Using @apply sparingly and strategically",
+        ],
+      },
+      { type: "heading", text: "Design System Implementation" },
+      {
+        type: "paragraph",
+        text: "Tailwind is perfect for building design systems. These patterns help maintain consistency across large projects.",
+      },
+      {
+        type: "list",
+        items: [
+          "Color and typography systems",
+          "Spacing and sizing scales",
+          "Component libraries and patterns",
+          "Documentation and usage guidelines",
+        ],
+      },
+      { type: "heading", text: "Performance Optimization" },
+      {
+        type: "paragraph",
+        text: "Tailwind can generate large CSS files. These techniques help keep your stylesheets lean and performant.",
+      },
+      {
+        type: "list",
+        items: [
+          "JIT mode for on-demand class generation",
+          "Purge unused styles in production",
+          "Optimize images and assets",
+          "Use CSS custom properties for theming",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Tailwind CSS provides a powerful foundation for modern CSS development when used with these advanced techniques.",
       },
     ],
   },
