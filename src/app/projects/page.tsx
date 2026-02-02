@@ -11,7 +11,9 @@ import {
   flagshipProject,
   person,
 } from "@/lib/resume-data";
-import { ExternalLink, Gitlab, Layers, Trophy } from "lucide-react";
+import { projectSlugs } from "@/lib/project-slugs";
+import { ExternalLink, Gitlab, Layers, Trophy, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -128,75 +130,65 @@ export default function ProjectsPage() {
           </Card>
         </Section>
 
-        <Section title="Featured" subtitle="Notable launches and platforms.">
-          <div className="grid gap-4 md:grid-cols-2">
-            {featuredProjects.map((p) => (
-              <Card key={p.name}>
-                {"image" in p && p.image ? (
-                  <div className="mb-4 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
-                    <div className="relative w-full" style={{ aspectRatio: "404 / 260" }}>
-                      <Image
-                        src={p.image}
-                        alt={p.name}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 1024px) 100vw, 50vw"
-                      />
-                    </div>
+        <Section title="Featured Projects" subtitle="Detailed case studies and implementations.">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {projectSlugs.map((project) => (
+              <Card key={project.id} className="group overflow-hidden hover:shadow-lg transition-shadow">
+                {"image" in project && project.image ? (
+                  <div className="relative h-48 overflow-hidden">
+                    <Image
+                      src={project.image}
+                      alt={project.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 1024px) 100vw, 33vw"
+                    />
                   </div>
                 ) : null}
-                <div className="flex items-start justify-between gap-3">
-                  <div className="space-y-1">
-                    <p className="text-base font-semibold text-slate-900 dark:text-slate-100">
-                      {p.name}
-                    </p>
-                    {"url" in p && p.url ? (
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="rounded-full bg-brand-green/10 px-3 py-1 text-sm font-medium text-brand-green dark:bg-brand-yellow/15 dark:text-brand-yellow capitalize">
+                      {project.category.replace('-', ' ')}
+                    </span>
+                    {project.date && (
+                      <span className="text-sm text-slate-500 dark:text-slate-400">{project.date}</span>
+                    )}
+                  </div>
+                  
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-brand-green dark:group-hover:text-brand-yellow transition-colors">
+                    {project.name}
+                  </h3>
+                  
+                  <p className="text-slate-600 dark:text-slate-300 mb-4 line-clamp-3">
+                    {project.description}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.tech.slice(0, 3).map((tech) => (
+                      <Badge key={tech}>{tech}</Badge>
+                    ))}
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <Link
+                      href={`/projects/${project.slug}`}
+                      className="inline-flex items-center gap-2 text-brand-green font-semibold hover:text-brand-greenDark dark:text-brand-yellow dark:hover:text-brand-yellow/80 transition-colors"
+                    >
+                      View Details
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                    {project.url && (
                       <a
-                        href={p.url}
+                        href={project.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-sm font-semibold text-amber-700 hover:text-amber-800 dark:text-amber-300 dark:hover:text-amber-200"
+                        className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
                       >
-                        <ExternalLink className="h-4 w-4" aria-hidden="true" />
-                        <span>Live site</span>
+                        <ExternalLink className="h-4 w-4" />
                       </a>
-                    ) : null}
-                    {"date" in p && p.date ? (
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
-                        Event date: {p.date}
-                      </p>
-                    ) : null}
+                    )}
                   </div>
-                  <Layers className="h-5 w-5 text-amber-600 dark:text-amber-400" aria-hidden="true" />
                 </div>
-
-                <p className="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">
-                  {p.description}
-                </p>
-
-                {"features" in p && p.features?.length ? (
-                  <div className="mt-4">
-                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                      Features
-                    </p>
-                    <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700 dark:text-slate-300">
-                      {p.features.map((f) => (
-                        <li key={f}>{f}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-
-                {"tech" in p && p.tech?.length ? (
-                  <div className="mt-4">
-                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Tech</p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {p.tech.map((t) => (
-                        <Badge key={t}>{t}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
               </Card>
             ))}
           </div>

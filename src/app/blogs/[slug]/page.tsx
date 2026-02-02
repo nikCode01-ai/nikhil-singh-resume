@@ -9,17 +9,18 @@ import { blogPosts, getBlogPostBySlug } from "@/lib/blog-posts";
 import { ArrowLeft } from "lucide-react";
 
 type PageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
 }
 
-export function generateMetadata({ params }: PageProps): Metadata {
-  const post = getBlogPostBySlug(params.slug);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getBlogPostBySlug(slug);
 
   if (!post) {
     return {
@@ -33,8 +34,9 @@ export function generateMetadata({ params }: PageProps): Metadata {
   };
 }
 
-export default function BlogPostPage({ params }: PageProps) {
-  const post = getBlogPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: PageProps) {
+  const { slug } = await params;
+  const post = getBlogPostBySlug(slug);
 
   if (!post) {
     notFound();
