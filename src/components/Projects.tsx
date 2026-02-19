@@ -4,21 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { Button, ButtonLink } from "@/components/Button";
-import { ProjectSkeleton, ProjectGridSkeleton } from "@/components/ProjectSkeleton";
-import { additionalProjects, featuredProjects, flagshipProject, person } from "@/lib/resume-data";
-import { projectSlugs, getProjectsByCategory } from "@/lib/project-slugs";
-import { ExternalLink, Calendar, Code, ArrowRight, ChevronDown, ChevronUp, Search, Filter, Star, TrendingUp, Users, Clock } from "lucide-react";
+import { ProjectGridSkeleton } from "@/components/ProjectSkeleton";
+import { additionalProjects, person } from "@/lib/resume-data";
+import { projectSlugs } from "@/lib/project-slugs";
+import { ExternalLink, Calendar, Code, ArrowRight, ChevronDown, ChevronUp, Search, Filter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
-const projectImages = [
-  "/images/flightbooking.png",
-  "/images/panamakosherfest.png",
-  "/images/freshkosher.png",
-  "/api/placeholder/400/300?text=Travel+Platform",
-  "/api/placeholder/400/300?text=E-commerce+Solution",
-  "/api/placeholder/400/300?text=Event+Management"
-];
 
 const allProjects = [
   ...projectSlugs.map((project) => ({

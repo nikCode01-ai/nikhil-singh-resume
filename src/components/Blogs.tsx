@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { blogPosts } from "@/lib/blog-posts";
 import { ButtonLink } from "@/components/Button";
-import { ArrowUpRight, Calendar, Clock, Tag, Users } from "lucide-react";
+import { ArrowUpRight, Clock, Tag } from "lucide-react";
 
 type BlogsProps = {
   limit?: number;

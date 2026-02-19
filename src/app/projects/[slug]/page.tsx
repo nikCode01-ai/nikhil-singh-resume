@@ -3,9 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Badge } from "@/components/Badge";
 import { Card } from "@/components/Card";
-import { getProjectBySlug, getRelatedProjects } from "@/lib/project-slugs";
+import { getProjectBySlug, getRelatedProjects, projectSlugs } from "@/lib/project-slugs";
 import { ArrowLeft, ExternalLink, Calendar, Users, Clock, Award, Target, Lightbulb, CheckCircle, TrendingUp, Star, GitBranch, Zap, Code2, Rocket, Layers } from "lucide-react";
 
 type PageProps = {
@@ -15,19 +14,9 @@ type PageProps = {
 };
 
 export function generateStaticParams() {
-  return [
-    { slug: "ndc-terminal" },
-    { slug: "panama-kosher-fest" },
-    { slug: "fresh-kosher-cruises-full-stack" },
-    { slug: "invitationstreet-landing-pages" },
-    { slug: "dreamyinvite-event-invitations" },
-    { slug: "muffleit-full-stack" },
-    { slug: "barrymcguigan-website" },
-    { slug: "businessmatters-content-platform" },
-    { slug: "agrosaf-pharmaceuticals-website" },
-    { slug: "lala-decorators-website" },
-    { slug: "ultimate-sports-trainer-platform" }
-  ];
+  return projectSlugs.map((project) => ({
+    slug: project.slug,
+  }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -367,7 +356,7 @@ export default async function ProjectPage({ params }: PageProps) {
                         <Star key={i} className="w-5 h-5 text-brand-yellow fill-current" />
                       ))}
                     </div>
-                    <p className="text-slate-700 dark:text-slate-300 mb-6 italic text-lg leading-relaxed">"{testimonial.text}"</p>
+                    <p className="text-slate-700 dark:text-slate-300 mb-6 italic text-lg leading-relaxed">&ldquo;{testimonial.text}&rdquo;</p>
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 bg-gradient-to-br from-brand-green/20 to-brand-yellow/20 dark:from-brand-green/30 dark:to-brand-yellow/30 rounded-full flex items-center justify-center ring-4 ring-brand-green/10 dark:ring-brand-yellow/10">
                         <span className="text-brand-green dark:text-brand-yellow font-bold text-lg">
@@ -396,7 +385,7 @@ export default async function ProjectPage({ params }: PageProps) {
               <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Related Projects</h2>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {relatedProjects.map((relatedProject, index) => (
+              {relatedProjects.map((relatedProject) => (
                 <div key={relatedProject.id}>
                   <Link href={`/projects/${relatedProject.slug}`}>
                     <Card className="overflow-hidden bg-white dark:bg-slate-800 shadow-xl hover:shadow-2xl transition-all duration-300 border-slate-200 dark:border-slate-700 cursor-pointer h-full flex flex-col">

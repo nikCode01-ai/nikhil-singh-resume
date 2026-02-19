@@ -40,22 +40,26 @@ a {
 
 @layer components {
   .btn-brand {
-    @apply border-0 bg-brand-yellow text-brand-green shadow-sm ring-1 ring-black/10 hover:brightness-95 hover:shadow-md;
+    @apply border-0 bg-gradient-to-r from-brand-yellow to-brand-yellow/90 text-brand-green shadow-lg ring-1 ring-black/10 hover:from-brand-yellow/95 hover:to-brand-yellow/85 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md transition-all duration-200;
   }
 
   .btn-brand-secondary {
-    @apply border border-brand-green/30 bg-white text-brand-green shadow-sm ring-1 ring-black/5 hover:border-brand-green/40 hover:bg-brand-yellow/10 hover:shadow-md dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:ring-white/10 dark:hover:bg-slate-900;
+    @apply border border-brand-green/30 bg-white text-brand-green shadow-md ring-1 ring-black/5 hover:border-brand-green/50 hover:bg-brand-green/5 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:ring-white/10 dark:hover:bg-slate-900 dark:hover:border-brand-yellow/50 dark:hover:text-brand-yellow transition-all duration-200;
+  }
+
+  .btn-brand-accent {
+    @apply border-0 bg-gradient-to-r from-brand-green to-brand-greenDark text-white shadow-lg ring-1 ring-brand-green/20 hover:from-brand-greenDark hover:to-brand-green hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md transition-all duration-200;
   }
 
   .btn-brand-ghost {
-    @apply border border-transparent bg-transparent text-brand-green shadow-none hover:bg-brand-yellow/15 dark:text-slate-100 dark:hover:bg-slate-900;
+    @apply border border-transparent bg-transparent text-brand-green shadow-none hover:bg-brand-yellow/20 hover:shadow-sm active:bg-brand-yellow/30 dark:text-slate-100 dark:hover:bg-slate-800 dark:hover:text-brand-yellow transition-all duration-200;
   }
 
   .btn-brand-pill {
-    @apply border border-brand-green/20 bg-white/80 text-brand-green shadow-none hover:border-brand-green/30 hover:bg-brand-yellow/10 dark:border-slate-700 dark:bg-slate-950/60 dark:text-slate-100 dark:hover:bg-slate-900;
+    @apply border border-brand-green/30 bg-white/90 text-brand-green shadow-sm hover:border-brand-green/50 hover:bg-brand-green/10 hover:shadow-md active:bg-brand-green/20 dark:border-slate-700 dark:bg-slate-950/70 dark:text-slate-100 dark:hover:border-brand-yellow/50 dark:hover:bg-slate-900 dark:hover:text-brand-yellow transition-all duration-200;
   }
 
   .btn-brand-inverse {
-    @apply border border-brand-yellow/60 bg-transparent text-brand-yellow shadow-sm hover:border-brand-yellow hover:bg-brand-yellow hover:text-brand-green hover:shadow-md;
+    @apply border-2 border-brand-yellow/70 bg-transparent text-brand-yellow shadow-md hover:border-brand-yellow hover:bg-gradient-to-r hover:from-brand-yellow hover:to-brand-yellow/90 hover:text-brand-green hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm transition-all duration-200;
   }
 }

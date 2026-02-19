@@ -11,7 +11,7 @@ import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { ApiUiIcon } from "@/components/ApiUiIcon";
 import { technicalSkills } from "@/lib/resume-data";
 
-const skillProficiency = {
+const skillProficiency: Record<string, number> = {
   "HTML5": 95,
   "CSS3": 90,
   "JavaScript (ES6+)": 92,
@@ -23,6 +23,10 @@ const skillProficiency = {
   "jQuery": 75,
   "PWA": 82,
   "SSE": 85,
+  "Framer Motion": 78,
+  "React Query": 80,
+  "Zustand": 75,
+  "Redux Toolkit": 75,
   "Node.js": 90,
   "Fastify": 85,
   "Express": 88,
@@ -32,30 +36,57 @@ const skillProficiency = {
   "GraphQL": 78,
   "Microservices": 82,
   "WebSockets": 88,
+  "Server-Sent Events (SSE)": 85,
+  "Authentication & Authorization": 82,
+  "JWT": 85,
+  "OAuth 2.0": 75,
   "MongoDB": 85,
   "PostgreSQL": 82,
   "MySQL": 80,
   "BigQuery": 70,
   "Redis": 78,
   "Query Optimization": 85,
+  "Database Design": 80,
+  "Data Modeling": 78,
+  "Migrations": 80,
+  "ACID Compliance": 75,
+  "GenAI/LLM Integration": 82,
+  "RAG (Retrieval Augmented Generation)": 78,
+  "Vector Databases (Pinecone, Weaviate)": 75,
+  "OpenAI API": 85,
+  "LangChain": 78,
+  "Prompt Engineering": 80,
+  "Fine-tuning": 70,
+  "Machine Learning Basics": 65,
+  "Data Preprocessing": 70,
+  "Natural Language Processing": 68,
   "AWS (EC2, S3, RDS, Lambda)": 80,
+  "AWS CloudWatch": 70,
   "PM2": 85,
   "Docker": 75,
+  "Docker Compose": 72,
   "Git": 92,
   "GitLab CI/CD": 82,
-  "Linux": 78,
+  "GitHub Actions": 78,
+  "Linux Administration": 75,
   "Nginx": 80,
   "Apache": 75,
   "Plesk": 70,
   "WHM": 72,
   "Hostinger": 85,
   "HostGator": 80,
+  "SSL/TLS Management": 78,
+  "Load Balancing": 72,
+  "CDN Configuration": 75,
   "NDC APIs": 90,
   "American Airlines": 85,
   "United Airlines": 85,
   "Copa Airlines": 80,
   "AirGateway (25+ airlines)": 88,
   "GDS systems": 82,
+  "Flight Booking Engine": 85,
+  "Fare Management": 78,
+  "Ticket Issuance": 82,
   "GA4": 75,
   "Google Ads": 80,
   "GTM": 78,
@@ -63,6 +94,25 @@ const skillProficiency = {
   "Amazon PA-API": 70,
   "SEO": 85,
   "Google Apps Script": 80,
+  "Data Visualization": 75,
+  "A/B Testing": 70,
+  "Conversion Rate Optimization": 72,
+  "Jest": 82,
+  "React Testing Library": 85,
+  "Cypress": 78,
+  "Mocha": 72,
+  "Chai": 70,
+  "Unit Testing": 85,
+  "Integration Testing": 80,
+  "E2E Testing": 75,
+  "VS Code": 90,
+  "Postman": 88,
+  "Insomnia": 82,
+  "MongoDB Compass": 80,
+  "pgAdmin": 75,
+  "Docker Desktop": 78,
+  "Chrome DevTools": 90,
+  "Swagger/OpenAPI": 82,
 };
 
 const skillLogoSrcMap: Record<string, string> = {
@@ -73,12 +123,17 @@ const skillLogoSrcMap: Record<string, string> = {
   "React": "/icons/skills/react.svg",
   "Next.js 16 (App Router)": "/icons/skills/nextjs.svg",
   "Tailwind CSS": "/icons/skills/tailwindcss.svg",
+  "Bootstrap": "/icons/skills/bootstrap.svg",
   "Node.js": "/icons/skills/nodejs.svg",
   "Fastify": "/icons/skills/fastify.svg",
   "Express": "/icons/skills/express.svg",
   "MongoDB": "/icons/skills/mongodb.svg",
+  "PostgreSQL": "/icons/skills/postgresql.svg",
+  "MySQL": "/icons/skills/mysql.svg",
+  "Redis": "/icons/skills/redis.svg",
   "Docker": "/icons/skills/docker.svg",
   "Git": "/icons/skills/git.svg",
+  "AWS (EC2, S3, RDS, Lambda)": "/icons/skills/aws.svg",
 };
 
 function fallbackIconNameFromCategory(category: string) {
@@ -95,6 +150,12 @@ function fallbackIconNameFromCategory(category: string) {
       return "Globe";
     case "Analytics & Marketing":
       return "Target";
+    case "AI & Machine Learning":
+      return "Bot";
+    case "Testing":
+      return "Check";
+    case "Development Tools":
+      return "Settings";
     default:
       return "Code";
   }

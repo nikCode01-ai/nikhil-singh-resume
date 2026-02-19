@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Badge } from "@/components/Badge";
-import { ButtonLink } from "@/components/Button";
 import { Card } from "@/components/Card";
 import { Container } from "@/components/Container";
 import { Section } from "@/components/Section";
 import { flagshipProject } from "@/lib/resume-data";
 import { projectSlugs } from "@/lib/project-slugs";
-import { ExternalLink, Gitlab, Trophy, ArrowRight } from "lucide-react";
+import { ExternalLink, Trophy, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {

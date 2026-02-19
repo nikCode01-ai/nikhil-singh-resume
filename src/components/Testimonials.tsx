@@ -3,57 +3,16 @@
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/Button";
+import { testimonials as testimonialsData } from "@/lib/resume-data";
 
-const testimonials = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    title: "CEO, TechStart Inc.",
-    avatar: "SJ",
-    rating: 5,
-    content: "Nikhil delivered an exceptional airline booking system that reduced our processing time by 80%. His expertise in NDC APIs and real-time systems is unmatched. Highly recommended for complex travel technology projects."
-  },
-  {
-    id: 2,
-    name: "Michael Chen",
-    title: "CTO, TravelHub",
-    avatar: "MC",
-    rating: 5,
-    content: "Working with Nikhil was a game-changer for our platform. He built a scalable architecture that handles 1000+ daily bookings with 99.9% uptime. His full-stack skills and problem-solving abilities are outstanding."
-  },
-  {
-    id: 3,
-    name: "Emily Rodriguez",
-    title: "Product Manager, AeroConnect",
-    avatar: "ER",
-    rating: 5,
-    content: "Nikhil's expertise in React and Node.js helped us launch our product 3 months ahead of schedule. The real-time features he implemented using WebSockets have significantly improved user experience."
-  },
-  {
-    id: 4,
-    name: "David Kim",
-    title: "Founder, Kosher Fest",
-    avatar: "DK",
-    rating: 5,
-    content: "The event platform Nikhil built for us integrated seamlessly with multiple airline APIs. His attention to detail and ability to handle complex integrations made our international event a huge success."
-  },
-  {
-    id: 5,
-    name: "Lisa Thompson",
-    title: "VP Engineering, CloudTech",
-    avatar: "LT",
-    rating: 5,
-    content: "Nikhil's cloud infrastructure expertise helped us optimize our server management and reduce costs by 40%. His DevOps skills and proactive approach to system monitoring are invaluable."
-  },
-  {
-    id: 6,
-    name: "James Wilson",
-    title: "Director, E-commerce Solutions",
-    avatar: "JW",
-    rating: 5,
-    content: "The e-commerce platform Nikhil developed exceeded our expectations. His performance optimization techniques improved our load times by 50%, resulting in better conversion rates."
-  }
-];
+const testimonials = testimonialsData.map((t, index) => ({
+  id: index + 1,
+  name: t.author,
+  title: `${t.role} ${t.company ? `• ${t.company}` : ""}`,
+  avatar: t.author.split(" ").map((n) => n[0]).join(""),
+  rating: 5,
+  content: t.text,
+}));
 
 export function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);

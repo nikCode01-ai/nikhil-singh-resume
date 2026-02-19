@@ -53,6 +53,18 @@ export default function ContactPage() {
                     <span>{person.location}</span>
                   </div>
                 ) : null}
+                {person.timezone ? (
+                  <div className="inline-flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                    <ApiUiIcon
+                      name="Clock"
+                      size={16}
+                      color="amber-500"
+                      darkColor="amber-400"
+                      className="h-4 w-4"
+                    />
+                    <span>{person.timezone}</span>
+                  </div>
+                ) : null}
                 <IconLink href={`tel:${person.phone.replace(/\s/g, "")}`} iconName="Phone">
                   {person.phone}
                 </IconLink>
@@ -60,11 +72,26 @@ export default function ContactPage() {
                   {person.email}
                 </IconLink>
                 <IconLink href={person.linkedinUrl} iconName="Linkedin">
-                  LinkedIn
+                  LinkedIn Profile
                 </IconLink>
                 <IconLink href={person.gitlabUrl} iconName="Gitlab">
                   GitLab {person.gitlabHandle}
                 </IconLink>
+                {person.githubUrl ? (
+                  <IconLink href={person.githubUrl} iconName="Github">
+                    GitHub Profile
+                  </IconLink>
+                ) : null}
+                {person.twitterUrl ? (
+                  <IconLink href={person.twitterUrl} iconName="Twitter">
+                    Twitter/X
+                  </IconLink>
+                ) : null}
+                {person.websiteUrl ? (
+                  <IconLink href={person.websiteUrl} iconName="Globe">
+                    Website
+                  </IconLink>
+                ) : null}
               </div>
             </Card>
 

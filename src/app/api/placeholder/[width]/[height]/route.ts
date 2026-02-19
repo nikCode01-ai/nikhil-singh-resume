@@ -2,11 +2,6 @@ import type { NextRequest } from "next/server";
 
 export const runtime = "nodejs";
 
-type Params = {
-  width: string;
-  height: string;
-};
-
 function svgResponse(svg: string, init: ResponseInit = {}) {
   const headers = new Headers(init.headers);
   headers.set("Content-Type", "image/svg+xml; charset=utf-8");

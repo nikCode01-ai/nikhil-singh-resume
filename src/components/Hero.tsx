@@ -21,7 +21,7 @@ export function Hero() {
             </div>
             
             <h1 className="text-4xl lg:text-6xl font-extrabold leading-tight text-slate-900 dark:text-slate-100">
-              I'm{" "}
+              I&apos;m{" "}
               <span className="bg-gradient-to-r from-brand-green to-brand-greenDark bg-clip-text text-transparent dark:from-brand-yellow dark:to-brand-yellow/70">
                 {person.name}
               </span>
