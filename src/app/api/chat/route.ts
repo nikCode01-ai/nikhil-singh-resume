@@ -81,14 +81,6 @@ type OpenAIChatMessage = {
   name?: string;
 };
 
-type ToolCall = {
-  id: string;
-  function: {
-    name: string;
-    arguments: string;
-  };
-};
-
 const TOOLS = [
   {
     type: "function" as const,
@@ -195,7 +187,7 @@ async function handleOpenAIWithTools(
 ): Promise<string> {
   const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
 
-  let currentMessages = [...messages];
+  const currentMessages = [...messages];
 
   for (let iteration = 0; iteration < 5; iteration++) {
     const upstream = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -295,7 +287,7 @@ async function handleGeminiWithTools(
     parameters: t.function.parameters,
   }));
 
-  let currentContents: GeminiContent[] = messages.map((m) => ({
+  const currentContents: GeminiContent[] = messages.map((m) => ({
     role: m.role === "user" ? "user" : "model",
     parts: [{ text: m.content }],
   }));
@@ -382,6 +374,29 @@ async function handleGeminiWithTools(
   throw new Error("Maximum tool iterations reached");
 }
 
+function hasImageContent(content: unknown): boolean {
+  if (typeof content === "string") return false;
+  if (!Array.isArray(content)) return false;
+  return content.some(
+    (part) =>
+      part &&
+      typeof part === "object" &&
+      ("image_url" in part || "image" in part || part.type === "image_url" || part.type === "image"),
+  );
+}
+
+function validateMessagesForImages(messages: unknown): string | null {
+  if (!Array.isArray(messages)) return null;
+  for (const msg of messages) {
+    if (msg && typeof msg === "object" && "content" in msg) {
+      if (hasImageContent(msg.content)) {
+        return "Image uploads are not supported. Please use text only.";
+      }
+    }
+  }
+  return null;
+}
+
 export async function POST(request: Request) {
   const geminiKey = process.env.GEMINI_API_KEY;
   const openAIKey = process.env.OPENAI_API_KEY;
@@ -408,6 +423,15 @@ export async function POST(request: Request) {
   const bodyRecord = body as Record<string, unknown>;
   const incomingMessages: unknown = bodyRecord.messages;
   const singleMessage: unknown = bodyRecord.message;
+
+  const imageError = validateMessagesForImages(incomingMessages);
+  if (imageError) {
+    return json({ error: imageError }, { status: 400 });
+  }
+
+  if (typeof singleMessage === "object" && singleMessage !== null && "image" in singleMessage) {
+    return json({ error: "Image uploads are not supported. Please use text only." }, { status: 400 });
+  }
 
   let messages: ChatMessage[] = [];
 
@@ -445,9 +469,13 @@ export async function POST(request: Request) {
     return json({ error: "No AI API key is configured" }, { status: 500 });
   } catch (error) {
     console.error("Chat API error:", error);
-    return json(
-      { error: error instanceof Error ? error.message : "An error occurred" },
-      { status: 500 },
-    );
+    const errorMessage = error instanceof Error ? error.message : "An error occurred";
+    if (errorMessage.includes("image") && errorMessage.includes("not support")) {
+      return json(
+        { error: "Image uploads are not supported. Please use text only." },
+        { status: 400 },
+      );
+    }
+    return json({ error: errorMessage }, { status: 500 });
   }
 }
