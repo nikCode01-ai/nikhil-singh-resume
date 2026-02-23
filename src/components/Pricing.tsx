@@ -6,7 +6,7 @@ import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 const plans = [
   {
     name: "Hourly",
-    price: "₹3,500",
+    price: "₹500",
     cadence: "/ Hour",
     emphasized: false,
     features: [
@@ -20,7 +20,7 @@ const plans = [
   },
   {
     name: "Monthly",
-    price: "₹2,40,000",
+    price: "₹45,000",
     cadence: "/ Month",
     emphasized: true,
     features: [
@@ -34,7 +34,7 @@ const plans = [
   },
   {
     name: "Quarterly",
-    price: "₹6,90,000",
+    price: "₹1,15,000",
     cadence: "/ Quarter",
     emphasized: false,
     features: [
