@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -42,17 +44,38 @@ export function ApiUiIcon({
   const ariaHidden = decorative ? true : undefined;
 
   if (!darkSrc) {
-    return <img src={lightSrc} className={cn("inline-block", className)} alt={alt} aria-hidden={ariaHidden} />;
+    return (
+      <Image
+        src={lightSrc}
+        width={size}
+        height={size}
+        className={cn("inline-block", className)}
+        alt={alt}
+        aria-hidden={ariaHidden}
+        unoptimized
+      />
+    );
   }
 
   return (
     <>
-      <img src={lightSrc} className={cn("inline-block dark:hidden", className)} alt={alt} aria-hidden={ariaHidden} />
-      <img
+      <Image
+        src={lightSrc}
+        width={size}
+        height={size}
+        className={cn("inline-block dark:hidden", className)}
+        alt={alt}
+        aria-hidden={ariaHidden}
+        unoptimized
+      />
+      <Image
         src={darkSrc}
+        width={size}
+        height={size}
         className={cn("hidden dark:inline-block", className)}
         alt={alt}
         aria-hidden={ariaHidden}
+        unoptimized
       />
     </>
   );

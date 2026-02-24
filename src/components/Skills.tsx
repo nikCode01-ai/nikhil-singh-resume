@@ -3,6 +3,7 @@
 
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
@@ -285,11 +286,12 @@ export function Skills() {
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-green/15 to-brand-yellow/25 ring-1 ring-slate-900/5 dark:from-brand-green/10 dark:to-brand-yellow/10 dark:ring-white/10">
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white shadow-sm ring-1 ring-slate-900/5">
                       {logoSrc ? (
-                        <img
+                        <Image
                           src={logoSrc}
                           alt={tool.name}
+                          width={24}
+                          height={24}
                           className="h-6 w-6"
-                          loading="lazy"
                         />
                       ) : (
                         <ApiUiIcon

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -14,5 +16,14 @@ export function ApiAvatar({ name, size = 96, className, alt }: Props) {
 
   const src = `/api/avatar?${params.toString()}`;
 
-  return <img src={src} className={cn("inline-block", className)} alt={alt ?? name} />;
+  return (
+    <Image
+      src={src}
+      width={size}
+      height={size}
+      className={cn("inline-block", className)}
+      alt={alt ?? name}
+      unoptimized
+    />
+  );
 }
