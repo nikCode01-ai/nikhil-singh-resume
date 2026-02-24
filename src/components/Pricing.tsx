@@ -20,8 +20,8 @@ const plans = [
   },
   {
     name: "Monthly",
-    price: "₹45,000",
-    cadence: "/ Month",
+    price: "₹45000",
+    cadence: "per month",
     emphasized: true,
     features: [
       { label: "Dedicated delivery (approx. 80 hrs/month)", enabled: true },

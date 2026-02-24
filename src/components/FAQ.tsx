@@ -58,7 +58,7 @@ const faqs = [
   {
     id: 11,
     question: "What is your pricing structure?",
-    answer: "My pricing is project-based and depends on scope, complexity, and timeline. I offer flexible pricing models including hourly rates (₹500/hr), monthly retainers (₹45,000/month), and quarterly packages (₹1,15,000/quarter). Contact me with your project details for a personalized quote."
+    answer: "My pricing is project-based and depends on scope, complexity, and timeline. I offer flexible pricing models including hourly rates (₹500/hr), monthly retainers (₹45000 per month), and quarterly packages (₹1,15,000/quarter). Contact me with your project details for a personalized quote."
   },
   {
     id: 12,
