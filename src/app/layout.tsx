@@ -42,7 +42,10 @@ export const metadata: Metadata = {
       'Senior Full Stack Developer & Cloud Infrastructure Specialist. Next.js, React, Node.js, Fastify, Laravel, Strapi, WebSockets, SSE, NDC APIs.',
   },
   verification: {
-    kro: 'your-kro-verification-code',
+    google: 'your-google-verification-code',
+  },
+  alternates: {
+    canonical: 'https://nikhisingh.netlify.app',
   },
 };
 
@@ -58,13 +61,42 @@ export default function RootLayout({
         className={`${inter.variable} ${geistMono.variable} min-h-screen bg-brand-cream font-sans text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100`}
       >
         <Script id="theme-init" strategy="beforeInteractive">{`(() => {
-  try {
-    const saved = localStorage.getItem('theme');
-    const preferredDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const theme = (saved === 'dark' || saved === 'light') ? saved : (preferredDark ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-  } catch (_) {}
-})();`}</Script>
+    try {
+      const saved = localStorage.getItem('theme');
+      const preferredDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = (saved === 'dark' || saved === 'light') ? saved : (preferredDark ? 'dark' : 'light');
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    } catch (_) {}
+  })();`}</Script>
+        <Script
+          id="json-ld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Person',
+              name: 'Nikhil Singh',
+              url: 'https://nikhisingh.netlify.app',
+              jobTitle: 'Senior Full Stack Developer',
+              description:
+                'Senior Full Stack Developer & Cloud Infrastructure Specialist',
+              sameAs: [
+                'https://github.com/nikCode01-ai',
+                'https://linkedin.com/in/nikhil-singh',
+              ],
+              knowsAbout: [
+                'Next.js',
+                'React',
+                'Node.js',
+                'Fastify',
+                'TypeScript',
+                'WebSockets',
+                'Server-Sent Events',
+                'NDC APIs',
+              ],
+            }),
+          }}
+        />
         <div className="flex min-h-screen flex-col">
           <HomeHeader />
           <div className="h-24" aria-hidden="true" />
