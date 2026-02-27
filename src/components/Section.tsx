@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 export function Section({
   id,
@@ -18,22 +18,23 @@ export function Section({
   return (
     <section
       id={id}
-      className={cn(
-        "scroll-mt-24 py-8 motion-safe:animate-fade-up sm:py-10",
-        className,
-      )}
+      className={cn('scroll-mt-24 py-12 sm:py-16 md:py-20', className)}
+      aria-labelledby={id ? `${id}-heading` : undefined}
     >
-      <div className="space-y-2">
-        <h2 className="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100 sm:text-xl">
+      <div className="space-y-2 mb-8">
+        <h2
+          id={id ? `${id}-heading` : undefined}
+          className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100"
+        >
           {title}
         </h2>
         {subtitle ? (
-          <p className="text-sm leading-6 text-slate-600 dark:text-slate-400">
+          <p className="text-base sm:text-lg leading-relaxed text-slate-600 dark:text-slate-400 max-w-3xl">
             {subtitle}
           </p>
         ) : null}
       </div>
-      <div className="mt-4">{children}</div>
+      <div>{children}</div>
     </section>
   );
 }
