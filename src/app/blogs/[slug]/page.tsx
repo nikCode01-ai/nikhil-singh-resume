@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
-import { Badge } from "@/components/Badge";
-import { Container } from "@/components/Container";
-import { blogPosts, getBlogPostBySlug } from "@/lib/blog-posts";
-import { ArrowLeft } from "lucide-react";
+import { Badge } from '@/components/Badge';
+import { Container } from '@/components/Container';
+import { blogPosts, getBlogPostBySlug } from '@/lib/blog-posts';
+import { ArrowLeft } from 'lucide-react';
 
 type PageProps = {
   params: Promise<{
@@ -18,19 +18,46 @@ export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = getBlogPostBySlug(slug);
 
   if (!post) {
     return {
-      title: "Blog",
+      title: 'Blog',
     };
   }
 
   return {
-    title: post.title,
+    title: `${post.title} | Nikhil Singh Blog`,
     description: post.excerpt,
+    keywords: post.tags,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: 'article',
+      publishedTime: post.date,
+      authors: ['Nikhil Singh'],
+      tags: post.tags,
+      images: post.image
+        ? [
+            {
+              url: post.image,
+              width: 1200,
+              height: 630,
+              alt: post.title,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: post.image ? [post.image] : [],
+    },
   };
 }
 
@@ -86,7 +113,10 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           {post.image ? (
             <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
-              <div className="relative w-full" style={{ aspectRatio: "16 / 9" }}>
+              <div
+                className="relative w-full"
+                style={{ aspectRatio: '16 / 9' }}
+              >
                 <Image
                   src={post.image}
                   alt={post.title}
@@ -103,7 +133,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           <article className="mt-8">
             {post.body.map((block, index) => {
-              if (block.type === "heading") {
+              if (block.type === 'heading') {
                 return (
                   <h2
                     key={`${block.type}-${index}`}
@@ -114,11 +144,14 @@ export default async function BlogPostPage({ params }: PageProps) {
                 );
               }
 
-              if (block.type === "image") {
+              if (block.type === 'image') {
                 return (
                   <div key={`${block.type}-${index}`} className="mt-8 mb-8">
                     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
-                      <div className="relative w-full" style={{ aspectRatio: "16 / 9" }}>
+                      <div
+                        className="relative w-full"
+                        style={{ aspectRatio: '16 / 9' }}
+                      >
                         <Image
                           src={block.src}
                           alt={block.alt}
@@ -137,7 +170,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 );
               }
 
-              if (block.type === "list") {
+              if (block.type === 'list') {
                 return (
                   <ul
                     key={`${block.type}-${index}`}
