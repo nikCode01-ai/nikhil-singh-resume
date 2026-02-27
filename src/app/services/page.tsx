@@ -1,6 +1,56 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 
 import { Services } from '@/components/Services';
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: [
+    {
+      '@type': 'Offer',
+      position: 1,
+      name: 'Full Stack Web Development',
+      description:
+        'Complete web application development from concept to deployment using Next.js, React, Node.js, MongoDB, PostgreSQL, AWS.',
+    },
+    {
+      '@type': 'Offer',
+      position: 2,
+      name: 'NDC API Integration',
+      description:
+        'Specialized airline booking systems with NDC API integrations for American Airlines, United Airlines, Copa Airlines, and 25+ airlines.',
+    },
+    {
+      '@type': 'Offer',
+      position: 3,
+      name: 'GenAI & LLM Solutions',
+      description:
+        'RAG-powered AI applications, chatbots, and automation using OpenAI, LangChain, Pinecone, and vector databases.',
+    },
+    {
+      '@type': 'Offer',
+      position: 4,
+      name: 'Performance Optimization',
+      description:
+        'Comprehensive performance audits and optimization for existing applications using Lighthouse, caching, and code splitting.',
+    },
+    {
+      '@type': 'Offer',
+      position: 5,
+      name: 'Cloud Infrastructure Setup',
+      description:
+        'AWS cloud architecture design, deployment, and management with CI/CD pipelines and Docker containerization.',
+    },
+    {
+      '@type': 'Offer',
+      position: 6,
+      name: 'Technical Consulting',
+      description:
+        'Architecture reviews, technology stack recommendations, and development best practices guidance.',
+    },
+  ],
+};
 
 export const metadata: Metadata = {
   title:
@@ -22,5 +72,14 @@ export const metadata: Metadata = {
 };
 
 export default function ServicesPage() {
-  return <Services variant="page" />;
+  return (
+    <>
+      <Script
+        id="service-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <Services variant="page" />
+    </>
+  );
 }

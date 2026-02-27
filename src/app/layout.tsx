@@ -11,11 +11,15 @@ import { ScrollToTopButton } from '@/components/ScrollToTopButton';
 const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
+  display: 'swap',
+  preload: true,
 });
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+  display: 'swap',
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -66,7 +70,7 @@ export const metadata: Metadata = {
       'Senior Full Stack Developer & Cloud Infrastructure Specialist with 4+ years experience. Expert in Next.js, React, Node.js, Fastify, NDC API Integration, GenAI/LLM, WebSockets, AWS.',
     images: [
       {
-        url: '/og-image.png',
+        url: '/og-image.svg',
         width: 1200,
         height: 630,
         alt: 'Nikhil Singh - Senior Full Stack Developer',
@@ -79,7 +83,7 @@ export const metadata: Metadata = {
     description:
       'Senior Full Stack Developer & Cloud Infrastructure Specialist. Expert in Next.js, React, Node.js, NDC APIs, GenAI/LLM.',
     creator: '@nikhilcool974',
-    images: ['/og-image.png'],
+    images: ['/og-image.svg'],
   },
   verification: {
     google: 'google965e9543cc274a9b', // Replace with actual Google Search Console verification code
@@ -93,10 +97,21 @@ export const metadata: Metadata = {
   },
   category: 'technology',
   classification: 'Portfolio',
+  authors: [
+    { name: 'Nikhil Singh', url: 'https://nikhilsingh-eight.vercel.app' },
+  ],
+  creator: 'Nikhil Singh',
+  publisher: 'Nikhil Singh',
   other: {
-    'geo.region': 'IN',
-    'geo.placename': 'Agra, Uttar Pradesh, India',
-    'og:see_also': 'https://linkedin.com/in/nikhil-code05',
+    'geo.region': 'IN-UP',
+    'geo.placename': 'Agra',
+    'geo.position': '27.1767;78.0081',
+    ICBM: '27.1767, 78.0081',
+    'og:see_also': [
+      'https://linkedin.com/in/nikhil-code05',
+      'https://github.com/nikCode01-ai',
+      'https://gitlab.com/nikhilcool974',
+    ],
   },
 };
 
@@ -119,6 +134,16 @@ export default function RootLayout({
       document.documentElement.classList.toggle('dark', theme === 'dark');
     } catch (_) {}
   })();`}</Script>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=GA4_MEASUREMENT_ID"
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'GA4_MEASUREMENT_ID');
+        `}</Script>
         <Script
           id="json-ld"
           type="application/ld+json"
