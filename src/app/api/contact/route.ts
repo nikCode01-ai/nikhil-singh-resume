@@ -4,6 +4,8 @@ export async function POST(request: NextRequest) {
   try {
     const { name, email, message } = await request.json();
 
+    console.log('Received contact form submission:', { name, email, message });
+
     if (!name || !email || !message) {
       return NextResponse.json(
         { error: 'Name, email, and message are required' },
@@ -17,6 +19,12 @@ export async function POST(request: NextRequest) {
     const twilioWhatsAppFrom = process.env.TWILIO_WHATSAPP_FROM;
     const myWhatsAppTo = process.env.WHATSAPP_TO;
 
+    console.log('Environment check:', {
+      hasResendKey: !!resendApiKey,
+      resendKeyPrefix: resendApiKey?.substring(0, 10),
+      hasTwilio: !!twilioAccountSid,
+    });
+
     const emailSubject = `Portfolio Contact: ${name}`;
     const emailHtml = `
       <h2>New Contact Form Submission</h2>
@@ -27,7 +35,10 @@ export async function POST(request: NextRequest) {
     `;
 
     // Send Email using Resend
+    let emailSent = false;
     if (resendApiKey) {
+      console.log('Attempting to send email with Resend...');
+
       const emailResponse = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -37,15 +48,22 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({
           from: 'Portfolio Contact <onboarding@resend.dev>',
           to: ['nikhilcool974@gmail.com'],
+          reply_to: email,
           subject: emailSubject,
           html: emailHtml,
         }),
       });
 
-      if (!emailResponse.ok) {
-        const emailError = await emailResponse.text();
-        console.error('Resend error:', emailError);
+      const emailResult = await emailResponse.text();
+      console.log('Resend response:', emailResponse.status, emailResult);
+
+      if (emailResponse.ok) {
+        emailSent = true;
+      } else {
+        console.error('Resend error:', emailResult);
       }
+    } else {
+      console.log('No RESEND_API_KEY found');
     }
 
     // Send WhatsApp notification using Twilio
