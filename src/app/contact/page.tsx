@@ -132,7 +132,7 @@ export default function ContactPage() {
 
           <Section
             title="Message"
-            subtitle="This opens your email client (no backend required)."
+            subtitle="Send me a message and I'll get back to you within 24 hours."
           >
             <Card>
               <ContactForm toEmail={person.email} />
