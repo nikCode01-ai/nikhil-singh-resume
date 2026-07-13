@@ -1,6 +1,4 @@
-import Image from "next/image";
-
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 type Props = {
   name: string;
@@ -11,19 +9,18 @@ type Props = {
 
 export function ApiAvatar({ name, size = 96, className, alt }: Props) {
   const params = new URLSearchParams();
-  params.set("name", name);
-  params.set("size", String(size));
+  params.set('name', name);
+  params.set('size', String(size));
 
   const src = `/api/avatar?${params.toString()}`;
 
   return (
-    <Image
+    <img
       src={src}
       width={size}
       height={size}
-      className={cn("inline-block", className)}
+      className={cn('inline-block', className)}
       alt={alt ?? name}
-      unoptimized
     />
   );
 }

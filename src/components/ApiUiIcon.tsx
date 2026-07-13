@@ -1,6 +1,4 @@
-import Image from "next/image";
-
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 type Props = {
   name: string;
@@ -19,7 +17,7 @@ export function ApiUiIcon({
   name,
   size = 20,
   strokeWidth = 2,
-  color = "brand-green",
+  color = 'brand-green',
   darkColor,
   fill,
   darkFill,
@@ -29,53 +27,53 @@ export function ApiUiIcon({
 }: Props) {
   const buildSrc = (opts: { color?: string; fill?: string }) => {
     const params = new URLSearchParams();
-    params.set("name", name);
-    params.set("size", String(size));
-    params.set("strokeWidth", String(strokeWidth));
-    if (opts.color) params.set("color", opts.color);
-    if (opts.fill) params.set("fill", opts.fill);
+    params.set('name', name);
+    params.set('size', String(size));
+    params.set('strokeWidth', String(strokeWidth));
+    if (opts.color) params.set('color', opts.color);
+    if (opts.fill) params.set('fill', opts.fill);
     return `/api/ui-icon?${params.toString()}`;
   };
 
   const lightSrc = buildSrc({ color, fill });
-  const darkSrc = darkColor || darkFill ? buildSrc({ color: darkColor ?? color, fill: darkFill ?? fill }) : null;
+  const darkSrc =
+    darkColor || darkFill
+      ? buildSrc({ color: darkColor ?? color, fill: darkFill ?? fill })
+      : null;
 
-  const alt = decorative ? "" : title || name;
+  const alt = decorative ? '' : title || name;
   const ariaHidden = decorative ? true : undefined;
 
   if (!darkSrc) {
     return (
-      <Image
+      <img
         src={lightSrc}
         width={size}
         height={size}
-        className={cn("inline-block", className)}
+        className={cn('inline-block', className)}
         alt={alt}
         aria-hidden={ariaHidden}
-        unoptimized
       />
     );
   }
 
   return (
     <>
-      <Image
+      <img
         src={lightSrc}
         width={size}
         height={size}
-        className={cn("inline-block dark:hidden", className)}
+        className={cn('inline-block dark:hidden', className)}
         alt={alt}
         aria-hidden={ariaHidden}
-        unoptimized
       />
-      <Image
+      <img
         src={darkSrc}
         width={size}
         height={size}
-        className={cn("hidden dark:inline-block", className)}
+        className={cn('hidden dark:inline-block', className)}
         alt={alt}
         aria-hidden={ariaHidden}
-        unoptimized
       />
     </>
   );

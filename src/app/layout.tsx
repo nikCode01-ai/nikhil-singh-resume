@@ -244,13 +244,13 @@ export default function RootLayout({
         />
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-brand-green focus:text-white focus:rounded-lg focus:font-semibold"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-5 focus:py-2.5 focus:bg-brand-green focus:text-white focus:rounded-xl focus:font-bold focus:text-sm focus:shadow-elevated"
         >
           Skip to main content
         </a>
         <div className="flex min-h-screen flex-col">
           <HomeHeader />
-          <div className="h-24" aria-hidden="true" />
+          <div className="h-20 lg:h-24" aria-hidden="true" />
           <main id="main-content" className="flex-1" role="main">
             {children}
           </main>

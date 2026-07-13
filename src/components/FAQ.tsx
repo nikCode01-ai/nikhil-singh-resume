@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { ButtonLink } from '@/components/Button';
 
 const faqs = [
@@ -105,90 +105,63 @@ const faqs = [
 
 export function FAQ() {
   const [openId, setOpenId] = useState<number | null>(2);
-  const [animating, setAnimating] = useState<number | null>(null);
   const contentRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
   const toggleItem = (id: number) => {
-    if (animating) return;
-
-    if (openId === id) {
-      setAnimating(id);
-      setTimeout(() => {
-        setOpenId(null);
-        setAnimating(null);
-      }, 300);
-    } else {
-      setAnimating(openId);
-      setTimeout(
-        () => {
-          setOpenId(id);
-          setAnimating(null);
-        },
-        openId ? 300 : 0
-      );
-    }
+    setOpenId((prev) => (prev === id ? null : id));
   };
 
   return (
-    <section className="bg-brand-green py-20 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-brand-yellow rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+    <section
+      className="bg-white dark:bg-slate-950 section-padding relative overflow-hidden"
+      aria-labelledby="faq-heading"
+    >
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-green/3 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-brand-yellow/3 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 relative">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white text-sm font-medium mb-4">
-            <HelpCircle className="w-4 h-4" />
-            <span>FAQ</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
-            Questions? <span className="text-brand-yellow">Look here.</span>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="text-center mb-14">
+          <p className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
+            <span className="h-px w-8 bg-brand-green/20 dark:bg-brand-yellow/20" />
+            <span className="text-brand-green dark:text-brand-yellow">FAQ</span>
+            <span className="h-px w-8 bg-brand-green/20 dark:bg-brand-yellow/20" />
+          </p>
+          <h2
+            id="faq-heading"
+            className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white"
+          >
+            Questions?{' '}
+            <span className="text-brand-green dark:text-brand-yellow">
+              Look here.
+            </span>
           </h2>
-          <p className="text-xl text-white/80 max-w-3xl mx-auto">
+          <p className="mx-auto mt-5 max-w-3xl text-base lg:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
             Find answers to commonly asked questions about my services,
             experience, and work process.
           </p>
         </div>
 
         <div className="max-w-4xl mx-auto">
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {faqs.map((faq) => {
               const isOpen = openId === faq.id;
-              const isAnimating = animating === faq.id;
-
               return (
-                <div
-                  key={faq.id}
-                  className={`rounded-2xl overflow-hidden transition-all duration-300 ${
-                    isOpen
-                      ? 'bg-brand-yellow shadow-lg shadow-brand-yellow/20'
-                      : 'bg-white/10 hover:bg-white/15'
-                  }`}
-                >
+                <div key={faq.id} className="card-premium overflow-hidden">
                   <button
                     onClick={() => toggleItem(faq.id)}
-                    className={`w-full px-6 py-5 text-left flex items-center justify-between transition-all ${
-                      isOpen
-                        ? 'text-brand-green'
-                        : 'text-white hover:bg-white/5'
-                    }`}
+                    className="w-full px-5 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between gap-4 transition-all duration-200 hover:bg-slate-50/50 dark:hover:bg-white/3"
                     aria-expanded={isOpen}
                     aria-controls={`faq-answer-${faq.id}`}
                   >
-                    <h3
-                      className={`text-lg font-semibold pr-4 ${isOpen ? 'text-brand-green' : 'text-white'}`}
-                    >
+                    <h3 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white pr-2">
                       {faq.question}
                     </h3>
                     <div
                       className={`flex-shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
                     >
-                      {isOpen ? (
-                        <ChevronUp className="w-5 h-5 text-brand-green" />
-                      ) : (
-                        <ChevronDown className="w-5 h-5 text-white/70" />
-                      )}
+                      <ChevronDown className="w-5 h-5 text-slate-400 dark:text-slate-500" />
                     </div>
                   </button>
 
@@ -197,14 +170,12 @@ export function FAQ() {
                       contentRefs.current[faq.id] = el;
                     }}
                     id={`faq-answer-${faq.id}`}
-                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                      isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                    }`}
+                    role="region"
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
+                    aria-hidden={!isOpen}
                   >
-                    <div className="px-6 pb-6">
-                      <div
-                        className={`${isOpen ? 'text-brand-green' : 'text-white/80'} leading-relaxed`}
-                      >
+                    <div className="px-5 sm:px-6 pb-5 sm:pb-6">
+                      <div className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
                         {faq.answer}
                       </div>
                     </div>
@@ -214,20 +185,15 @@ export function FAQ() {
             })}
           </div>
 
-          <div className="mt-12 text-center rounded-2xl bg-white/10 backdrop-blur-sm p-8 ring-1 ring-white/20">
-            <h3 className="text-2xl font-bold text-white mb-4">
+          <div className="mt-12 text-center card-premium p-6 sm:p-8">
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-3">
               Still have questions?
             </h3>
-            <p className="text-white/80 mb-6">
+            <p className="text-slate-600 dark:text-slate-300 mb-6 text-sm sm:text-base">
               Can&apos;t find the answer you&apos;re looking for? Feel free to
-              reach out directly through the contact form or email.
+              reach out directly.
             </p>
-            <ButtonLink
-              href="/contact"
-              variant="accent"
-              size="lg"
-              className="focus-visible:!ring-offset-brand-green"
-            >
+            <ButtonLink href="/contact" variant="primary" size="lg">
               Contact Me
             </ButtonLink>
           </div>
