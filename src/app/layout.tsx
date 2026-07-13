@@ -89,12 +89,6 @@ export const metadata: Metadata = {
     google: 'google965e9543cc274a9b', // Replace with actual Google Search Console verification code
     yandex: 'yandex-verification-code',
   },
-  alternates: {
-    canonical: 'https://nikhilsingh-eight.vercel.app',
-    languages: {
-      'en-US': 'https://nikhilsingh-eight.vercel.app',
-    },
-  },
   category: 'technology',
   classification: 'Portfolio',
   authors: [

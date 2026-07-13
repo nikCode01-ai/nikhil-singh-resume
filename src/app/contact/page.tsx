@@ -22,6 +22,9 @@ export const metadata: Metadata = {
     'Web Developer Contact',
     'Book Freelance Developer',
   ],
+  alternates: {
+    canonical: 'https://nikhilsingh-eight.vercel.app/contact',
+  },
 };
 
 export default function ContactPage() {

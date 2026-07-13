@@ -64,6 +64,9 @@ export const metadata: Metadata = {
     'Pricing FAQ',
     'Hiring Developer FAQ',
   ],
+  alternates: {
+    canonical: 'https://nikhilsingh-eight.vercel.app/faqs',
+  },
 };
 
 export default function FAQsPage() {

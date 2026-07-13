@@ -16,6 +16,9 @@ export const metadata: Metadata = {
     'Web Developer Vacancies',
     'Frontend Developer Jobs',
   ],
+  alternates: {
+    canonical: 'https://nikhilsingh-eight.vercel.app/jobs',
+  },
 };
 
 export default function JobsPage() {

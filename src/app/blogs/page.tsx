@@ -18,6 +18,9 @@ export const metadata: Metadata = {
     'Real-time Systems Tutorial',
     'Full Stack Development Tips',
   ],
+  alternates: {
+    canonical: 'https://nikhilsingh-eight.vercel.app/blogs',
+  },
 };
 
 export default function BlogsPage() {

@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     'DevOps Tools',
     'Development Environment',
   ],
+  alternates: {
+    canonical: 'https://nikhilsingh-eight.vercel.app/tools',
+  },
 };
 
 export default function ToolsPage() {

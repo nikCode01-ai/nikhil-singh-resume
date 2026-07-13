@@ -16,6 +16,9 @@ export const metadata: Metadata = {
     'Freelance Web Developer India',
     'Hourly Rate Developer',
   ],
+  alternates: {
+    canonical: 'https://nikhilsingh-eight.vercel.app/price',
+  },
 };
 
 export default function PricePage() {

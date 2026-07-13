@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     'AWS Projects',
     'Travel Technology Projects',
   ],
+  alternates: {
+    canonical: 'https://nikhilsingh-eight.vercel.app/projects',
+  },
 };
 
 export default function ProjectsPage() {

@@ -16,6 +16,9 @@ export const metadata: Metadata = {
     'Web Developer Feedback',
     'Client Recommendations',
   ],
+  alternates: {
+    canonical: 'https://nikhilsingh-eight.vercel.app/testimonials',
+  },
 };
 
 export default function TestimonialsPage() {

@@ -63,6 +63,9 @@ export async function generateMetadata({
     title: `${project.name} | ${project.category.replace('-', ' ')} - Nikhil Singh Portfolio`,
     description: project.description,
     keywords,
+    alternates: {
+      canonical: `https://nikhilsingh-eight.vercel.app/projects/${slug}`,
+    },
     openGraph: {
       title: project.name,
       description: project.description,

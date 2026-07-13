@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Hero } from '@/components/Hero';
 import { Services } from '@/components/Services';
 import { About } from '@/components/About';
@@ -7,6 +8,12 @@ import { Testimonials } from '@/components/Testimonials';
 import { Blogs } from '@/components/Blogs';
 import { FAQ } from '@/components/FAQ';
 import { ContactSection } from '@/components/ContactSection';
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: 'https://nikhilsingh-eight.vercel.app',
+  },
+};
 
 export default function Home() {
   return (

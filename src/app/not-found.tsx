@@ -1,11 +1,22 @@
-import { ButtonLink } from "@/components/Button";
-import { Home, ArrowRight } from "lucide-react";
+import type { Metadata } from 'next';
+import { ButtonLink } from '@/components/Button';
+import { Home, ArrowRight } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Page Not Found',
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function NotFound() {
   return (
     <div className="flex flex-col min-h-screen items-center justify-center bg-brand-cream px-4 dark:bg-slate-950">
       <div className="text-center">
-        <h1 className="text-6xl font-extrabold text-brand-green dark:text-brand-yellow">404</h1>
+        <h1 className="text-6xl font-extrabold text-brand-green dark:text-brand-yellow">
+          404
+        </h1>
         <h2 className="mt-4 text-2xl font-bold text-slate-900 dark:text-slate-100">
           Page Not Found
         </h2>

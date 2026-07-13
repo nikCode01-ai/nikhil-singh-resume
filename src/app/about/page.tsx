@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     'AWS Developer Agra',
     'Freelance Web Developer',
   ],
+  alternates: {
+    canonical: 'https://nikhilsingh-eight.vercel.app/about',
+  },
 };
 
 export default function AboutPage() {

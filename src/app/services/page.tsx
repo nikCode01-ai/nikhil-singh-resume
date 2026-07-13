@@ -69,6 +69,9 @@ export const metadata: Metadata = {
     'Real-time Systems Development',
     'Performance Optimization Services',
   ],
+  alternates: {
+    canonical: 'https://nikhilsingh-eight.vercel.app/services',
+  },
 };
 
 export default function ServicesPage() {

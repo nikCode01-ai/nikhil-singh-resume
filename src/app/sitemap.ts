@@ -43,16 +43,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/skills`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
       url: `${baseUrl}/tools`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.6,
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/price`,
@@ -80,12 +74,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const projectPages: MetadataRoute.Sitemap = projectSlugs.map((project) => ({
-    url: `${baseUrl}/projects/${project.slug}`,
-    lastModified: new Date(project.date),
-    changeFrequency: 'monthly',
-    priority: 0.7,
-  }));
+  const projectPages: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/projects/ndcterm`,
+      lastModified: new Date('2026-01-01'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    ...projectSlugs.map((project) => ({
+      url: `${baseUrl}/projects/${project.slug}`,
+      lastModified: new Date(project.date),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+  ];
 
   const blogPages: MetadataRoute.Sitemap = blogPosts.map((post) => ({
     url: `${baseUrl}/blogs/${post.slug}`,
