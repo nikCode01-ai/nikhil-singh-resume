@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     'Book Freelance Developer',
   ],
   alternates: {
-    canonical: 'https://nikhilsingh-eight.vercel.app/contact',
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/contact`,
   },
 };
 

@@ -123,7 +123,7 @@ export const metadata: Metadata = {
     'Performance Optimization Services',
   ],
   alternates: {
-    canonical: 'https://nikhilsingh-eight.vercel.app/services',
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/services`,
   },
 };
 

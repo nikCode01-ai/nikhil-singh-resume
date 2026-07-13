@@ -23,7 +23,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://nikhilsingh-eight.vercel.app'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'
+  ),
   title: {
     default:
       'Nikhil Singh | Senior Full Stack Developer | Next.js, React, Node.js Expert',
@@ -63,7 +65,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://nikhilsingh-eight.vercel.app',
+    url:
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      'https://nikhilsingh-eight.vercel.app',
     siteName: 'Nikhil Singh Portfolio',
     title:
       'Nikhil Singh | Senior Full Stack Developer | Next.js, React, Node.js Expert',
@@ -93,7 +97,12 @@ export const metadata: Metadata = {
   category: 'technology',
   classification: 'Portfolio',
   authors: [
-    { name: 'Nikhil Singh', url: 'https://nikhilsingh-eight.vercel.app' },
+    {
+      name: 'Nikhil Singh',
+      url:
+        process.env.NEXT_PUBLIC_SITE_URL ||
+        'https://nikhilsingh-eight.vercel.app',
+    },
   ],
   creator: 'Nikhil Singh',
   publisher: 'Nikhil Singh',
@@ -148,8 +157,10 @@ export default function RootLayout({
                 '@context': 'https://schema.org',
                 '@type': 'Person',
                 name: 'Nikhil Singh',
-                url: 'https://nikhilsingh-eight.vercel.app',
-                image: 'https://nikhilsingh-eight.vercel.app/og-image.svg',
+                url:
+                  process.env.NEXT_PUBLIC_SITE_URL ||
+                  'https://nikhilsingh-eight.vercel.app',
+                image: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/og-image.svg`,
                 jobTitle: 'Senior Full Stack Developer',
                 description:
                   'Senior Full Stack Developer & Cloud Infrastructure Specialist with 4+ years experience in Next.js, React, Node.js, NDC API Integration, GenAI/LLM.',
@@ -204,8 +215,10 @@ export default function RootLayout({
                 name: 'Nikhil Singh - Full Stack Developer',
                 description:
                   'Professional full-stack development services including Next.js, React, Node.js, NDC API integration, GenAI/LLM solutions, and cloud infrastructure.',
-                url: 'https://nikhilsingh-eight.vercel.app',
-                image: 'https://nikhilsingh-eight.vercel.app/og-image.svg',
+                url:
+                  process.env.NEXT_PUBLIC_SITE_URL ||
+                  'https://nikhilsingh-eight.vercel.app',
+                image: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/og-image.svg`,
                 address: {
                   '@type': 'PostalAddress',
                   addressLocality: 'Agra',
@@ -227,7 +240,9 @@ export default function RootLayout({
                 '@context': 'https://schema.org',
                 '@type': 'WebSite',
                 name: 'Nikhil Singh Portfolio',
-                url: 'https://nikhilsingh-eight.vercel.app',
+                url:
+                  process.env.NEXT_PUBLIC_SITE_URL ||
+                  'https://nikhilsingh-eight.vercel.app',
                 description:
                   'Portfolio of Nikhil Singh - Senior Full Stack Developer specializing in Next.js, React, Node.js, NDC APIs, GenAI/LLM.',
                 inLanguage: 'en-US',

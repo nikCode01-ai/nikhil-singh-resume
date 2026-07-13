@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     'Frontend Developer Jobs',
   ],
   alternates: {
-    canonical: 'https://nikhilsingh-eight.vercel.app/jobs',
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/jobs`,
   },
 };
 

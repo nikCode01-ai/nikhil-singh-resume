@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/admin/'],
     },
-    sitemap: 'https://nikhilsingh-eight.vercel.app/sitemap.xml',
+    sitemap: `${process.env.SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/sitemap.xml`,
   };
 }

@@ -36,7 +36,7 @@ export async function generateMetadata({
     description: post.excerpt,
     keywords: post.tags,
     alternates: {
-      canonical: `https://nikhilsingh-eight.vercel.app/blogs/${slug}`,
+      canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/blogs/${slug}`,
     },
     openGraph: {
       title: post.title,

@@ -3,7 +3,8 @@ import { projectSlugs } from '@/lib/project-slugs';
 import { blogPosts } from '@/lib/blog-posts';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://nikhilsingh-eight.vercel.app';
+  const baseUrl =
+    process.env.SITE_URL || 'https://nikhilsingh-eight.vercel.app';
 
   const staticPages: MetadataRoute.Sitemap = [
     {

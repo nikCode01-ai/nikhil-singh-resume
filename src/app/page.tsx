@@ -11,7 +11,9 @@ import { ContactSection } from '@/components/ContactSection';
 
 export const metadata: Metadata = {
   alternates: {
-    canonical: 'https://nikhilsingh-eight.vercel.app',
+    canonical:
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      'https://nikhilsingh-eight.vercel.app',
   },
 };
 

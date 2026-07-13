@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     'Client Recommendations',
   ],
   alternates: {
-    canonical: 'https://nikhilsingh-eight.vercel.app/testimonials',
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/testimonials`,
   },
 };
 

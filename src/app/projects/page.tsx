@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     'Travel Technology Projects',
   ],
   alternates: {
-    canonical: 'https://nikhilsingh-eight.vercel.app/projects',
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/projects`,
   },
 };
 

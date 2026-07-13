@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     'Hiring Developer FAQ',
   ],
   alternates: {
-    canonical: 'https://nikhilsingh-eight.vercel.app/faqs',
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/faqs`,
   },
 };
 

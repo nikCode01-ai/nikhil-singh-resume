@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     'Full Stack Development Tips',
   ],
   alternates: {
-    canonical: 'https://nikhilsingh-eight.vercel.app/blogs',
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/blogs`,
   },
 };
 

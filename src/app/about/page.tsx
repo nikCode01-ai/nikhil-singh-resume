@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     'Freelance Web Developer',
   ],
   alternates: {
-    canonical: 'https://nikhilsingh-eight.vercel.app/about',
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/about`,
   },
 };
 

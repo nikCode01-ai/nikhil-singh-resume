@@ -17,8 +17,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical:
-      'https://nikhilsingh-eight.vercel.app/projects/ndc-terminal-airline-booking-system',
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/projects/ndc-terminal-airline-booking-system`,
   },
 };
 

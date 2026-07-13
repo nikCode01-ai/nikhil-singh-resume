@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     'Development Environment',
   ],
   alternates: {
-    canonical: 'https://nikhilsingh-eight.vercel.app/tools',
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/tools`,
   },
 };
 
