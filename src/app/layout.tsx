@@ -23,6 +23,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://nikhilsingh-eight.vercel.app'),
   title: {
     default:
       'Nikhil Singh | Senior Full Stack Developer | Next.js, React, Node.js Expert',
@@ -148,6 +149,7 @@ export default function RootLayout({
                 '@type': 'Person',
                 name: 'Nikhil Singh',
                 url: 'https://nikhilsingh-eight.vercel.app',
+                image: 'https://nikhilsingh-eight.vercel.app/og-image.svg',
                 jobTitle: 'Senior Full Stack Developer',
                 description:
                   'Senior Full Stack Developer & Cloud Infrastructure Specialist with 4+ years experience in Next.js, React, Node.js, NDC API Integration, GenAI/LLM.',
@@ -174,10 +176,10 @@ export default function RootLayout({
                   addressCountry: 'IN',
                 },
                 email: 'nikhilcool974@gmail.com',
-                telephone: '+918532856980',
+                telephone: '+91 8532856980',
                 sameAs: [
-                  'https://github.com/nikCode01-ai',
-                  'https://linkedin.com/in/nikhil-singh',
+                  'https://github.com/nikhilcool974',
+                  'https://linkedin.com/in/nikhil-code05',
                   'https://gitlab.com/nikhilcool974',
                   'https://twitter.com/nikhilcool974',
                 ],
@@ -190,7 +192,7 @@ export default function RootLayout({
                   '@type': 'EducationalOrganization',
                   name: 'Dr. A.P.J. Abdul Kalam Technical University (AKTU)',
                 },
-                credential: [
+                hasCredential: [
                   'AWS Certified Developer – Associate',
                   'Advanced React Patterns (Epic React)',
                   'MongoDB Developer Certification',
@@ -203,7 +205,7 @@ export default function RootLayout({
                 description:
                   'Professional full-stack development services including Next.js, React, Node.js, NDC API integration, GenAI/LLM solutions, and cloud infrastructure.',
                 url: 'https://nikhilsingh-eight.vercel.app',
-                image: 'https://nikhilsingh-eight.vercel.app/og-image.png',
+                image: 'https://nikhilsingh-eight.vercel.app/og-image.svg',
                 address: {
                   '@type': 'PostalAddress',
                   addressLocality: 'Agra',
@@ -223,11 +225,12 @@ export default function RootLayout({
               },
               {
                 '@context': 'https://schema.org',
-                '@type': 'Website',
+                '@type': 'WebSite',
                 name: 'Nikhil Singh Portfolio',
                 url: 'https://nikhilsingh-eight.vercel.app',
                 description:
                   'Portfolio of Nikhil Singh - Senior Full Stack Developer specializing in Next.js, React, Node.js, NDC APIs, GenAI/LLM.',
+                inLanguage: 'en-US',
                 publisher: {
                   '@type': 'Person',
                   name: 'Nikhil Singh',

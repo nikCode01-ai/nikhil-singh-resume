@@ -73,7 +73,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     notFound();
   }
 
-  const authorSchema = {
+  const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: post.title,
@@ -81,6 +81,10 @@ export default async function BlogPostPage({ params }: PageProps) {
     image: post.image,
     datePublished: post.date,
     dateModified: post.date,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://nikhilsingh-eight.vercel.app/blogs/${slug}`,
+    },
     author: {
       '@type': 'Person',
       name: 'Nikhil Singh',
@@ -99,9 +103,9 @@ export default async function BlogPostPage({ params }: PageProps) {
   return (
     <>
       <Script
-        id="author-schema"
+        id="article-schema"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(authorSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
       <div className="relative">
         <div
