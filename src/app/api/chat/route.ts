@@ -187,14 +187,16 @@ async function executeToolCall(
 
 async function handleOpenAIWithTools(
   messages: OpenAIChatMessage[],
-  openAIKey: string
+  openAIKey: string,
+  baseUrl = 'https://api.openai.com/v1',
+  modelName?: string
 ): Promise<string> {
-  const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+  const model = modelName || process.env.OPENAI_MODEL || 'gpt-4o-mini';
 
   const currentMessages = [...messages];
 
   for (let iteration = 0; iteration < 5; iteration++) {
-    const upstream = await fetch('https://api.openai.com/v1/chat/completions', {
+    const upstream = await fetch(`${baseUrl}/chat/completions`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${openAIKey}`,
@@ -416,7 +418,8 @@ function validateMessagesForImages(messages: unknown): string | null {
 export async function POST(request: Request) {
   const geminiKey = process.env.GEMINI_API_KEY;
   const openAIKey = process.env.OPENAI_API_KEY;
-  if (!geminiKey && !openAIKey) {
+  const groqKey = process.env.GROQ_API_KEY;
+  if (!geminiKey && !openAIKey && !groqKey) {
     return json(
       {
         error: 'No AI API key is configured',
@@ -480,6 +483,20 @@ export async function POST(request: Request) {
         messages,
         geminiKey,
         buildSystemPrompt()
+      );
+      return json({ reply });
+    }
+
+    if (groqKey) {
+      const groqMessages: OpenAIChatMessage[] = [
+        { role: 'system', content: buildSystemPrompt() },
+        ...messages,
+      ];
+      const reply = await handleOpenAIWithTools(
+        groqMessages,
+        groqKey,
+        'https://api.groq.com/openai/v1',
+        process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
       );
       return json({ reply });
     }
