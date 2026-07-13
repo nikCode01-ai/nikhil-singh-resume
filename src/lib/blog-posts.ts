@@ -62,13 +62,6 @@ export const blogPosts: BlogPost[] = [
         text: 'AI is no longer a side experiment — it is a core product feature. In 2026, every serious web application is expected to have intelligent search, smart recommendations, or conversational interfaces. The challenge is not calling an AI API. The challenge is building a reliable, fast, and scalable full-stack system around it. This guide walks through exactly how to do that with Next.js on the frontend, Node.js on the backend, and OpenAI powering the intelligence layer.',
       },
       {
-        type: 'image',
-        src: '/images/ai-fullstack-roadmap-2026.png',
-        alt: '2026 AI-powered full-stack web application development roadmap showing Next.js, Node.js, OpenAI API, Docker, AWS, PostgreSQL, and RAG pipeline architecture',
-        caption:
-          'Complete tech stack roadmap for building AI-powered full-stack applications in 2026',
-      },
-      {
         type: 'links',
         heading: 'Related Reading',
         items: [
