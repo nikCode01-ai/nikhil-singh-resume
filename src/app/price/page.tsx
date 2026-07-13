@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Pricing } from '@/components/Pricing';
 
 export const metadata: Metadata = {
-  title: 'Pricing | Full Stack Development Rates - Freelance Developer',
+  title: 'Pricing',
   description:
     'View pricing for full-stack development services by Nikhil Singh. Hourly rate: ₹500/hr, Monthly retainer: ₹45,000/month, Quarterly packages available. Services: Next.js, React, Node.js, NDC API Integration, GenAI Solutions.',
   keywords: [

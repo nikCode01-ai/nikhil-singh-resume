@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { About } from '@/components/About';
 
 export const metadata: Metadata = {
-  title: 'About Me | Senior Full Stack Developer - Nikhil Singh',
+  title: 'About Me',
   description:
     'Learn about Nikhil Singh - Senior Full Stack Developer with 4+ years experience in Next.js, React, Node.js, NDC API Integration, GenAI/LLM solutions, and AWS cloud infrastructure. Based in Agra, India.',
   keywords: [

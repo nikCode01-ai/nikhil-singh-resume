@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { Button, ButtonLink } from '@/components/Button';
-import { ProjectGridSkeleton } from '@/components/ProjectSkeleton';
 import { additionalProjects, person } from '@/lib/resume-data';
 import { projectSlugs } from '@/lib/project-slugs';
 import {
@@ -60,7 +59,6 @@ export function Projects() {
   const [showAll, setShowAll] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const sectionRef = useRef<HTMLElement | null>(null);
   const prevShowAllRef = useRef(showAll);
 
@@ -86,14 +84,6 @@ export function Projects() {
     ? searchFilteredProjects
     : searchFilteredProjects.slice(0, INITIAL_VISIBLE_PROJECTS);
   const canToggle = searchFilteredProjects.length > INITIAL_VISIBLE_PROJECTS;
-
-  useEffect(() => {
-    if (searchTerm || activeCategory !== 'All Projects') {
-      setIsLoading(true);
-      const timer = setTimeout(() => setIsLoading(false), 300);
-      return () => clearTimeout(timer);
-    }
-  }, [searchTerm, activeCategory]);
 
   useEffect(() => {
     const wasExpanded = prevShowAllRef.current;
@@ -226,128 +216,121 @@ export function Projects() {
           )}
         </motion.div>
 
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
-          layout
-        >
-          {isLoading ? (
-            <ProjectGridSkeleton count={visibleProjects.length || 6} />
-          ) : (
-            <AnimatePresence mode="popLayout">
-              {visibleProjects.map((project, index) => (
-                <motion.div
-                  key={`${project.name}-${index}`}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="group relative card-premium overflow-hidden"
-                >
-                  {'href' in project && project.href ? (
-                    <Link
-                      href={project.href}
-                      aria-label={`Open ${project.name} project page`}
-                      className="absolute inset-0 z-10 cursor-pointer"
-                    >
-                      <span className="sr-only">Open project</span>
-                    </Link>
-                  ) : null}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <AnimatePresence mode="popLayout">
+            {visibleProjects.map((project, index) => (
+              <motion.div
+                key={`${project.name}-${index}`}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                className="group relative card-premium overflow-hidden"
+              >
+                {'href' in project && project.href ? (
+                  <Link
+                    href={project.href}
+                    aria-label={`Open ${project.name} project page`}
+                    className="absolute inset-0 z-10 cursor-pointer"
+                  >
+                    <span className="sr-only">Open project</span>
+                  </Link>
+                ) : null}
 
-                  {/* Project Image - 16:9 */}
-                  <div className="relative aspect-video bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-900 overflow-hidden">
-                    {project.image ? (
-                      <>
-                        <Image
-                          src={project.image}
-                          alt={project.name}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-700"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      </>
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center">
-                          <Code className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
-                          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                            {project.name}
-                          </p>
-                        </div>
+                {/* Project Image - 16:9 */}
+                <div className="relative aspect-video bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-900 overflow-hidden">
+                  {project.image ? (
+                    <>
+                      <Image
+                        src={project.image}
+                        alt={project.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </>
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center">
+                        <Code className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
+                        <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                          {project.name}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {project.url && (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-xl text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors shadow-sm"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                {/* Project Content */}
+                <div className="p-5 sm:p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="rounded-full bg-brand-green/8 dark:bg-brand-yellow/8 px-3 py-1 text-xs font-semibold text-brand-green dark:text-brand-yellow capitalize">
+                      {project.category.replace('-', ' ')}
+                    </span>
+                    {project.date && (
+                      <div className="flex items-center gap-1 text-slate-400 dark:text-slate-500">
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span className="text-xs">{project.date}</span>
                       </div>
                     )}
-
-                    <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      {project.url && (
-                        <a
-                          href={project.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-xl text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 transition-colors shadow-sm"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                        </a>
-                      )}
-                    </div>
                   </div>
 
-                  {/* Project Content */}
-                  <div className="p-5 sm:p-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="rounded-full bg-brand-green/8 dark:bg-brand-yellow/8 px-3 py-1 text-xs font-semibold text-brand-green dark:text-brand-yellow capitalize">
-                        {project.category.replace('-', ' ')}
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-brand-green dark:group-hover:text-brand-yellow transition-colors">
+                    {project.name}
+                  </h3>
+
+                  <p className="text-sm text-slate-600 dark:text-slate-300 mb-4 line-clamp-2 leading-relaxed">
+                    {project.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {project.tech.map((tech, techIndex) => (
+                      <span
+                        key={techIndex}
+                        className="rounded-full bg-slate-100 dark:bg-white/6 px-2.5 py-1 text-xs font-medium text-slate-600 dark:text-slate-300"
+                      >
+                        {tech}
                       </span>
-                      {project.date && (
-                        <div className="flex items-center gap-1 text-slate-400 dark:text-slate-500">
-                          <Calendar className="w-3.5 h-3.5" />
-                          <span className="text-xs">{project.date}</span>
-                        </div>
-                      )}
-                    </div>
-
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-brand-green dark:group-hover:text-brand-yellow transition-colors">
-                      {project.name}
-                    </h3>
-
-                    <p className="text-sm text-slate-600 dark:text-slate-300 mb-4 line-clamp-2 leading-relaxed">
-                      {project.description}
-                    </p>
-
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {project.tech.map((tech, techIndex) => (
-                        <span
-                          key={techIndex}
-                          className="rounded-full bg-slate-100 dark:bg-white/6 px-2.5 py-1 text-xs font-medium text-slate-600 dark:text-slate-300"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      {'href' in project && project.href ? (
-                        <span className="inline-flex items-center gap-2 text-sm font-semibold text-brand-green dark:text-brand-yellow group-hover:gap-3 transition-all">
-                          View Project
-                          <ArrowRight className="w-4 h-4" />
-                        </span>
-                      ) : (
-                        <a
-                          href={project.url}
-                          className="inline-flex items-center gap-2 text-sm font-semibold text-brand-green dark:text-brand-yellow hover:underline transition-colors"
-                        >
-                          View Project
-                          <ExternalLink className="w-4 h-4" />
-                        </a>
-                      )}
-                    </div>
+                    ))}
                   </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          )}
-        </motion.div>
+
+                  <div className="flex items-center justify-between">
+                    {'href' in project && project.href ? (
+                      <span className="inline-flex items-center gap-2 text-sm font-semibold text-brand-green dark:text-brand-yellow group-hover:gap-3 transition-all">
+                        View Project
+                        <ArrowRight className="w-4 h-4" />
+                      </span>
+                    ) : (
+                      <a
+                        href={project.url}
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-brand-green dark:text-brand-yellow hover:underline transition-colors"
+                      >
+                        View Project
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
 
         {searchFilteredProjects.length === 0 && (
           <motion.div

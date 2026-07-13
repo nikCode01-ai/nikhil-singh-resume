@@ -1,22 +1,24 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Download, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Download, X } from 'lucide-react';
 
-import { Button } from "@/components/Button";
+import { Button } from '@/components/Button';
 
-type ResumeTemplateId = "1" | "2";
-type ResumeFormat = "pdf" | "docx";
+type ResumeTemplateId = '1' | '2';
+type ResumeFormat = 'pdf' | 'docx';
 
 type Props = {
-  variant?: "hero" | "about";
+  variant?: 'hero' | 'about';
   label?: string;
 };
 
 function extractFilename(contentDisposition: string | null): string | null {
   if (!contentDisposition) return null;
 
-  const match = /filename\*?=(?:UTF-8''|\")?([^\";]+)\"?/i.exec(contentDisposition);
+  const match = /filename\*?=(?:UTF-8''|\")?([^\";]+)\"?/i.exec(
+    contentDisposition
+  );
   if (!match?.[1]) return null;
 
   try {
@@ -26,30 +28,33 @@ function extractFilename(contentDisposition: string | null): string | null {
   }
 }
 
-export function ResumeDownloadButton({ variant = "hero", label }: Props) {
+export function ResumeDownloadButton({ variant = 'hero', label }: Props) {
   const [open, setOpen] = useState(false);
-  const [downloading, setDownloading] = useState<{ template: ResumeTemplateId; format: ResumeFormat } | null>(null);
-  const [selectedTemplate, setSelectedTemplate] = useState<ResumeTemplateId>("1");
+  const [downloading, setDownloading] = useState<{
+    template: ResumeTemplateId;
+    format: ResumeFormat;
+  } | null>(null);
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<ResumeTemplateId>('1');
   const [error, setError] = useState<string | null>(null);
 
   const templates = useMemo(
-    () =>
-      [
-        {
-          id: "1" as const,
-          name: "Template 1",
-          description: "Classic ATS-friendly layout with full details",
-        },
-        {
-          id: "2" as const,
-          name: "Template 2",
-          description: "Compact layout (projects + skills snapshot)",
-        },
-      ],
-    [],
+    () => [
+      {
+        id: '1' as const,
+        name: 'Template 1',
+        description: 'Classic ATS-friendly layout with full details',
+      },
+      {
+        id: '2' as const,
+        name: 'Template 2',
+        description: 'Compact layout (projects + skills snapshot)',
+      },
+    ],
+    []
   );
 
-  const triggerVariant = variant === "about" ? "inverse" : "secondary";
+  const triggerVariant = variant === 'about' ? 'inverse' : 'secondary';
 
   const close = useCallback(() => {
     if (downloading) return;
@@ -61,50 +66,58 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
     if (!open) return;
 
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
+      if (e.key === 'Escape') close();
     };
 
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
   }, [close, open]);
 
-  const download = useCallback(async (template: ResumeTemplateId, format: ResumeFormat) => {
-    setError(null);
-    setDownloading({ template, format });
+  const download = useCallback(
+    async (template: ResumeTemplateId, format: ResumeFormat) => {
+      setError(null);
+      setDownloading({ template, format });
 
-    try {
-      const res = await fetch(`/api/resume?template=${template}&format=${format}&disposition=attachment`, {
-        cache: "no-store",
-      });
+      try {
+        const res = await fetch(
+          `/api/resume?template=${template}&format=${format}&disposition=attachment`,
+          {
+            cache: 'no-store',
+          }
+        );
 
-      if (!res.ok) {
-        throw new Error("Resume download failed");
+        if (!res.ok) {
+          throw new Error('Resume download failed');
+        }
+
+        const blob = await res.blob();
+        const filename =
+          extractFilename(res.headers.get('content-disposition')) ??
+          `Resume-Template-${template}.${format}`;
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+
+        setOpen(false);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : 'Resume download failed');
+      } finally {
+        setDownloading(null);
       }
-
-      const blob = await res.blob();
-      const filename =
-        extractFilename(res.headers.get("content-disposition")) ?? `Resume-Template-${template}.${format}`;
-
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-
-      setOpen(false);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Resume download failed");
-    } finally {
-      setDownloading(null);
-    }
-  }, []);
+    },
+    []
+  );
 
   const previewUrl = useMemo(
-    () => `/api/resume?template=${selectedTemplate}&format=pdf&disposition=inline`,
-    [selectedTemplate],
+    () =>
+      `/api/resume?template=${selectedTemplate}&format=pdf&disposition=inline`,
+    [selectedTemplate]
   );
 
   return (
@@ -113,18 +126,23 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
         type="button"
         onClick={() => {
           setError(null);
-          setSelectedTemplate("1");
+          setSelectedTemplate('1');
           setOpen(true);
         }}
         variant={triggerVariant}
         size="md"
       >
-        {label ?? "Download Resume"}
+        {label ?? 'Download Resume'}
         <Download className="h-4 w-4" aria-hidden="true" />
       </Button>
 
       {open ? (
-        <div className="fixed inset-0 z-[100]">
+        <div
+          className="fixed inset-0 z-[100]"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Resume download"
+        >
           <button
             type="button"
             aria-label="Close"
@@ -135,7 +153,9 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
           <div className="relative mx-auto mt-24 w-[92%] max-w-lg rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-black/10">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h3 className="text-xl font-bold text-slate-900">Choose a Resume Template</h3>
+                <h3 className="text-xl font-bold text-slate-900">
+                  Choose a Resume Template
+                </h3>
                 <p className="mt-1 text-sm text-slate-600">
                   Select a template to preview, then download as PDF or DOCX.
                 </p>
@@ -151,7 +171,11 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
               </Button>
             </div>
 
-            {error ? <div className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div> : null}
+            {error ? (
+              <div className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+                {error}
+              </div>
+            ) : null}
 
             <div className="mt-5 grid gap-3">
               {templates.map((t) => {
@@ -166,18 +190,24 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
                     onClick={() => setSelectedTemplate(t.id)}
                     className={`w-full rounded-xl border px-4 py-4 text-left transition-colors ${
                       isDisabled
-                        ? "cursor-not-allowed border-slate-200 bg-slate-50"
+                        ? 'cursor-not-allowed border-slate-200 bg-slate-50'
                         : isSelected
-                          ? "border-brand-green/40 bg-brand-cream"
-                          : "border-slate-200 bg-white hover:bg-slate-50"
+                          ? 'border-brand-green/40 bg-brand-cream'
+                          : 'border-slate-200 bg-white hover:bg-slate-50'
                     }`}
                   >
                     <div className="flex items-center justify-between gap-4">
                       <div>
-                        <div className="text-sm font-semibold text-slate-900">{t.name}</div>
-                        <div className="mt-1 text-sm text-slate-600">{t.description}</div>
+                        <div className="text-sm font-semibold text-slate-900">
+                          {t.name}
+                        </div>
+                        <div className="mt-1 text-sm text-slate-600">
+                          {t.description}
+                        </div>
                       </div>
-                      <div className="text-sm font-semibold text-brand-green">{isSelected ? "Selected" : "Preview"}</div>
+                      <div className="text-sm font-semibold text-brand-green">
+                        {isSelected ? 'Selected' : 'Preview'}
+                      </div>
                     </div>
                   </button>
                 );
@@ -186,7 +216,9 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
 
             <div className="mt-5 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
               <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-2">
-                <div className="text-sm font-semibold text-slate-900">Preview (PDF)</div>
+                <div className="text-sm font-semibold text-slate-900">
+                  Preview (PDF)
+                </div>
                 <a
                   href={previewUrl}
                   target="_blank"
@@ -196,29 +228,39 @@ export function ResumeDownloadButton({ variant = "hero", label }: Props) {
                   Open in new tab
                 </a>
               </div>
-              <iframe title="Resume preview" src={previewUrl} className="h-[420px] w-full bg-white" />
+              <iframe
+                title="Resume preview"
+                src={previewUrl}
+                className="h-[420px] w-full bg-white"
+              />
             </div>
 
             <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
               <Button
                 type="button"
                 disabled={downloading !== null}
-                onClick={() => download(selectedTemplate, "pdf")}
+                onClick={() => download(selectedTemplate, 'pdf')}
                 variant="primary"
                 size="md"
                 fullWidth
               >
-                {downloading?.template === selectedTemplate && downloading.format === "pdf" ? "Downloading PDF..." : "Download PDF"}
+                {downloading?.template === selectedTemplate &&
+                downloading.format === 'pdf'
+                  ? 'Downloading PDF...'
+                  : 'Download PDF'}
               </Button>
               <Button
                 type="button"
                 disabled={downloading !== null}
-                onClick={() => download(selectedTemplate, "docx")}
+                onClick={() => download(selectedTemplate, 'docx')}
                 variant="secondary"
                 size="md"
                 fullWidth
               >
-                {downloading?.template === selectedTemplate && downloading.format === "docx" ? "Downloading DOCX..." : "Download DOCX"}
+                {downloading?.template === selectedTemplate &&
+                downloading.format === 'docx'
+                  ? 'Downloading DOCX...'
+                  : 'Download DOCX'}
               </Button>
             </div>
 

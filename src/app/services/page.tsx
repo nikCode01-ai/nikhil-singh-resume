@@ -53,8 +53,7 @@ const serviceSchema = {
 };
 
 export const metadata: Metadata = {
-  title:
-    'Services | Full Stack Development, NDC API Integration, GenAI Solutions',
+  title: 'Services',
   description:
     'Professional services by Nikhil Singh: Full Stack Web Development, NDC API Integration for airlines, GenAI/LLM Solutions, Performance Optimization, Cloud Infrastructure Setup. Available for freelance projects worldwide.',
   keywords: [

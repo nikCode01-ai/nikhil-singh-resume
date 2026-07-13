@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 type AnimatedCounterProps = {
   to: number;
@@ -20,7 +20,7 @@ export function AnimatedCounter({
   from = 0,
   durationMs = 1200,
   decimals = 0,
-  suffix = "",
+  suffix = '',
   once = true,
 }: AnimatedCounterProps) {
   const [value, setValue] = useState(from);
@@ -39,8 +39,8 @@ export function AnimatedCounter({
     if (!el) return;
 
     const prefersReducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
 
     let rafId: number | null = null;
 
@@ -90,7 +90,7 @@ export function AnimatedCounter({
   }, [durationMs, from, hasAnimated, once, to]);
 
   return (
-    <span ref={ref}>
+    <span ref={ref} aria-live="polite">
       {formatter.format(value)}
       {suffix}
     </span>

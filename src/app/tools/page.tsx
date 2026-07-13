@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Skills } from '@/components/Skills';
 
 export const metadata: Metadata = {
-  title: 'Tools & Technologies | Senior Full Stack Developer Tech Stack',
+  title: 'Tools & Technologies',
   description:
     'View tools and technologies used by Nikhil Singh. Tech stack: Next.js 16, React, TypeScript, Node.js, Fastify, PostgreSQL, MongoDB, AWS, Docker, Git, Postman, VS Code. Full development toolchain.',
   keywords: [

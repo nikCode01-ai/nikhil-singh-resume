@@ -10,7 +10,7 @@ import { ExternalLink, Trophy, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Projects | Portfolio - Next.js, NDC API, GenAI, Real-time Systems',
+  title: 'Projects',
   description:
     'Browse projects by Nikhil Singh - Senior Full Stack Developer. Featured work: NDC Terminal airline booking system, GenAI chatbots, real-time travel dashboards, e-commerce platforms. Built with Next.js, React, Node.js, WebSockets, AWS.',
   keywords: [

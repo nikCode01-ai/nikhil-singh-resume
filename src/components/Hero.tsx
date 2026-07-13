@@ -5,6 +5,7 @@ import { person, professionalSummary } from '@/lib/resume-data';
 import { ResumeDownloadButton } from '@/components/ResumeDownloadButton';
 import { ApiUiIcon } from '@/components/ApiUiIcon';
 import { ApiAvatar } from '@/components/ApiAvatar';
+import { cn } from '@/lib/utils';
 import { useEffect, useRef, useState } from 'react';
 
 const summaryLines =
@@ -233,8 +234,4 @@ export function Hero() {
       </div>
     </section>
   );
-}
-
-function cn(...classes: Array<string | false | null | undefined>) {
-  return classes.filter(Boolean).join(' ');
 }

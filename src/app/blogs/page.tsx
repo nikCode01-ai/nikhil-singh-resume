@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Blogs } from '@/components/Blogs';
 
 export const metadata: Metadata = {
-  title: 'Blog | Technical Articles - Next.js, NDC API, GenAI, Web Development',
+  title: 'Blog',
   description:
     'Read technical articles and tutorials by Nikhil Singh on Next.js, React, NDC API Integration, GenAI/LLM, WebSockets, performance optimization, and full-stack development best practices.',
   keywords: [

@@ -8,7 +8,7 @@ import { ApiUiIcon } from '@/components/ApiUiIcon';
 import { person } from '@/lib/resume-data';
 
 export const metadata: Metadata = {
-  title: 'Contact | Hire Senior Full Stack Developer - Nikhil Singh',
+  title: 'Contact',
   description:
     'Contact Nikhil Singh - Senior Full Stack Developer for freelance projects, NDC API integration, GenAI solutions, or full-stack development work. Based in Agra, India. Available worldwide. Email: nikhilcool974@gmail.com',
   keywords: [

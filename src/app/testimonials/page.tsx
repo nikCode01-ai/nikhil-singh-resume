@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Testimonials } from '@/components/Testimonials';
 
 export const metadata: Metadata = {
-  title: 'Testimonials | Client Reviews - Senior Full Stack Developer',
+  title: 'Testimonials',
   description:
     'Read client testimonials for Nikhil Singh - Senior Full Stack Developer. Reviews from TravelTech Solutions, Fresh Kosher Cruises, Invitation Street, Business Matters, Dreamy Invites. Known for NDC API integration, GenAI solutions, performance optimization.',
   keywords: [

@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { Hero } from '@/components/Hero';
 import { Services } from '@/components/Services';
 import { About } from '@/components/About';
-import { Skills } from '@/components/Skills';
-import { Projects } from '@/components/Projects';
+import { LazySkills } from '@/components/LazySkills';
+import { LazyProjects } from '@/components/LazyProjects';
 import { Testimonials } from '@/components/Testimonials';
 import { Blogs } from '@/components/Blogs';
 import { FAQ } from '@/components/FAQ';
@@ -78,11 +78,11 @@ export default function Home() {
       </section>
 
       <section id="skills" className="scroll-mt-24">
-        <Skills />
+        <LazySkills />
       </section>
 
       <section id="projects" className="scroll-mt-24">
-        <Projects />
+        <LazyProjects />
       </section>
 
       <section id="testimonials" className="scroll-mt-24">

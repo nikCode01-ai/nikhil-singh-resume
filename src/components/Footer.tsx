@@ -21,7 +21,6 @@ export function Footer() {
 
   const handleNewsletterSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log('Newsletter signup:', email);
     setEmail('');
   };
 
@@ -38,10 +37,10 @@ export function Footer() {
   ];
 
   const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Youtube, href: '#', label: 'YouTube' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
+    { icon: Facebook, href: person.linkedinUrl, label: 'Facebook' },
+    { icon: Youtube, href: person.linkedinUrl, label: 'YouTube' },
+    { icon: Twitter, href: person.linkedinUrl, label: 'Twitter' },
+    { icon: Instagram, href: person.linkedinUrl, label: 'Instagram' },
   ];
 
   return (

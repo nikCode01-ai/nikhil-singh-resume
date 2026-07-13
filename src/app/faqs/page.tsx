@@ -51,7 +51,7 @@ const faqSchema = {
 };
 
 export const metadata: Metadata = {
-  title: 'FAQs | Frequently Asked Questions - Full Stack Developer',
+  title: 'FAQs',
   description:
     'Frequently asked questions about services, process, and engagements with Nikhil Singh - Senior Full Stack Developer. Learn about NDC API integration, GenAI solutions, pricing, timeline, and freelance work availability.',
   keywords: [

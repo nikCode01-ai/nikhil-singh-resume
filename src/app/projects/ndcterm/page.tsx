@@ -12,6 +12,10 @@ export const metadata: Metadata = {
   title: 'NDC Terminal',
   description:
     'NDC Terminal: a cryptic command-line airline booking system enabling full booking flows in under 30 seconds using short commands.',
+  robots: {
+    index: false,
+    follow: true,
+  },
   alternates: {
     canonical:
       'https://nikhilsingh-eight.vercel.app/projects/ndc-terminal-airline-booking-system',

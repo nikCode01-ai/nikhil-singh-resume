@@ -4,7 +4,7 @@ import Script from 'next/script';
 import type { ReactNode } from 'react';
 import './globals.css';
 import { HomeHeader } from '@/components/HomeHeader';
-import { Chatbot } from '@/components/Chatbot';
+import { LazyChatbot } from '@/components/LazyChatbot';
 import { Footer } from '@/components/Footer';
 import { ScrollToTopButton } from '@/components/ScrollToTopButton';
 
@@ -249,7 +249,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
-          <Chatbot />
+          <LazyChatbot />
           <ScrollToTopButton />
         </div>
       </body>

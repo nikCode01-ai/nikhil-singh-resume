@@ -75,12 +75,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const projectPages: MetadataRoute.Sitemap = [
-    {
-      url: `${baseUrl}/projects/ndcterm`,
-      lastModified: new Date('2026-01-01'),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
     ...projectSlugs.map((project) => ({
       url: `${baseUrl}/projects/${project.slug}`,
       lastModified: new Date(project.date),
