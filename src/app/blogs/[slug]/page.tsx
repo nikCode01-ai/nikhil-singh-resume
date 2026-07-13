@@ -220,6 +220,33 @@ export default async function BlogPostPage({ params }: PageProps) {
                   );
                 }
 
+                if (block.type === 'links') {
+                  return (
+                    <div
+                      key={`${block.type}-${index}`}
+                      className="mt-8 rounded-xl border border-amber-200 bg-amber-50 p-6 dark:border-amber-800 dark:bg-amber-950/30"
+                    >
+                      {block.heading && (
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3">
+                          {block.heading}
+                        </h3>
+                      )}
+                      <ul className="space-y-2">
+                        {block.items.map((link) => (
+                          <li key={link.href}>
+                            <Link
+                              href={link.href}
+                              className="text-sm font-semibold text-amber-700 hover:text-amber-800 dark:text-amber-300 dark:hover:text-amber-200 underline underline-offset-2"
+                            >
+                              {link.label} →
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                }
+
                 return (
                   <p
                     key={`${block.type}-${index}`}
