@@ -11,6 +11,7 @@ import { person } from '@/lib/resume-data';
 
 const navItems = [
   { href: '/', label: 'Home' },
+  { href: '/dashboard', label: 'Dashboard' },
   { href: '/services', label: 'Services' },
   { href: '/about', label: 'About' },
   { href: '/price', label: 'Price' },
@@ -91,7 +92,7 @@ export function HomeHeader() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'relative px-3 py-2 rounded-lg transition-all duration-200',
+                      'relative px-3 py-2 rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950',
                       active
                         ? 'text-brand-green dark:text-brand-yellow font-semibold bg-brand-green/8 dark:bg-brand-yellow/10'
                         : 'hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/60 dark:hover:bg-white/6'

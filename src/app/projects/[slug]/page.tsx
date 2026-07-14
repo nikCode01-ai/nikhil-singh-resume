@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import Script from 'next/script';
 import { notFound } from 'next/navigation';
 
 import { Card } from '@/components/Card';
@@ -98,8 +99,28 @@ export default async function ProjectPage({ params }: PageProps) {
 
   const relatedProjects = getRelatedProjects(project);
 
+  const projectSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: project.name,
+    description: project.description,
+    author: {
+      '@type': 'Person',
+      name: 'Nikhil Singh',
+    },
+    datePublished: project.date || undefined,
+    techStack: project.tech,
+    image: project.image,
+    url: project.url || undefined,
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-brand-cream dark:from-slate-950 dark:to-slate-900">
+      <Script
+        id={`project-schema-${slug}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectSchema) }}
+      />
       {/* Hero Section - Full Width Image */}
       <div className="relative h-[600px] overflow-hidden">
         <div className="absolute inset-0">

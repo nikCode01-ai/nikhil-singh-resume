@@ -4,7 +4,7 @@ import { blogPosts } from '@/lib/blog-posts';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl =
-    process.env.SITE_URL || 'https://nikhilsingh-eight.vercel.app';
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app';
 
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -79,18 +79,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
-    {
-      url: `${baseUrl}/dashboard`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.3,
-    },
   ];
 
   const projectPages: MetadataRoute.Sitemap = [
     ...projectSlugs.map((project) => ({
       url: `${baseUrl}/projects/${project.slug}`,
-      lastModified: new Date(project.date),
+      lastModified: new Date(project.date || Date.now()),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),

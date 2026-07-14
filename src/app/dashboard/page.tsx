@@ -1,20 +1,55 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
-  AlertTriangle,
   ArrowRight,
+  ArrowUp,
   CheckCircle2,
-  Clock3,
+  Clock,
+  FileText,
   LayoutDashboard,
-  ListChecks,
-  Rocket,
-  ShieldCheck,
-  Sparkles,
+  MessageSquare,
+  Play,
   RefreshCw,
+  Send,
+  Square,
+  Terminal,
+  Upload,
+  XCircle,
+  AlertCircle,
 } from 'lucide-react';
+
+interface Message {
+  id: string;
+  from: 'user' | 'ai';
+  content: string;
+  timestamp: string;
+  type: 'requirement' | 'question' | 'status' | 'reply';
+}
+
+interface Phase {
+  id: string;
+  name: string;
+  status: 'done' | 'in-progress' | 'pending' | 'error';
+  progress: number;
+  description: string;
+  files: string[];
+  lastModified: string;
+}
+
+interface PhaseData {
+  phases: Phase[];
+  requirements: string;
+  summary: {
+    totalPhases: number;
+    completed: number;
+    inProgress: number;
+    pending: number;
+    overallProgress: number;
+  };
+}
 
 interface DocFile {
   name: string;
@@ -42,713 +77,769 @@ interface DashboardData {
   };
 }
 
-const statusConfig = {
-  pass: {
-    bg: 'bg-emerald-500/10',
-    text: 'text-emerald-400',
-    border: 'border-emerald-500/20',
-    dot: 'bg-emerald-500',
-    label: 'PASS',
-    gradient: 'from-emerald-500/20 to-emerald-500/5',
-  },
-  warn: {
-    bg: 'bg-amber-500/10',
-    text: 'text-amber-400',
-    border: 'border-amber-500/20',
-    dot: 'bg-amber-500',
-    label: 'WARN',
-    gradient: 'from-amber-500/20 to-amber-500/5',
-  },
-  pending: {
-    bg: 'bg-blue-500/10',
-    text: 'text-blue-400',
-    border: 'border-blue-500/20',
-    dot: 'bg-blue-500',
-    label: 'PENDING',
-    gradient: 'from-blue-500/20 to-blue-500/5',
-  },
-  error: {
-    bg: 'bg-red-500/10',
-    text: 'text-red-400',
-    border: 'border-red-500/20',
-    dot: 'bg-red-500',
-    label: 'ERROR',
-    gradient: 'from-red-500/20 to-red-500/5',
-  },
+const phaseStatusStyles: Record<string, string> = {
+  done: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+  'in-progress': 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+  pending: 'bg-slate-500/10 text-slate-400 border-slate-500/20',
+  error: 'bg-red-500/10 text-red-500 border-red-500/20',
 };
 
-const categoryIcons: Record<string, string> = {
-  architecture: '◈',
-  performance: '⚡',
-  accessibility: '♿',
-  seo: '🔍',
-  issues: '📋',
-  tasks: '📝',
-  review: '👁',
-  testing: '🧪',
-  planning: '📅',
-  ideas: '💡',
-  cleanup: '🧹',
-  runner: '🚀',
-  general: '📄',
+const phaseIcons: Record<string, string> = {
+  done: '✅',
+  'in-progress': '🔄',
+  pending: '⏳',
+  error: '❌',
 };
 
-const pipelineStages = [
+const docStatusStyles: Record<string, string> = {
+  pass: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+  warn: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+  pending: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+  error: 'bg-red-500/10 text-red-500 border-red-500/20',
+};
+
+const commands = [
+  { key: 'build', label: 'Build', color: 'bg-violet-500 hover:bg-violet-600' },
+  { key: 'lint', label: 'Lint', color: 'bg-sky-500 hover:bg-sky-600' },
   {
-    title: '01. Discover',
-    description: 'Architecture, docs, and current gaps reviewed.',
-    icon: LayoutDashboard,
+    key: 'typecheck',
+    label: 'TypeCheck',
+    color: 'bg-amber-500 hover:bg-amber-600',
   },
   {
-    title: '02. Prioritize',
-    description: 'Issues and tasks grouped by impact.',
-    icon: ListChecks,
+    key: 'format',
+    label: 'Format',
+    color: 'bg-emerald-500 hover:bg-emerald-600',
   },
   {
-    title: '03. Implement',
-    description: 'Performance, SEO, accessibility fixes.',
-    icon: Rocket,
+    key: 'verify-doc',
+    label: 'Verify Doc',
+    color: 'bg-rose-500 hover:bg-rose-600',
   },
   {
-    title: '04. Verify',
-    description: 'Build, lint, typecheck, Lighthouse.',
-    icon: ShieldCheck,
-  },
-  {
-    title: '05. Release',
-    description: 'Production-ready portfolio.',
-    icon: Sparkles,
+    key: 'list-docs',
+    label: 'List Docs',
+    color: 'bg-teal-500 hover:bg-teal-600',
   },
 ];
 
-const focusAreas = [
-  {
-    title: 'Performance',
-    value: 'High impact',
-    note: 'Image optimization, caching headers, GA4 loading, bundle cleanup.',
-  },
-  {
-    title: 'Accessibility',
-    value: 'Medium impact',
-    note: 'ARIA announcements, focus states, and screen-reader support.',
-  },
-  {
-    title: 'SEO',
-    value: 'High impact',
-    note: 'Canonical URLs, metadata, schema, and sitemap coverage.',
-  },
-];
+type TaskStatus = 'idle' | 'running' | 'success' | 'error';
 
 export default function DashboardPage() {
-  const [data, setData] = useState<DashboardData | null>(null);
+  const [phaseData, setPhaseData] = useState<PhaseData | null>(null);
+  const [docData, setDocData] = useState<DashboardData | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDoc, setSelectedDoc] = useState<DocFile | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [taskStatus, setTaskStatus] = useState<Record<string, TaskStatus>>({});
+  const [log, setLog] = useState<string[]>([]);
+  const [requirements, setRequirements] = useState('');
+  const [newMessage, setNewMessage] = useState('');
+  const [activeTab, setActiveTab] = useState<
+    'phases' | 'docs' | 'req' | 'log' | 'messages'
+  >('phases');
+  const logRef = useRef<HTMLPreElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const fetchData = useCallback(async () => {
-    setRefreshing(true);
+  const fetchPhaseData = useCallback(async () => {
     try {
-      const res = await fetch('/api/dashboard');
+      const res = await fetch('/api/phases');
       const json = await res.json();
-      setData(json);
+      setPhaseData(json);
+      if (json.requirements) {
+        setRequirements(json.requirements);
+      }
     } catch {
-      console.error('Failed to fetch dashboard data');
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
+      console.error('Failed to fetch phase data');
     }
   }, []);
 
+  const fetchDocData = useCallback(async () => {
+    try {
+      const res = await fetch('/api/dashboard');
+      const json = await res.json();
+      setDocData(json);
+    } catch {
+      console.error('Failed to fetch doc data');
+    }
+  }, []);
+
+  const fetchMessages = useCallback(async () => {
+    try {
+      const res = await fetch('/api/messages');
+      const json = await res.json();
+      setMessages(json.messages || []);
+    } catch {
+      console.error('Failed to fetch messages');
+    }
+  }, []);
+
+  const fetchAll = useCallback(async () => {
+    setRefreshing(true);
+    await Promise.all([fetchPhaseData(), fetchDocData(), fetchMessages()]);
+    setLoading(false);
+    setRefreshing(false);
+  }, [fetchPhaseData, fetchDocData, fetchMessages]);
+
   useEffect(() => {
-    fetchData();
-    const interval = setInterval(fetchData, 30000);
+    fetchAll();
+    // Auto-refresh every 5 seconds for messages
+    const interval = setInterval(fetchMessages, 5000);
     return () => clearInterval(interval);
-  }, [fetchData]);
+  }, [fetchAll, fetchMessages]);
+
+  useEffect(() => {
+    if (logRef.current) {
+      logRef.current.scrollTop = logRef.current.scrollHeight;
+    }
+  }, [log]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  const runCommand = useCallback(async (cmd: string) => {
+    setTaskStatus((p) => ({ ...p, [cmd]: 'running' }));
+    setLog((p) => [...p, `\n$ ${cmd}\n`]);
+    setActiveTab('log');
+
+    try {
+      const res = await fetch(`/api/run?cmd=${cmd}`);
+      const reader = res.body!.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        const events = buffer.split('\n\n');
+        buffer = events.pop()!;
+
+        for (const evt of events) {
+          const type = evt.match(/^event: (.+)$/m)?.[1];
+          const payload = evt.match(/^data: (.+)$/m)?.[1];
+          if (!type || !payload) continue;
+
+          if (type === 'stdout' || type === 'stderr') {
+            setLog((p) => [...p, payload]);
+          } else if (type === 'done') {
+            const { success } = JSON.parse(payload);
+            setTaskStatus((p) => ({
+              ...p,
+              [cmd]: success ? 'success' : 'error',
+            }));
+            setLog((p) => [
+              ...p,
+              success ? '\n✅ Command completed\n' : '\n❌ Command failed\n',
+            ]);
+          }
+        }
+      }
+    } catch {
+      setTaskStatus((p) => ({ ...p, [cmd]: 'error' }));
+      setLog((p) => [...p, `\n❌ Failed to run ${cmd}\n`]);
+    }
+  }, []);
+
+  const stopAll = useCallback(() => {
+    setTaskStatus({});
+    setLog([]);
+  }, []);
+
+  const sendMessage = useCallback(async () => {
+    if (!newMessage.trim()) return;
+
+    const msg = newMessage.trim();
+    setNewMessage('');
+
+    try {
+      await fetch('/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from: 'user',
+          content: msg,
+          type: 'requirement',
+        }),
+      });
+      await fetchMessages();
+    } catch {
+      console.error('Failed to send message');
+    }
+  }, [newMessage, fetchMessages]);
+
+  const handleRequirementsSubmit = useCallback(async () => {
+    if (!requirements.trim()) return;
+
+    try {
+      await fetch('/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from: 'user',
+          content: requirements,
+          type: 'requirement',
+        }),
+      });
+      setRequirements('');
+      await fetchMessages();
+      setActiveTab('messages');
+    } catch {
+      console.error('Failed to submit requirements');
+    }
+  }, [requirements, fetchMessages]);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(31,77,55,0.08),_transparent_55%)] dark:bg-[radial-gradient(circle_at_top,_rgba(31,77,55,0.15),_transparent_55%)] flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center"
-        >
-          <div className="relative w-16 h-16 mx-auto mb-4">
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="relative w-12 h-12 mx-auto mb-3">
             <div className="absolute inset-0 rounded-full border-2 border-brand-green/20 dark:border-brand-yellow/20" />
             <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-brand-green dark:border-t-brand-yellow animate-spin" />
           </div>
-          <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">
-            Loading dashboard...
-          </p>
-        </motion.div>
+          <p className="text-sm text-slate-400">Loading dashboard...</p>
+        </div>
       </div>
     );
   }
 
-  if (!data) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-red-400">Failed to load dashboard data</p>
-      </div>
-    );
-  }
-
-  const { docs, summary } = data;
+  const phases = phaseData?.phases || [];
+  const phaseSummary = phaseData?.summary;
+  const docs = docData?.docs || [];
+  const overallProgress = phaseSummary?.overallProgress || 0;
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(31,77,55,0.08),_transparent_55%)] dark:bg-[radial-gradient(circle_at_top,_rgba(31,77,55,0.15),_transparent_55%)] py-8 sm:py-12">
-      <div className="mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen py-6 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl space-y-6">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="rounded-3xl border border-slate-200/70 bg-white/80 p-6 shadow-[0_20px_60px_-30px_rgba(15,23,42,0.35)] backdrop-blur dark:border-white/10 dark:bg-slate-900/70 sm:p-8">
-            <div className="flex items-center justify-between mb-6">
+          <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/70">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-green/10 dark:bg-brand-yellow/10">
-                  <LayoutDashboard className="h-6 w-6 text-brand-green dark:text-brand-yellow" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-green/10 dark:bg-brand-yellow/10">
+                  <LayoutDashboard className="h-5 w-5 text-brand-green dark:text-brand-yellow" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-                    Project Dashboard
+                  <h1 className="text-xl font-bold text-slate-900 dark:text-white">
+                    Process Dashboard
                   </h1>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">
-                    Last updated:{' '}
-                    {new Date(summary.timestamp).toLocaleTimeString()}
+                  <p className="text-xs text-slate-400">
+                    Live tracking • {phases.length} phases • {docs.length} docs
+                    • {messages.length} messages
                   </p>
                 </div>
               </div>
-              <button
-                onClick={fetchData}
-                disabled={refreshing}
-                className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
-              >
-                <RefreshCw
-                  className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`}
-                />
-                Refresh
-              </button>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3 mb-4">
-              <div className="inline-flex items-center gap-2 rounded-full border border-brand-green/20 bg-brand-green/10 px-3 py-1 text-sm font-semibold text-brand-green dark:border-brand-yellow/20 dark:bg-brand-yellow/10 dark:text-brand-yellow">
-                <CheckCircle2 className="h-4 w-4" />
-                {summary.passCount}/{summary.totalFiles} docs passing
-              </div>
-              {summary.errorCount > 0 && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-red-500/10 px-3 py-1 text-sm font-semibold text-red-400 border border-red-500/20">
-                  {summary.errorCount} errors
-                </span>
-              )}
-            </div>
-
-            {/* Progress */}
-            <div className="mb-4">
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-slate-500 dark:text-slate-400">
-                  Overall Progress
-                </span>
-                <span className="font-bold text-brand-green dark:text-brand-yellow">
-                  {summary.overallProgress}%
-                </span>
-              </div>
-              <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${summary.overallProgress}%` }}
-                  transition={{ duration: 1.2, ease: 'easeOut' }}
-                  className="h-full bg-gradient-to-r from-brand-green to-emerald-400 dark:from-brand-yellow dark:to-amber-400 rounded-full"
-                />
-              </div>
-            </div>
-
-            {/* Stat cards */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-              {[
-                {
-                  label: 'Total',
-                  value: summary.totalFiles,
-                  bg: 'bg-slate-100 dark:bg-slate-800',
-                  color: 'text-slate-900 dark:text-white',
-                },
-                {
-                  label: 'Passing',
-                  value: summary.passCount,
-                  bg: 'bg-emerald-50 dark:bg-emerald-500/10',
-                  color: 'text-emerald-600 dark:text-emerald-400',
-                },
-                {
-                  label: 'Warnings',
-                  value: summary.warnCount,
-                  bg: 'bg-amber-50 dark:bg-amber-500/10',
-                  color: 'text-amber-600 dark:text-amber-400',
-                },
-                {
-                  label: 'Pending',
-                  value: summary.pendingCount,
-                  bg: 'bg-blue-50 dark:bg-blue-500/10',
-                  color: 'text-blue-600 dark:text-blue-400',
-                },
-                {
-                  label: 'Errors',
-                  value: summary.errorCount,
-                  bg: 'bg-red-50 dark:bg-red-500/10',
-                  color: 'text-red-600 dark:text-red-400',
-                },
-              ].map((c) => (
-                <div
-                  key={c.label}
-                  className={`${c.bg} rounded-2xl p-3 text-center border border-slate-200/50 dark:border-white/5`}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={fetchAll}
+                  disabled={refreshing}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
                 >
-                  <p className={`text-2xl font-bold ${c.color}`}>{c.value}</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                    {c.label}
-                  </p>
-                </div>
-              ))}
+                  <RefreshCw
+                    className={`h-3.5 w-3.5 ${refreshing ? 'animate-spin' : ''}`}
+                  />
+                  Refresh
+                </button>
+                <Link
+                  href="/"
+                  className="inline-flex items-center gap-1 rounded-lg bg-brand-green px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-greenDark dark:bg-brand-yellow dark:text-slate-900 transition-colors"
+                >
+                  Home <ArrowRight className="h-3 w-3" />
+                </Link>
+              </div>
             </div>
           </div>
         </motion.div>
 
-        {/* Pipeline */}
+        {/* Stats */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.05 }}
+        >
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            {[
+              {
+                label: 'Completed',
+                value: phaseSummary?.completed || 0,
+                color: 'text-emerald-500',
+                icon: CheckCircle2,
+              },
+              {
+                label: 'In Progress',
+                value: phaseSummary?.inProgress || 0,
+                color: 'text-blue-500',
+                icon: Clock,
+              },
+              {
+                label: 'Pending',
+                value: phaseSummary?.pending || 0,
+                color: 'text-slate-400',
+                icon: AlertCircle,
+              },
+              {
+                label: 'Docs',
+                value: docs.length,
+                color: 'text-brand-green dark:text-brand-yellow',
+                icon: FileText,
+              },
+              {
+                label: 'Messages',
+                value: messages.length,
+                color: 'text-purple-500',
+                icon: MessageSquare,
+              },
+            ].map((s) => (
+              <div
+                key={s.label}
+                className="rounded-xl border border-slate-200/70 bg-white/80 p-3 text-center backdrop-blur dark:border-white/10 dark:bg-slate-900/70"
+              >
+                <s.icon className={`h-5 w-5 mx-auto mb-1 ${s.color}`} />
+                <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
+                <p className="text-[11px] text-slate-400">{s.label}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-3">
+            <div className="flex justify-between text-xs mb-1">
+              <span className="text-slate-400">Overall Progress</span>
+              <span className="font-bold text-brand-green dark:text-brand-yellow">
+                {overallProgress}%
+              </span>
+            </div>
+            <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${overallProgress}%` }}
+                transition={{ duration: 0.8 }}
+                className="h-full bg-gradient-to-r from-brand-green to-emerald-400 dark:from-brand-yellow dark:to-amber-400 rounded-full"
+              />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Tabs */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <div className="rounded-3xl border border-slate-200/70 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/70">
-            <div className="flex items-center gap-2 mb-4">
-              <Rocket className="h-5 w-5 text-brand-green dark:text-brand-yellow" />
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                Execution Pipeline
+          <div className="flex gap-1 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl overflow-x-auto">
+            {[
+              {
+                key: 'messages' as const,
+                label: 'Messages',
+                count: messages.length,
+                icon: MessageSquare,
+              },
+              {
+                key: 'phases' as const,
+                label: 'Phases',
+                count: phases.length,
+                icon: Clock,
+              },
+              {
+                key: 'docs' as const,
+                label: 'Docs',
+                count: docs.length,
+                icon: FileText,
+              },
+              {
+                key: 'req' as const,
+                label: 'Requirements',
+                count: 0,
+                icon: Upload,
+              },
+              {
+                key: 'log' as const,
+                label: 'Live Log',
+                count: log.length,
+                icon: Terminal,
+              },
+            ].map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-all whitespace-nowrap ${
+                  activeTab === tab.key
+                    ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
+                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                }`}
+              >
+                <tab.icon className="h-3.5 w-3.5" />
+                {tab.label}
+                {tab.count > 0 && (
+                  <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-600">
+                    {tab.count}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Messages Tab */}
+        {activeTab === 'messages' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/70">
+              <h2 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                <MessageSquare className="h-4 w-4 text-brand-green dark:text-brand-yellow" />
+                Messages ({messages.length})
               </h2>
-            </div>
-            <div className="grid gap-3 lg:grid-cols-5">
-              {pipelineStages.map((stage, i) => {
-                const Icon = stage.icon;
-                const isCompleted = i < 2;
-                const isCurrent = i === 2;
-                return (
-                  <motion.div
-                    key={stage.title}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 + i * 0.05 }}
-                    className={`rounded-2xl border p-4 transition-all ${
-                      isCompleted
-                        ? 'border-emerald-500/20 bg-emerald-500/5'
-                        : isCurrent
-                          ? 'border-brand-green/30 bg-brand-green/5 dark:border-brand-yellow/30 dark:bg-brand-yellow/5 ring-1 ring-brand-green/10 dark:ring-brand-yellow/10'
-                          : 'border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-slate-800/50'
-                    }`}
+
+              {/* Messages List */}
+              <div className="space-y-3 max-h-96 overflow-y-auto mb-4">
+                {messages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`flex ${msg.from === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    <div className="flex items-center justify-between mb-3">
-                      <div
-                        className={`flex h-8 w-8 items-center justify-center rounded-xl ${
-                          isCompleted
-                            ? 'bg-emerald-500/10'
-                            : isCurrent
-                              ? 'bg-brand-green/10 dark:bg-brand-yellow/10'
-                              : 'bg-slate-100 dark:bg-slate-800'
-                        }`}
-                      >
-                        {isCompleted ? (
-                          <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                        ) : (
-                          <Icon className="h-4 w-4 text-brand-green dark:text-brand-yellow" />
-                        )}
+                    <div
+                      className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                        msg.from === 'user'
+                          ? 'bg-brand-green dark:bg-brand-yellow text-white dark:text-slate-900 rounded-br-md'
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-bl-md'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <span className="text-[10px] font-bold opacity-70">
+                          {msg.from === 'user' ? 'You' : 'AI'}
+                        </span>
+                        <span className="text-[10px] opacity-50">
+                          {new Date(msg.timestamp).toLocaleTimeString()}
+                        </span>
+                      </div>
+                      <p className="text-sm whitespace-pre-wrap">
+                        {msg.content}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+                <div ref={messagesEndRef} />
+              </div>
+
+              {/* Message Input */}
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+                  placeholder="Type a message..."
+                  className="flex-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2.5 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-green dark:focus:ring-brand-yellow focus:ring-offset-2"
+                />
+                <button
+                  onClick={sendMessage}
+                  disabled={!newMessage.trim()}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-brand-green px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-greenDark dark:bg-brand-yellow dark:text-slate-900 transition-colors disabled:opacity-50"
+                >
+                  <Send className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Phases Tab */}
+        {activeTab === 'phases' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/70">
+              <h2 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                <Terminal className="h-4 w-4 text-brand-green dark:text-brand-yellow" />
+                Phases ({phases.length})
+              </h2>
+              <div className="space-y-3">
+                {phases.map((phase) => (
+                  <div
+                    key={phase.id}
+                    className="rounded-xl border border-slate-200/70 bg-white/50 p-4 dark:border-white/5 dark:bg-slate-800/50"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">
+                          {phaseIcons[phase.status]}
+                        </span>
+                        <div>
+                          <p className="text-sm font-semibold text-slate-800 dark:text-white">
+                            {phase.name}
+                          </p>
+                          <p className="text-[11px] text-slate-400">
+                            {phase.description}
+                          </p>
+                        </div>
                       </div>
                       <span
-                        className={`text-[10px] font-bold uppercase tracking-wider ${
-                          isCompleted
-                            ? 'text-emerald-500'
-                            : isCurrent
-                              ? 'text-brand-green dark:text-brand-yellow'
-                              : 'text-slate-400'
-                        }`}
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${phaseStatusStyles[phase.status]}`}
                       >
-                        {isCompleted ? 'DONE' : isCurrent ? 'NOW' : 'NEXT'}
+                        {phase.status.toUpperCase()}
                       </span>
                     </div>
-                    <p className="text-sm font-semibold text-slate-900 dark:text-white">
-                      {stage.title}
-                    </p>
-                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                      {stage.description}
-                    </p>
-                  </motion.div>
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-brand-green dark:bg-brand-yellow rounded-full transition-all duration-500"
+                          style={{ width: `${phase.progress}%` }}
+                        />
+                      </div>
+                      <span className="text-[11px] font-bold text-slate-500">
+                        {phase.progress}%
+                      </span>
+                    </div>
+                    {phase.files.length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-1">
+                        {phase.files.slice(0, 3).map((f) => (
+                          <span
+                            key={f}
+                            className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500 font-mono"
+                          >
+                            {f}
+                          </span>
+                        ))}
+                        {phase.files.length > 3 && (
+                          <span className="text-[10px] text-slate-400">
+                            +{phase.files.length - 3} more
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+                {phases.length === 0 && (
+                  <div className="text-center py-8 text-slate-400 text-sm">
+                    No phases found in phases.md
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Docs Tab */}
+        {activeTab === 'docs' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/70">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-brand-green dark:text-brand-yellow" />
+                  Docs ({docs.length})
+                </h2>
+                <div className="flex gap-2">
+                  {(['pass', 'warn', 'pending', 'error'] as const).map((s) => {
+                    const count = docs.filter((d) => d.status === s).length;
+                    if (count === 0) return null;
+                    return (
+                      <span
+                        key={s}
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${docStatusStyles[s]}`}
+                      >
+                        {count} {s.toUpperCase()}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="space-y-2">
+                {docs.map((doc) => (
+                  <div
+                    key={doc.name}
+                    className="flex items-center justify-between rounded-xl border border-slate-200/70 bg-white/50 p-3 hover:border-slate-300 dark:border-white/5 dark:bg-slate-800/50 dark:hover:border-white/15 transition-all group"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-semibold text-slate-800 dark:text-white truncate group-hover:text-brand-green dark:group-hover:text-brand-yellow transition-colors">
+                        {doc.title}
+                      </p>
+                      <p className="text-[11px] text-slate-400 truncate">
+                        {doc.description}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3 ml-3 flex-shrink-0">
+                      <span className="text-[10px] text-slate-400">
+                        {doc.lines} lines • {doc.size}
+                      </span>
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${docStatusStyles[doc.status]}`}
+                      >
+                        {doc.status.toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Requirements Tab */}
+        {activeTab === 'req' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/70">
+              <h2 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                <Upload className="h-4 w-4 text-brand-green dark:text-brand-yellow" />
+                Submit Requirements
+              </h2>
+              <p className="text-xs text-slate-400 mb-3">
+                Describe what you need. It will be sent as a message and I will
+                process it.
+              </p>
+              <textarea
+                value={requirements}
+                onChange={(e) => setRequirements(e.target.value)}
+                placeholder={`# New Requirement\n\nDescribe what you want here...\n\nExamples:\n- Convert Hindi docx to English\n- Add new page for services\n- Fix SEO issues\n- Create new blog post`}
+                className="w-full h-48 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 text-sm text-slate-800 dark:text-slate-200 font-mono resize-none focus:outline-none focus:ring-2 focus:ring-brand-green dark:focus:ring-brand-yellow focus:ring-offset-2"
+              />
+              <div className="flex gap-2 mt-3">
+                <button
+                  onClick={handleRequirementsSubmit}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-brand-green px-4 py-2 text-xs font-semibold text-white hover:bg-brand-greenDark dark:bg-brand-yellow dark:text-slate-900 transition-colors"
+                >
+                  <Send className="h-3.5 w-3.5" />
+                  Submit Requirement
+                </button>
+                <button
+                  onClick={() => setRequirements('')}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 transition-colors"
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Live Log Tab */}
+        {activeTab === 'log' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/70">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Terminal className="h-4 w-4 text-brand-green dark:text-brand-yellow" />
+                  <h2 className="text-sm font-bold text-slate-900 dark:text-white">
+                    Live Log
+                  </h2>
+                </div>
+                <button
+                  onClick={stopAll}
+                  className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-red-400 transition-colors"
+                >
+                  <Square className="h-3 w-3" /> Clear
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {commands.map((cmd) => {
+                  const st = taskStatus[cmd.key] || 'idle';
+                  return (
+                    <button
+                      key={cmd.key}
+                      onClick={() => runCommand(cmd.key)}
+                      disabled={st === 'running'}
+                      className={`inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed ${cmd.color}`}
+                    >
+                      {st === 'running' ? (
+                        <div className="h-3 w-3 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                      ) : st === 'success' ? (
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                      ) : st === 'error' ? (
+                        <XCircle className="h-3.5 w-3.5" />
+                      ) : (
+                        <Play className="h-3 w-3" />
+                      )}
+                      {cmd.label}
+                    </button>
+                  );
+                })}
+              </div>
+              {log.length > 0 ? (
+                <pre
+                  ref={logRef}
+                  className="max-h-96 overflow-y-auto rounded-xl bg-slate-950 p-4 text-[11px] leading-relaxed text-slate-300 font-mono whitespace-pre-wrap"
+                >
+                  {log.join('')}
+                </pre>
+              ) : (
+                <div className="rounded-xl border border-dashed border-slate-300 dark:border-slate-700 p-8 text-center">
+                  <Terminal className="h-8 w-8 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
+                  <p className="text-sm text-slate-400">
+                    Click a button above to run a command
+                  </p>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Output will appear here in real-time
+                  </p>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Quick Commands (always visible) */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/70">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Terminal className="h-4 w-4 text-brand-green dark:text-brand-yellow" />
+                <h2 className="text-sm font-bold text-slate-900 dark:text-white">
+                  Quick Commands
+                </h2>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {commands.map((cmd) => {
+                const st = taskStatus[cmd.key] || 'idle';
+                return (
+                  <button
+                    key={cmd.key}
+                    onClick={() => runCommand(cmd.key)}
+                    disabled={st === 'running'}
+                    className={`inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed ${cmd.color}`}
+                  >
+                    {st === 'running' ? (
+                      <div className="h-3 w-3 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                    ) : st === 'success' ? (
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                    ) : st === 'error' ? (
+                      <XCircle className="h-3.5 w-3.5" />
+                    ) : (
+                      <Play className="h-3 w-3" />
+                    )}
+                    {cmd.label}
+                  </button>
                 );
               })}
             </div>
           </div>
         </motion.div>
 
-        {/* Focus Areas */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
-        >
-          <div className="rounded-3xl border border-slate-200/70 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/70">
-            <div className="flex items-center gap-2 mb-4">
-              <AlertTriangle className="h-5 w-5 text-amber-500" />
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                Current Focus
-              </h2>
-            </div>
-            <div className="grid gap-3 md:grid-cols-3">
-              {focusAreas.map((area) => (
-                <div
-                  key={area.title}
-                  className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-slate-800/50"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="font-semibold text-slate-900 dark:text-white">
-                      {area.title}
-                    </p>
-                    <span className="text-xs font-semibold text-brand-green dark:text-brand-yellow">
-                      {area.value}
-                    </span>
-                  </div>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">
-                    {area.note}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Docs Grid + Detail Panel */}
-        <div className="grid gap-6 lg:grid-cols-3">
-          {/* File list */}
-          <div className="lg:col-span-2 space-y-3">
-            <div className="flex items-center justify-between mb-1">
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                Documentation Files
-              </h2>
-              <span className="text-sm text-slate-500 dark:text-slate-400">
-                {docs.length} files
-              </span>
-            </div>
-            {docs.map((doc, i) => {
-              const cfg = statusConfig[doc.status];
-              return (
-                <motion.div
-                  key={doc.name}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 + i * 0.03 }}
-                  onClick={() =>
-                    setSelectedDoc(selectedDoc?.name === doc.name ? null : doc)
-                  }
-                  className={`cursor-pointer rounded-2xl border p-4 transition-all duration-200 ${
-                    selectedDoc?.name === doc.name
-                      ? 'border-brand-green/40 bg-brand-green/5 dark:border-brand-yellow/40 dark:bg-brand-yellow/5 ring-1 ring-brand-green/10 dark:ring-brand-yellow/10'
-                      : 'border-slate-200 bg-white hover:border-slate-300 dark:border-white/10 dark:bg-slate-900/70 dark:hover:border-white/20'
-                  }`}
-                >
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={`h-11 w-11 rounded-xl ${cfg.bg} flex items-center justify-center flex-shrink-0`}
-                    >
-                      <span className="text-xl">
-                        {categoryIcons[doc.category] || '📄'}
-                      </span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-sm font-bold text-slate-900 dark:text-white truncate">
-                          {doc.title}
-                        </h3>
-                        <span
-                          className={`shrink-0 px-2 py-0.5 rounded-full text-[10px] font-bold ${cfg.bg} ${cfg.text} border ${cfg.border}`}
-                        >
-                          {cfg.label}
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
-                        {doc.description}
-                      </p>
-                      <div className="flex items-center gap-3 mt-2">
-                        <span className="text-[10px] text-slate-400 dark:text-slate-500">
-                          {doc.lines} lines
-                        </span>
-                        <span className="text-[10px] text-slate-400 dark:text-slate-500">
-                          {doc.size}
-                        </span>
-                        <span className="text-[10px] capitalize text-slate-400 dark:text-slate-500">
-                          {doc.category}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <div className="relative w-11 h-11">
-                        <svg
-                          className="w-11 h-11 -rotate-90"
-                          viewBox="0 0 36 36"
-                        >
-                          <circle
-                            cx="18"
-                            cy="18"
-                            r="15"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            className="text-slate-200 dark:text-slate-700"
-                          />
-                          <circle
-                            cx="18"
-                            cy="18"
-                            r="15"
-                            fill="none"
-                            strokeWidth="2.5"
-                            strokeDasharray={`${doc.progress * 0.94} 100`}
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            className={cfg.text}
-                          />
-                        </svg>
-                        <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-slate-600 dark:text-slate-300">
-                          {doc.progress}%
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Detail Panel */}
-          <div className="lg:col-span-1">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-              Details
-            </h2>
-            <AnimatePresence mode="wait">
-              {selectedDoc ? (
-                <motion.div
-                  key={selectedDoc.name}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-slate-900/70 sticky top-24"
-                >
-                  {(() => {
-                    const cfg = statusConfig[selectedDoc.status];
-                    return (
-                      <>
-                        <div className="flex items-center gap-3 mb-5">
-                          <div
-                            className={`h-14 w-14 rounded-2xl ${cfg.bg} flex items-center justify-center`}
-                          >
-                            <span className="text-2xl">
-                              {categoryIcons[selectedDoc.category]}
-                            </span>
-                          </div>
-                          <div>
-                            <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                              {selectedDoc.title}
-                            </h3>
-                            <span
-                              className={`text-xs font-semibold ${cfg.text}`}
-                            >
-                              {cfg.label}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="space-y-3 mb-5">
-                          {[
-                            {
-                              label: 'File',
-                              value: selectedDoc.name,
-                              mono: true,
-                            },
-                            {
-                              label: 'Lines',
-                              value: String(selectedDoc.lines),
-                            },
-                            { label: 'Size', value: selectedDoc.size },
-                            {
-                              label: 'Category',
-                              value: selectedDoc.category,
-                              capitalize: true,
-                            },
-                            {
-                              label: 'Modified',
-                              value: new Date(
-                                selectedDoc.lastModified
-                              ).toLocaleDateString(),
-                            },
-                          ].map((row) => (
-                            <div
-                              key={row.label}
-                              className="flex justify-between text-sm"
-                            >
-                              <span className="text-slate-500 dark:text-slate-400">
-                                {row.label}
-                              </span>
-                              <span
-                                className={`text-slate-900 dark:text-white ${row.mono ? 'font-mono text-xs' : ''} ${row.capitalize ? 'capitalize' : ''}`}
-                              >
-                                {row.value}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Progress bar */}
-                        <div className="mb-5">
-                          <div className="flex justify-between text-xs mb-1">
-                            <span className="text-slate-500">Progress</span>
-                            <span className={`font-bold ${cfg.text}`}>
-                              {selectedDoc.progress}%
-                            </span>
-                          </div>
-                          <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                            <div
-                              className={`h-full rounded-full transition-all duration-500 ${cfg.dot}`}
-                              style={{ width: `${selectedDoc.progress}%` }}
-                            />
-                          </div>
-                        </div>
-
-                        <a
-                          href={`https://github.com/nikCode01-ai/nikhil-singh-resume/blob/feature/chatbot-ai-integration/docs/${selectedDoc.name}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block w-full text-center px-4 py-2.5 rounded-xl bg-brand-green/10 border border-brand-green/20 text-brand-green dark:bg-brand-yellow/10 dark:border-brand-yellow/20 dark:text-brand-yellow text-sm font-semibold hover:bg-brand-green/20 dark:hover:bg-brand-yellow/20 transition-colors"
-                        >
-                          View on GitHub →
-                        </a>
-                      </>
-                    );
-                  })()}
-                </motion.div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="rounded-3xl border border-dashed border-slate-300 dark:border-slate-700 p-8 text-center"
-                >
-                  <LayoutDashboard className="h-8 w-8 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-                  <p className="text-sm text-slate-400 dark:text-slate-500">
-                    Click a file to see details
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-
-        {/* Recommended Plan */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
-        >
-          <div className="rounded-3xl border border-slate-200/70 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/70 sm:p-8">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
-              Recommended Plan
-            </h2>
-            <div className="grid gap-4 lg:grid-cols-2">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-slate-800/50">
-                <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  <Clock3 className="h-4 w-4 text-brand-green dark:text-brand-yellow" />
-                  Phase 1: Quick Wins
-                </div>
-                <ul className="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500 mt-0.5 shrink-0" />{' '}
-                    Caching headers and security headers
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500 mt-0.5 shrink-0" />{' '}
-                    Conditional GA4 loading
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500 mt-0.5 shrink-0" />{' '}
-                    Canonical URLs added to all pages
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500 mt-0.5 shrink-0" />{' '}
-                    aria-live on contact form
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500 mt-0.5 shrink-0" />{' '}
-                    Duplicate imports cleaned
-                  </li>
-                </ul>
-              </div>
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-slate-800/50">
-                <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  <Rocket className="h-4 w-4 text-brand-green dark:text-brand-yellow" />
-                  Phase 2: Quality Boost
-                </div>
-                <ul className="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                  <li className="flex items-start gap-2">
-                    <span className="h-4 w-4 flex items-center justify-center text-blue-400 mt-0.5 shrink-0">
-                      ◎
-                    </span>{' '}
-                    Optimize images with next/image + WebP
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="h-4 w-4 flex items-center justify-center text-blue-400 mt-0.5 shrink-0">
-                      ◎
-                    </span>{' '}
-                    Add FAQ and Article schema
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="h-4 w-4 flex items-center justify-center text-blue-400 mt-0.5 shrink-0">
-                      ◎
-                    </span>{' '}
-                    Debounce search in Projects
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="h-4 w-4 flex items-center justify-center text-blue-400 mt-0.5 shrink-0">
-                      ◎
-                    </span>{' '}
-                    Add unique meta descriptions
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="h-4 w-4 flex items-center justify-center text-blue-400 mt-0.5 shrink-0">
-                      ◎
-                    </span>{' '}
-                    Run Lighthouse audit
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 rounded-full bg-brand-green px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-greenDark"
-              >
-                Back to portfolio
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/contact"
-                className="text-sm font-semibold text-slate-700 transition hover:text-brand-green dark:text-slate-300 dark:hover:text-brand-yellow"
-              >
-                Share feedback
-              </Link>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Footer */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="text-center text-xs text-slate-400 dark:text-slate-500 pb-4"
-        >
-          Auto-refreshes every 30s · Dashboard by Nikhil Singh
-        </motion.p>
+        <p className="text-center text-[11px] text-slate-400 pb-4">
+          Dashboard by Nikhil Singh • Messages auto-refresh every 5s
+        </p>
       </div>
     </main>
   );

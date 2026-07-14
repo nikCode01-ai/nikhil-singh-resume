@@ -79,6 +79,7 @@ export function About() {
               ].map((badge) => (
                 <div
                   key={badge.label}
+                  aria-hidden="true"
                   className={`${badge.className} rounded-full bg-white dark:bg-slate-800 px-3 py-1.5 text-xs font-semibold text-brand-green dark:text-brand-yellow shadow-elevated border border-slate-100 dark:border-white/10`}
                 >
                   {badge.label}
@@ -120,7 +121,7 @@ export function About() {
                       suffix={stat.value.replace(/[0-9.]/g, '')}
                     />
                   </div>
-                  <div className="mt-1 text-xs font-medium text-slate-500 dark:text-slate-400">
+                  <div className="mt-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
                     {stat.label}
                   </div>
                 </div>

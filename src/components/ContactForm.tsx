@@ -71,24 +71,27 @@ export function ContactForm({ toEmail }: { toEmail: string }) {
       )}
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="space-y-1">
+        <label htmlFor="contact-name" className="space-y-1">
           <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
             Name *
           </span>
           <input
+            id="contact-name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-amber-500 focus:ring-2 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
             placeholder="Your name"
             autoComplete="name"
+            aria-required="true"
             required
           />
         </label>
-        <label className="space-y-1">
+        <label htmlFor="contact-email" className="space-y-1">
           <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
             Email *
           </span>
           <input
+            id="contact-email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-amber-500 focus:ring-2 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
@@ -96,19 +99,22 @@ export function ContactForm({ toEmail }: { toEmail: string }) {
             autoComplete="email"
             inputMode="email"
             type="email"
+            aria-required="true"
             required
           />
         </label>
       </div>
-      <label className="space-y-1 block">
+      <label htmlFor="contact-message" className="space-y-1 block">
         <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
           Message *
         </span>
         <textarea
+          id="contact-message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           className="min-h-32 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-amber-500 focus:ring-2 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
           placeholder="Tell me what you are looking to build, timelines, and any context."
+          aria-required="true"
           required
         />
       </label>

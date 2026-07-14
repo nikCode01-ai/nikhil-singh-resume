@@ -74,6 +74,11 @@ export function Hero() {
               <span className="block mt-2 text-xl sm:text-2xl lg:text-3xl font-semibold text-slate-500 dark:text-slate-400 tracking-normal">
                 {person.role}
               </span>
+              {person.tagline && (
+                <span className="block mt-2 text-base sm:text-lg lg:text-xl font-medium text-slate-400 dark:text-slate-500 tracking-normal">
+                  {person.tagline}
+                </span>
+              )}
             </h1>
 
             <p
@@ -89,7 +94,7 @@ export function Hero() {
 
             <div
               className={cn(
-                'flex flex-wrap gap-3 pt-2 transition-all duration-700 delay-300',
+                'flex flex-wrap gap-3 pt-3 transition-all duration-700 delay-300',
                 isVisible
                   ? 'opacity-100 translate-y-0'
                   : 'opacity-0 translate-y-4'
@@ -98,6 +103,10 @@ export function Hero() {
               <ButtonLink href="/contact" variant="primary" size="lg">
                 <ApiUiIcon name="Send" size={16} className="h-4 w-4" />
                 Hire Me
+              </ButtonLink>
+              <ButtonLink href="/projects" variant="secondary" size="lg">
+                <ApiUiIcon name="FolderOpen" size={16} className="h-4 w-4" />
+                View Projects
               </ButtonLink>
               <ResumeDownloadButton variant="hero" label="Download Resume" />
             </div>
@@ -118,9 +127,12 @@ export function Hero() {
                   darkColor="brand-yellow"
                   className="h-[18px] w-[18px] flex-shrink-0"
                 />
-                <span className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate">
+                <a
+                  href={`mailto:${person.email}`}
+                  className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate hover:text-brand-green dark:hover:text-brand-yellow transition-colors"
+                >
                   {person.email}
-                </span>
+                </a>
               </div>
               <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/60 dark:bg-white/5 backdrop-blur-sm border border-slate-200/50 dark:border-white/8 transition-all hover:bg-white dark:hover:bg-white/8">
                 <ApiUiIcon
@@ -130,9 +142,12 @@ export function Hero() {
                   darkColor="brand-yellow"
                   className="h-[18px] w-[18px] flex-shrink-0"
                 />
-                <span className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate">
+                <a
+                  href={`tel:${person.phone.replace(/\s/g, '')}`}
+                  className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate hover:text-brand-green dark:hover:text-brand-yellow transition-colors"
+                >
                   {person.phone}
-                </span>
+                </a>
               </div>
               <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/60 dark:bg-white/5 backdrop-blur-sm border border-slate-200/50 dark:border-white/8 transition-all hover:bg-white dark:hover:bg-white/8">
                 <ApiUiIcon
@@ -222,7 +237,7 @@ export function Hero() {
                     <div className="text-xl sm:text-2xl font-extrabold text-brand-green dark:text-brand-yellow">
                       {stat.value}
                     </div>
-                    <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">
+                    <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">
                       {stat.label}
                     </div>
                   </div>

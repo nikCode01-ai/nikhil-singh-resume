@@ -10,6 +10,21 @@ import { FAQ } from '@/components/FAQ';
 import { ContactSection } from '@/components/ContactSection';
 
 export const metadata: Metadata = {
+  title: 'Senior Full Stack Developer - Nikhil Singh',
+  description:
+    'Nikhil Singh - Senior Full Stack Developer specializing in Next.js, React, Node.js, NDC API Integration for airlines, GenAI/LLM solutions, and real-time systems. 4+ years experience, 30+ production systems, 99.9% uptime. Available for freelance projects worldwide.',
+  keywords: [
+    'Senior Full Stack Developer',
+    'Next.js Developer',
+    'React Developer',
+    'Node.js Developer',
+    'NDC API Integration',
+    'Airline Booking System',
+    'GenAI LLM Developer',
+    'Full Stack Developer India',
+    'Freelance Web Developer',
+    'Real-time Systems Developer',
+  ],
   alternates: {
     canonical:
       process.env.NEXT_PUBLIC_SITE_URL ||
@@ -29,7 +44,7 @@ export default function Home() {
         aria-label="Services offered"
       >
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-1 text-sm font-medium text-white/90">
+          <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm font-medium text-white/90">
             <span className="flex items-center gap-2">
               <span
                 className="h-1.5 w-1.5 rounded-full bg-brand-yellow"

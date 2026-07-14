@@ -62,7 +62,7 @@ export function Footer() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <ButtonLink href="/contact" variant="accent" size="lg">
-              Get Started
+              Start a Project
             </ButtonLink>
             <ResumeDownloadButton variant="about" label="Download Resume" />
           </div>

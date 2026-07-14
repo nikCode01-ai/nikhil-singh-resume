@@ -151,7 +151,7 @@ export function FAQ() {
                 <div key={faq.id} className="card-premium overflow-hidden">
                   <button
                     onClick={() => toggleItem(faq.id)}
-                    className="w-full px-5 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between gap-4 transition-all duration-200 hover:bg-slate-50/50 dark:hover:bg-white/3"
+                    className="w-full px-5 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between gap-4 transition-all duration-200 hover:bg-slate-50/50 dark:hover:bg-white/3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950 rounded-xl"
                     aria-expanded={isOpen}
                     aria-controls={`faq-answer-${faq.id}`}
                   >
@@ -194,7 +194,7 @@ export function FAQ() {
               reach out directly.
             </p>
             <ButtonLink href="/contact" variant="primary" size="lg">
-              Contact Me
+              Let&apos;s Discuss Your Project
             </ButtonLink>
           </div>
         </div>

@@ -152,7 +152,7 @@ export function Services({ variant = 'section' }: ServicesProps) {
           ) : (
             <div className="mt-8 flex justify-center">
               <ButtonLink href="/services" variant="primary" size="sm">
-                View All Services
+                Explore My Services
               </ButtonLink>
             </div>
           )}

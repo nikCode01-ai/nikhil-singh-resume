@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Card } from '@/components/Card';
 import { ContactForm } from '@/components/ContactForm';
 import { Container } from '@/components/Container';
@@ -6,6 +7,23 @@ import { IconLink } from '@/components/IconLink';
 import { Section } from '@/components/Section';
 import { ApiUiIcon } from '@/components/ApiUiIcon';
 import { person } from '@/lib/resume-data';
+
+const contactSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'Contact Nikhil Singh',
+  url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'}/contact`,
+  mainEntity: {
+    '@type': 'Person',
+    name: 'Nikhil Singh',
+    email: 'nikhilcool974@gmail.com',
+    telephone: '+91 8532856980',
+    jobTitle: 'Senior Full Stack Developer',
+    url:
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      'https://nikhilsingh-eight.vercel.app',
+  },
+};
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -30,6 +48,11 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div className="relative">
+      <Script
+        id="contact-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
+      />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 -top-24 h-72 bg-gradient-to-b from-amber-50 to-transparent dark:from-amber-950/30"

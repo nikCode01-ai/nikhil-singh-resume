@@ -112,7 +112,7 @@ export function ContactSection() {
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-5">
                 Get in Touch
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {contactInfo.map((item) => (
                   <div
                     key={item.label}

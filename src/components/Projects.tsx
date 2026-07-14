@@ -139,7 +139,7 @@ export function Projects() {
                 placeholder="Search projects..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-10 py-3 rounded-2xl border border-slate-200 dark:border-white/8 bg-white dark:bg-white/3 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-green/20 dark:focus:ring-brand-yellow/20 focus:border-brand-green dark:focus:border-brand-yellow transition-all duration-200 text-sm"
+                className="w-full pl-12 pr-10 py-3 rounded-2xl border border-slate-200 dark:border-white/8 bg-white dark:bg-white/3 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-green/40 dark:focus:ring-brand-yellow/40 focus:border-brand-green dark:focus:border-brand-yellow transition-all duration-200 text-sm"
                 aria-label="Search projects"
               />
               {searchTerm && (
@@ -244,7 +244,7 @@ export function Projects() {
                     <>
                       <Image
                         src={project.image}
-                        alt={project.name}
+                        alt={`${project.name} — ${project.description.slice(0, 80)}`}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-700"
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -291,7 +291,7 @@ export function Projects() {
                     )}
                   </div>
 
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-brand-green dark:group-hover:text-brand-yellow transition-colors">
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3 group-hover:text-brand-green dark:group-hover:text-brand-yellow transition-colors">
                     {project.name}
                   </h3>
 

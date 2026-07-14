@@ -82,7 +82,10 @@ export function Testimonials() {
                   <Quote className="w-4 h-4 text-white dark:text-slate-900" />
                 </div>
 
-                <div className="flex gap-0.5 mb-4 mt-2">
+                <div
+                  className="flex gap-0.5 mb-4 mt-2"
+                  aria-label={`${testimonial.rating} out of 5 stars`}
+                >
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star
                       key={i}
@@ -138,7 +141,7 @@ export function Testimonials() {
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`h-2 rounded-full transition-all duration-300 ${
+              className={`h-2 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950 ${
                 index === currentIndex
                   ? 'w-8 bg-brand-green dark:bg-brand-yellow'
                   : 'w-2 bg-slate-300 dark:bg-slate-600 hover:bg-slate-400 dark:hover:bg-slate-500'

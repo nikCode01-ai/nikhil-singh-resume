@@ -65,3 +65,42 @@
 - `body` blocks — headings, paragraphs, lists (existing format match)
 
 ### Status: ⏳ Pending
+
+---
+
+## Phase 3: Hindi Docx → English MD Conversion
+
+**Goal**: `docs/कार्यकारी सारांश.docx` ko English markdown mein convert karna — bina data skip kiye.
+
+### Current State
+
+- Hindi docx file `docs/` folder mein hai
+- python-docx se content extract hua
+- English mein convert hua with all citations
+
+### Plan
+
+| Step | Task                                               | Status     |
+| ---- | -------------------------------------------------- | ---------- |
+| 1    | Read Hindi docx content (97 paragraphs + 2 tables) | ✅ Done    |
+| 2    | Convert to English markdown (zero skips)           | ✅ Done    |
+| 3    | Add missing citation references (15 restored)      | ✅ Done    |
+| 4    | Restructure to match existing MD conventions       | ✅ Done    |
+| 5    | Verify & finalize (user approval)                  | ⏳ Pending |
+
+### Conventions Applied
+
+- Title: `# Title — Subtitle` format
+- Separators: `---` between sections
+- Tables: Structured data in tables
+- Priority: 🔴🟡🟢 markers
+- Code blocks: Language tags
+- File paths: Backtick formatting
+- Verification section at bottom
+
+### Output File
+
+- `docs/13-EXECUTIVE-SUMMARY.md` (final)
+- `docs/DASHBOARD.md` (live tracker)
+
+### Status: ⏳ Phase 5 Pending (Verification)
