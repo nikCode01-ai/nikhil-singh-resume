@@ -73,7 +73,7 @@ export function Pricing() {
               size="sm"
               className="h-10 gap-2 rounded-full bg-brand-yellow px-6 text-brand-green hover:bg-brand-yellow/90"
             >
-              Get Started
+              Start a Project
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-green text-brand-yellow">
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </span>

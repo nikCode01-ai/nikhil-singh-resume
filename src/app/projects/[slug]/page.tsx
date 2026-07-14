@@ -166,7 +166,7 @@ export default async function ProjectPage({ params }: PageProps) {
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3 bg-white text-slate-900 rounded-lg font-semibold hover:bg-slate-100 transition-colors"
+                className="px-6 py-3 bg-white text-slate-900 rounded-lg font-semibold hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-yellow focus-visible:ring-offset-2"
               >
                 <ExternalLink className="h-5 w-5 mr-2 inline" />
                 View Live Project
@@ -177,7 +177,7 @@ export default async function ProjectPage({ params }: PageProps) {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3 bg-brand-green text-white rounded-lg font-semibold hover:bg-brand-greenDark transition-colors"
+                className="px-6 py-3 bg-brand-green text-white rounded-lg font-semibold hover:bg-brand-greenDark transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-yellow focus-visible:ring-offset-2"
               >
                 <GitBranch className="h-5 w-5 mr-2 inline" />
                 View Source Code
@@ -188,7 +188,7 @@ export default async function ProjectPage({ params }: PageProps) {
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3 bg-brand-yellow text-brand-green rounded-lg font-semibold hover:bg-brand-yellow/80 transition-colors"
+                className="px-6 py-3 bg-brand-yellow text-brand-green rounded-lg font-semibold hover:bg-brand-yellow/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-yellow focus-visible:ring-offset-2"
               >
                 <Zap className="h-5 w-5 mr-2 inline" />
                 View Demo

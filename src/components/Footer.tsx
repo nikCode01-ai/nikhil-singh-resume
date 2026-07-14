@@ -6,10 +6,10 @@ import { person } from '@/lib/resume-data';
 import { Button, ButtonLink } from '@/components/Button';
 import { ResumeDownloadButton } from '@/components/ResumeDownloadButton';
 import {
-  Facebook,
-  Youtube,
+  Linkedin,
   Twitter,
-  Instagram,
+  Github,
+  Gitlab,
   Phone,
   Mail,
   MapPin,
@@ -37,10 +37,10 @@ export function Footer() {
   ];
 
   const socialLinks = [
-    { icon: Facebook, href: person.linkedinUrl, label: 'Facebook' },
-    { icon: Youtube, href: person.linkedinUrl, label: 'YouTube' },
-    { icon: Twitter, href: person.linkedinUrl, label: 'Twitter' },
-    { icon: Instagram, href: person.linkedinUrl, label: 'Instagram' },
+    { icon: Linkedin, href: person.linkedinUrl, label: 'LinkedIn' },
+    { icon: Twitter, href: person.twitterUrl, label: 'Twitter' },
+    { icon: Github, href: person.githubUrl, label: 'GitHub' },
+    { icon: Gitlab, href: person.gitlabUrl, label: 'GitLab' },
   ];
 
   return (

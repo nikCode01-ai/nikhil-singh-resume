@@ -178,7 +178,7 @@ export function ContactSection() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-white/5 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-brand-green/8 hover:text-brand-green dark:hover:bg-brand-yellow/8 dark:hover:text-brand-yellow transition-all"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-white/5 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-brand-green/8 hover:text-brand-green dark:hover:bg-brand-yellow/8 dark:hover:text-brand-yellow transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-yellow focus-visible:ring-offset-2"
                   aria-label={link.label}
                 >
                   <link.icon className="w-4 h-4" />

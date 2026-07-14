@@ -164,7 +164,7 @@ export function HomeHeader() {
             type="button"
             aria-label="Close menu"
             onClick={() => setOpen(false)}
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm focus-visible:outline-none"
           />
 
           <div className="absolute right-3 top-16 w-[calc(100%-24px)] max-w-sm overflow-hidden rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl ring-1 ring-black/10 dark:ring-white/10 animate-fade-down">
