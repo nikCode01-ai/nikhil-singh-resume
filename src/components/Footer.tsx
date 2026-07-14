@@ -190,7 +190,7 @@ export function Footer() {
             </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               <a
-                href="#"
+                href="/terms-and-conditions"
                 className="text-sm text-slate-500 hover:text-brand-yellow transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
               >
                 Terms & Conditions
@@ -199,7 +199,7 @@ export function Footer() {
                 &bull;
               </span>
               <a
-                href="#"
+                href="/privacy-policy"
                 className="text-sm text-slate-500 hover:text-brand-yellow transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
               >
                 Privacy Policy
