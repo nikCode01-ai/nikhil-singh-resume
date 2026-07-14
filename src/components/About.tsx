@@ -14,6 +14,7 @@ import {
 } from '@/lib/resume-data';
 import {
   Award,
+  Trophy,
   Target,
   Users,
   Code,
@@ -26,7 +27,6 @@ import {
   BookOpen,
   GitBranch,
   Heart,
-  Award as Trophy,
 } from 'lucide-react';
 import { ResumeDownloadButton } from '@/components/ResumeDownloadButton';
 import { AnimatedCounter } from '@/components/AnimatedCounter';

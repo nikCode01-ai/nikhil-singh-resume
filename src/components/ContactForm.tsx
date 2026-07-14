@@ -44,7 +44,7 @@ export function ContactForm({ toEmail }: { toEmail: string }) {
           message: data.error || 'Failed to send message. Please try again.',
         });
       }
-    } catch (error) {
+    } catch {
       setStatus({
         type: 'error',
         message: 'Failed to send message. Please try again.',
@@ -58,6 +58,8 @@ export function ContactForm({ toEmail }: { toEmail: string }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       {status && (
         <div
+          role="alert"
+          aria-live="assertive"
           className={`p-4 rounded-lg ${
             status.type === 'success'
               ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'

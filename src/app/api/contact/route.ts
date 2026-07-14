@@ -35,7 +35,6 @@ export async function POST(request: NextRequest) {
     `;
 
     // Send Email using Resend
-    let emailSent = false;
     if (resendApiKey) {
       console.log('Attempting to send email with Resend...');
 
@@ -58,7 +57,7 @@ export async function POST(request: NextRequest) {
       console.log('Resend response:', emailResponse.status, emailResult);
 
       if (emailResponse.ok) {
-        emailSent = true;
+        console.log('Email sent successfully');
       } else {
         console.error('Resend error:', emailResult);
       }

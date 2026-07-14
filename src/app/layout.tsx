@@ -138,16 +138,20 @@ export default function RootLayout({
       document.documentElement.classList.toggle('dark', theme === 'dark');
     } catch (_) {}
   })();`}</Script>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=GA4_MEASUREMENT_ID"
-          strategy="afterInteractive"
-        />
-        <Script id="ga4-init" strategy="afterInteractive">{`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'GA4_MEASUREMENT_ID');
-        `}</Script>
+        {process.env.NEXT_PUBLIC_GA4_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA4_ID}`}
+              strategy="lazyOnload"
+            />
+            <Script id="ga4-init" strategy="lazyOnload">{`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${process.env.NEXT_PUBLIC_GA4_ID}');
+            `}</Script>
+          </>
+        )}
         <Script
           id="json-ld"
           type="application/ld+json"
