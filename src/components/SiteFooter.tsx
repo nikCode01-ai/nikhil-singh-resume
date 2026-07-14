@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export function SiteFooter() {
   const pathname = usePathname();
 
-  if (pathname === "/") {
+  if (pathname === '/') {
     return null;
   }
 
@@ -19,10 +19,16 @@ export function SiteFooter() {
           {year} Nikhil Singh. All rights reserved.
         </p>
         <div className="flex items-center gap-4">
-          <Link className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:text-slate-300 dark:hover:text-slate-100 dark:focus:ring-slate-400" href="/projects">
+          <Link
+            className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:text-slate-300 dark:hover:text-slate-100 dark:focus:ring-slate-400"
+            href="/projects"
+          >
             Projects
           </Link>
-          <Link className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:text-slate-300 dark:hover:text-slate-100 dark:focus:ring-slate-400" href="/contact">
+          <Link
+            className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:text-slate-300 dark:hover:text-slate-100 dark:focus:ring-slate-400"
+            href="/contact"
+          >
             Contact
           </Link>
         </div>

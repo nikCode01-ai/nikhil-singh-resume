@@ -1,26 +1,26 @@
-const GITHUB_API_BASE = "https://api.github.com";
-const AI_LABEL = "ai-generated";
-const AI_LABEL_COLOR = "5C6BC0";
+const GITHUB_API_BASE = 'https://api.github.com';
+const AI_LABEL = 'ai-generated';
+const AI_LABEL_COLOR = '5C6BC0';
 
 function getAuthHeaders(): HeadersInit {
   const token = process.env.GITHUB_TOKEN;
   if (!token) {
-    throw new Error("GITHUB_TOKEN is not configured");
+    throw new Error('GITHUB_TOKEN is not configured');
   }
   return {
     Authorization: `Bearer ${token}`,
-    Accept: "application/vnd.github+json",
-    "X-GitHub-Api-Version": "2022-11-28",
-    "User-Agent": "Portfolio-AI-Agent",
+    Accept: 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+    'User-Agent': 'Portfolio-AI-Agent',
   };
 }
 
 function getRepo(): { owner: string; repo: string } {
   const repoString = process.env.GITHUB_REPO;
   if (!repoString) {
-    throw new Error("GITHUB_REPO is not configured");
+    throw new Error('GITHUB_REPO is not configured');
   }
-  const [owner, repo] = repoString.split("/");
+  const [owner, repo] = repoString.split('/');
   if (!owner || !repo) {
     throw new Error("GITHUB_REPO must be in format 'owner/repo'");
   }
@@ -67,24 +67,24 @@ async function ensureLabelExists(): Promise<void> {
 
   if (checkResponse.status === 404) {
     const createResponse = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify({
         name: AI_LABEL,
         color: AI_LABEL_COLOR,
-        description: "Issues created by AI assistant",
+        description: 'Issues created by AI assistant',
       }),
     });
 
     if (!createResponse.ok && createResponse.status !== 422) {
-      console.warn("Failed to create AI label, continuing without it");
+      console.warn('Failed to create AI label, continuing without it');
     }
   }
 }
 
 export async function createIssue(
   title: string,
-  body: string,
+  body: string
 ): Promise<CreateIssueResult> {
   const { owner, repo } = getRepo();
 
@@ -92,7 +92,7 @@ export async function createIssue(
 
   const url = `${GITHUB_API_BASE}/repos/${owner}/${repo}/issues`;
   const response = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: getAuthHeaders(),
     body: JSON.stringify({
       title,
@@ -115,8 +115,8 @@ export async function createIssue(
 }
 
 export async function listIssues(
-  state: "open" | "closed" | "all" = "open",
-  limit: number = 10,
+  state: 'open' | 'closed' | 'all' = 'open',
+  limit: number = 10
 ): Promise<ListIssuesResult> {
   const { owner, repo } = getRepo();
   const url = `${GITHUB_API_BASE}/repos/${owner}/${repo}/issues?state=${state}&per_page=${limit}&sort=created&direction=desc`;
@@ -133,7 +133,7 @@ export async function listIssues(
   const issues = (await response.json()) as GitHubIssue[];
   return {
     issues: issues
-      .filter((issue) => !("pull_request" in issue))
+      .filter((issue) => !('pull_request' in issue))
       .map((issue) => ({
         number: issue.number,
         title: issue.title,
@@ -172,7 +172,7 @@ export async function getIssue(issueNumber: number): Promise<{
   return {
     number: issue.number,
     title: issue.title,
-    body: issue.body || "",
+    body: issue.body || '',
     state: issue.state,
     url: issue.html_url,
     labels: issue.labels.map((l) => l.name),

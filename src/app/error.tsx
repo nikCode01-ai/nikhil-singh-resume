@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { Button, ButtonLink } from "@/components/Button";
-import { ApiUiIcon } from "@/components/ApiUiIcon";
+import { useEffect } from 'react';
+import { Button, ButtonLink } from '@/components/Button';
+import { ApiUiIcon } from '@/components/ApiUiIcon';
 
 type ErrorProps = {
   error: Error & { digest?: string };
@@ -23,11 +23,21 @@ export default function Error({ error, reset }: ErrorProps) {
 
       <div className="relative w-full max-w-2xl rounded-3xl bg-white/90 p-10 text-center shadow-xl ring-1 ring-slate-900/5 backdrop-blur dark:bg-slate-900/70 dark:ring-white/10">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-cream ring-1 ring-brand-green/10 dark:bg-slate-800/60 dark:ring-white/10">
-          <ApiUiIcon name="X" size={26} color="brand-green" darkColor="brand-yellow" className="h-6 w-6" decorative />
+          <ApiUiIcon
+            name="X"
+            size={26}
+            color="brand-green"
+            darkColor="brand-yellow"
+            className="h-6 w-6"
+            decorative
+          />
         </div>
-        <h1 className="mt-6 text-3xl font-extrabold text-slate-900 dark:text-slate-100">Something went wrong</h1>
+        <h1 className="mt-6 text-3xl font-extrabold text-slate-900 dark:text-slate-100">
+          Something went wrong
+        </h1>
         <p className="mt-3 text-base text-slate-600 dark:text-slate-300">
-          The page hit an unexpected issue. Please try again or return to a safe route.
+          The page hit an unexpected issue. Please try again or return to a safe
+          route.
         </p>
 
         {error.digest ? (

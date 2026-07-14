@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun } from 'lucide-react';
 
-import { Button } from "@/components/Button";
+import { Button } from '@/components/Button';
 
 export function ThemeToggle() {
   return (
@@ -10,16 +10,16 @@ export function ThemeToggle() {
       type="button"
       onClick={() => {
         const root = document.documentElement;
-        const isDark = root.classList.contains("dark");
-        const next = isDark ? "light" : "dark";
+        const isDark = root.classList.contains('dark');
+        const next = isDark ? 'light' : 'dark';
 
         try {
-          window.localStorage.setItem("theme", next);
+          window.localStorage.setItem('theme', next);
         } catch {
           // ignore
         }
 
-        root.classList.toggle("dark", next === "dark");
+        root.classList.toggle('dark', next === 'dark');
       }}
       variant="icon"
       aria-label="Toggle theme"

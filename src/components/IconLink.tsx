@@ -1,7 +1,7 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
-import { ApiUiIcon } from "@/components/ApiUiIcon";
-import type { ReactNode } from "react";
+import { ApiUiIcon } from '@/components/ApiUiIcon';
+import type { ReactNode } from 'react';
 
 export function IconLink({
   href,
@@ -18,11 +18,11 @@ export function IconLink({
     <a
       href={href}
       className={cn(
-        "inline-flex items-center gap-2 text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100",
-        className,
+        'inline-flex items-center gap-2 text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100',
+        className
       )}
-      target={href.startsWith("http") ? "_blank" : undefined}
-      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+      target={href.startsWith('http') ? '_blank' : undefined}
+      rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
     >
       <ApiUiIcon
         name={iconName}

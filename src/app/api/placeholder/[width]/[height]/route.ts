@@ -1,14 +1,17 @@
-import type { NextRequest } from "next/server";
+import type { NextRequest } from 'next/server';
 
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 function svgResponse(svg: string, init: ResponseInit = {}) {
   const headers = new Headers(init.headers);
-  headers.set("Content-Type", "image/svg+xml; charset=utf-8");
-  if (!headers.has("Cache-Control")) {
-    headers.set("Cache-Control", "public, max-age=604800, stale-while-revalidate=86400");
+  headers.set('Content-Type', 'image/svg+xml; charset=utf-8');
+  if (!headers.has('Cache-Control')) {
+    headers.set(
+      'Cache-Control',
+      'public, max-age=604800, stale-while-revalidate=86400'
+    );
   }
-  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set('X-Content-Type-Options', 'nosniff');
 
   return new Response(svg, {
     ...init,
@@ -22,11 +25,11 @@ function clampInt(value: number, min: number, max: number) {
 
 function escapeXml(input: string) {
   return input
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&apos;");
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;');
 }
 
 export async function GET(
@@ -40,11 +43,12 @@ export async function GET(
   const h = clampInt(Number.isFinite(hRaw) ? hRaw : 300, 1, 2000);
 
   const url = new URL(request.url);
-  const text = (url.searchParams.get("text") || "").trim();
+  const text = (url.searchParams.get('text') || '').trim();
 
-  const label = text ? escapeXml(text.replace(/\+/g, " ")) : `${w}×${h}`;
+  const label = text ? escapeXml(text.replace(/\+/g, ' ')) : `${w}×${h}`;
 
-  const svg = `<?xml version="1.0" encoding="UTF-8"?>\n` +
+  const svg =
+    `<?xml version="1.0" encoding="UTF-8"?>\n` +
     `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}">\n` +
     `  <defs>\n` +
     `    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">\n` +

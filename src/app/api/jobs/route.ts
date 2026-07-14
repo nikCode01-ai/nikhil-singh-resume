@@ -1,11 +1,12 @@
-import { person, technicalSkills } from "@/lib/resume-data";
+import { person, technicalSkills } from '@/lib/resume-data';
 
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 function json(data: unknown, init: ResponseInit = {}) {
   const headers = new Headers(init.headers);
-  if (!headers.has("Content-Type")) headers.set("Content-Type", "application/json");
-  if (!headers.has("Cache-Control")) headers.set("Cache-Control", "no-store");
+  if (!headers.has('Content-Type'))
+    headers.set('Content-Type', 'application/json');
+  if (!headers.has('Cache-Control')) headers.set('Cache-Control', 'no-store');
 
   return new Response(JSON.stringify(data), {
     ...init,
@@ -38,14 +39,16 @@ function buildDefaultQuery() {
   ].filter(Boolean);
 
   const base = `${person.role} jobs`;
-  const skillsPart = keySkills.length ? ` (${keySkills.join(" OR ")})` : "";
+  const skillsPart = keySkills.length ? ` (${keySkills.join(' OR ')})` : '';
   return `${base}${skillsPart} India remote`;
 }
 
 function parseDateFromSnippet(snippet: string) {
   const text = snippet.trim();
 
-  const rel = text.match(/\b(\d{1,3})\s+(minute|minutes|hour|hours|day|days|week|weeks|month|months)\s+ago\b/i);
+  const rel = text.match(
+    /\b(\d{1,3})\s+(minute|minutes|hour|hours|day|days|week|weeks|month|months)\s+ago\b/i
+  );
   if (rel) {
     const amount = Number(rel[1]);
     const unit = rel[2].toLowerCase();
@@ -86,7 +89,7 @@ function parseDateFromSnippet(snippet: string) {
   }
 
   const monthName = text.match(
-    /\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(\d{1,2})(?:,)?\s+(\d{4})\b/i,
+    /\b(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+(\d{1,2})(?:,)?\s+(\d{4})\b/i
   );
   if (monthName) {
     const d = new Date(`${monthName[1]} ${monthName[2]}, ${monthName[3]}`);
@@ -96,24 +99,26 @@ function parseDateFromSnippet(snippet: string) {
   return null;
 }
 
-function parseDateFromMetatags(metatags: Array<Record<string, string>> | undefined) {
+function parseDateFromMetatags(
+  metatags: Array<Record<string, string>> | undefined
+) {
   const tag = metatags?.[0];
   if (!tag) return null;
 
   const candidates = [
-    "article:published_time",
-    "article:modified_time",
-    "og:updated_time",
-    "date",
-    "pubdate",
-    "publishdate",
-    "datepublished",
-    "dc.date",
-    "dc.date.issued",
-    "last-modified",
-    "lastmodified",
-    "modified",
-    "updated_time",
+    'article:published_time',
+    'article:modified_time',
+    'og:updated_time',
+    'date',
+    'pubdate',
+    'publishdate',
+    'datepublished',
+    'dc.date',
+    'dc.date.issued',
+    'last-modified',
+    'lastmodified',
+    'modified',
+    'updated_time',
   ];
 
   for (const key of candidates) {
@@ -137,56 +142,65 @@ export async function GET(request: Request) {
   if (!apiKey || !cx) {
     return json(
       {
-        error: "Google Custom Search is not configured",
+        error: 'Google Custom Search is not configured',
         missing: {
           GOOGLE_CSE_API_KEY: !apiKey,
           GOOGLE_CSE_CX: !cx,
         },
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 
   const url = new URL(request.url);
-  const q = (url.searchParams.get("q") || "").trim();
-  const location = (url.searchParams.get("location") || "").trim();
-  const role = (url.searchParams.get("role") || "").trim();
-  const days = Math.min(Math.max(Number(url.searchParams.get("days") || "30"), 1), 365);
+  const q = (url.searchParams.get('q') || '').trim();
+  const location = (url.searchParams.get('location') || '').trim();
+  const role = (url.searchParams.get('role') || '').trim();
+  const days = Math.min(
+    Math.max(Number(url.searchParams.get('days') || '30'), 1),
+    365
+  );
 
-  const num = Math.min(Math.max(Number(url.searchParams.get("num") || "10"), 1), 10);
-  const start = Math.min(Math.max(Number(url.searchParams.get("start") || "1"), 1), 91);
+  const num = Math.min(
+    Math.max(Number(url.searchParams.get('num') || '10'), 1),
+    10
+  );
+  const start = Math.min(
+    Math.max(Number(url.searchParams.get('start') || '1'), 1),
+    91
+  );
 
   const baseQuery = q || buildDefaultQuery();
-  const assembled = [baseQuery, role, location].filter(Boolean).join(" ");
+  const assembled = [baseQuery, role, location].filter(Boolean).join(' ');
   const finalQuery = `${assembled} vacancy OR hiring OR opening`;
 
-  const upstreamUrl = new URL("https://www.googleapis.com/customsearch/v1");
-  upstreamUrl.searchParams.set("key", apiKey);
-  upstreamUrl.searchParams.set("cx", cx);
-  upstreamUrl.searchParams.set("q", finalQuery);
-  upstreamUrl.searchParams.set("num", String(num));
-  upstreamUrl.searchParams.set("start", String(start));
-  upstreamUrl.searchParams.set("hl", "en");
-  upstreamUrl.searchParams.set("gl", "in");
-  upstreamUrl.searchParams.set("dateRestrict", `d${days}`);
+  const upstreamUrl = new URL('https://www.googleapis.com/customsearch/v1');
+  upstreamUrl.searchParams.set('key', apiKey);
+  upstreamUrl.searchParams.set('cx', cx);
+  upstreamUrl.searchParams.set('q', finalQuery);
+  upstreamUrl.searchParams.set('num', String(num));
+  upstreamUrl.searchParams.set('start', String(start));
+  upstreamUrl.searchParams.set('hl', 'en');
+  upstreamUrl.searchParams.set('gl', 'in');
+  upstreamUrl.searchParams.set('dateRestrict', `d${days}`);
 
   const upstream = await fetch(upstreamUrl.toString(), {
-    method: "GET",
+    method: 'GET',
     headers: {
-      Accept: "application/json",
+      Accept: 'application/json',
     },
-    cache: "no-store",
+    cache: 'no-store',
   });
 
   if (!upstream.ok) {
-    const text = await upstream.text().catch(() => "");
+    const text = await upstream.text().catch(() => '');
     return json(
       {
-        error: "Google Custom Search request failed",
+        error: 'Google Custom Search request failed',
         status: upstream.status,
         body: text.slice(0, 2000),
       },
-      { status: 502 },
+      { status: 502 }
     );
   }
 
@@ -194,14 +208,18 @@ export async function GET(request: Request) {
   try {
     data = (await upstream.json()) as CseResponse;
   } catch {
-    return json({ error: "Google Custom Search returned invalid JSON" }, { status: 502 });
+    return json(
+      { error: 'Google Custom Search returned invalid JSON' },
+      { status: 502 }
+    );
   }
 
   const items = (data.items ?? []).map((item) => {
-    const title = typeof item.title === "string" ? item.title : "";
-    const link = typeof item.link === "string" ? item.link : "";
-    const displayLink = typeof item.displayLink === "string" ? item.displayLink : "";
-    const snippet = typeof item.snippet === "string" ? item.snippet : "";
+    const title = typeof item.title === 'string' ? item.title : '';
+    const link = typeof item.link === 'string' ? item.link : '';
+    const displayLink =
+      typeof item.displayLink === 'string' ? item.displayLink : '';
+    const snippet = typeof item.snippet === 'string' ? item.snippet : '';
 
     const fromMeta = parseDateFromMetatags(item.pagemap?.metatags);
     const fromSnippet = snippet ? parseDateFromSnippet(snippet) : null;
