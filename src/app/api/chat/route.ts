@@ -212,7 +212,10 @@ async function handleOpenAIWithTools(
     });
 
     if (!upstream.ok) {
-      throw new Error('AI provider request failed');
+      const errorBody = await upstream.text().catch(() => 'unknown');
+      throw new Error(
+        `AI provider request failed (${upstream.status}): ${errorBody.slice(0, 200)}`
+      );
     }
 
     const data = (await upstream.json()) as {
@@ -318,7 +321,10 @@ async function handleGeminiWithTools(
     });
 
     if (!upstream.ok) {
-      throw new Error('AI provider request failed');
+      const errorBody = await upstream.text().catch(() => 'unknown');
+      throw new Error(
+        `Gemini request failed (${upstream.status}): ${errorBody.slice(0, 200)}`
+      );
     }
 
     const data = (await upstream.json()) as {
@@ -478,36 +484,57 @@ export async function POST(request: Request) {
   }
 
   try {
+    const errors: string[] = [];
+
     if (geminiKey) {
-      const reply = await handleGeminiWithTools(
-        messages,
-        geminiKey,
-        buildSystemPrompt()
-      );
-      return json({ reply });
+      try {
+        const reply = await handleGeminiWithTools(
+          messages,
+          geminiKey,
+          buildSystemPrompt()
+        );
+        return json({ reply });
+      } catch (e) {
+        errors.push(`Gemini: ${e instanceof Error ? e.message : 'unknown'}`);
+      }
     }
 
     if (groqKey) {
-      const groqMessages: OpenAIChatMessage[] = [
-        { role: 'system', content: buildSystemPrompt() },
-        ...messages,
-      ];
-      const reply = await handleOpenAIWithTools(
-        groqMessages,
-        groqKey,
-        'https://api.groq.com/openai/v1',
-        process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
-      );
-      return json({ reply });
+      try {
+        const groqMessages: OpenAIChatMessage[] = [
+          { role: 'system', content: buildSystemPrompt() },
+          ...messages,
+        ];
+        const reply = await handleOpenAIWithTools(
+          groqMessages,
+          groqKey,
+          'https://api.groq.com/openai/v1',
+          process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+        );
+        return json({ reply });
+      } catch (e) {
+        errors.push(`Groq: ${e instanceof Error ? e.message : 'unknown'}`);
+      }
     }
 
     if (openAIKey) {
-      const openAIMessages: OpenAIChatMessage[] = [
-        { role: 'system', content: buildSystemPrompt() },
-        ...messages,
-      ];
-      const reply = await handleOpenAIWithTools(openAIMessages, openAIKey);
-      return json({ reply });
+      try {
+        const openAIMessages: OpenAIChatMessage[] = [
+          { role: 'system', content: buildSystemPrompt() },
+          ...messages,
+        ];
+        const reply = await handleOpenAIWithTools(openAIMessages, openAIKey);
+        return json({ reply });
+      } catch (e) {
+        errors.push(`OpenAI: ${e instanceof Error ? e.message : 'unknown'}`);
+      }
+    }
+
+    if (errors.length > 0) {
+      return json(
+        { error: `All AI providers failed: ${errors.join('; ')}` },
+        { status: 500 }
+      );
     }
 
     return json({ error: 'No AI API key is configured' }, { status: 500 });
