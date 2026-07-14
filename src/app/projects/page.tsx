@@ -35,12 +35,12 @@ export default function ProjectsPage() {
     <div className="relative">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-24 h-72 bg-gradient-to-b from-amber-50 to-transparent dark:from-amber-950/30"
+        className="pointer-events-none absolute inset-x-0 -top-24 h-72 bg-gradient-to-b from-brand-green/5 to-transparent dark:from-brand-yellow/5"
       />
       <Container>
         <div className="relative py-10 motion-safe:animate-fade-in sm:py-14">
           <header className="space-y-3">
-            <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
+            <p className="text-sm font-semibold text-brand-green dark:text-brand-yellow">
               Portfolio
             </p>
             <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl">
@@ -92,7 +92,7 @@ export default function ProjectsPage() {
                   </p>
                 </div>
                 <Trophy
-                  className="h-5 w-5 text-amber-600 dark:text-amber-400"
+                  className="h-5 w-5 text-brand-yellow"
                   aria-hidden="true"
                 />
               </div>

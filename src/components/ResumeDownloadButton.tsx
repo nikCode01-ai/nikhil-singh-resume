@@ -150,13 +150,13 @@ export function ResumeDownloadButton({ variant = 'hero', label }: Props) {
             className="absolute inset-0 bg-black/60"
           />
 
-          <div className="relative mx-auto mt-24 w-[92%] max-w-lg rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-black/10">
+          <div className="relative mx-auto mt-24 w-[92%] max-w-lg rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-2xl ring-1 ring-black/10 dark:ring-white/10">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h3 className="text-xl font-bold text-slate-900">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">
                   Choose a Resume Template
                 </h3>
-                <p className="mt-1 text-sm text-slate-600">
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
                   Select a template to preview, then download as PDF or DOCX.
                 </p>
               </div>
@@ -164,7 +164,7 @@ export function ResumeDownloadButton({ variant = 'hero', label }: Props) {
                 type="button"
                 onClick={close}
                 variant="icon"
-                className="rounded-full bg-slate-100 text-slate-700 shadow-sm hover:bg-slate-200"
+                className="rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm hover:bg-slate-200 dark:hover:bg-slate-700"
                 aria-label="Close"
               >
                 <X className="h-5 w-5" />
@@ -172,7 +172,7 @@ export function ResumeDownloadButton({ variant = 'hero', label }: Props) {
             </div>
 
             {error ? (
-              <div className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+              <div className="mt-4 rounded-lg bg-red-50 dark:bg-red-900/30 px-4 py-3 text-sm text-red-700 dark:text-red-300">
                 {error}
               </div>
             ) : null}
@@ -190,22 +190,22 @@ export function ResumeDownloadButton({ variant = 'hero', label }: Props) {
                     onClick={() => setSelectedTemplate(t.id)}
                     className={`w-full rounded-xl border px-4 py-4 text-left transition-colors ${
                       isDisabled
-                        ? 'cursor-not-allowed border-slate-200 bg-slate-50'
+                        ? 'cursor-not-allowed border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800'
                         : isSelected
-                          ? 'border-brand-green/40 bg-brand-cream'
-                          : 'border-slate-200 bg-white hover:bg-slate-50'
+                          ? 'border-brand-green/40 bg-brand-cream dark:bg-brand-green/10'
+                          : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700'
                     }`}
                   >
                     <div className="flex items-center justify-between gap-4">
                       <div>
-                        <div className="text-sm font-semibold text-slate-900">
+                        <div className="text-sm font-semibold text-slate-900 dark:text-white">
                           {t.name}
                         </div>
-                        <div className="mt-1 text-sm text-slate-600">
+                        <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">
                           {t.description}
                         </div>
                       </div>
-                      <div className="text-sm font-semibold text-brand-green">
+                      <div className="text-sm font-semibold text-brand-green dark:text-brand-yellow">
                         {isSelected ? 'Selected' : 'Preview'}
                       </div>
                     </div>
@@ -214,16 +214,16 @@ export function ResumeDownloadButton({ variant = 'hero', label }: Props) {
               })}
             </div>
 
-            <div className="mt-5 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
-              <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-2">
-                <div className="text-sm font-semibold text-slate-900">
+            <div className="mt-5 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+              <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2">
+                <div className="text-sm font-semibold text-slate-900 dark:text-white">
                   Preview (PDF)
                 </div>
                 <a
                   href={previewUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-sm font-semibold text-brand-green"
+                  className="text-sm font-semibold text-brand-green dark:text-brand-yellow"
                 >
                   Open in new tab
                 </a>
@@ -231,7 +231,7 @@ export function ResumeDownloadButton({ variant = 'hero', label }: Props) {
               <iframe
                 title="Resume preview"
                 src={previewUrl}
-                className="h-[420px] w-full bg-white"
+                className="h-[420px] w-full bg-white dark:bg-slate-900"
               />
             </div>
 

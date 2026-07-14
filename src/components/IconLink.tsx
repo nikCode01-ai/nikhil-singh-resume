@@ -27,8 +27,8 @@ export function IconLink({
       <ApiUiIcon
         name={iconName}
         size={16}
-        color="amber-500"
-        darkColor="amber-400"
+        color="brand-yellow"
+        darkColor="brand-yellow"
         className="h-4 w-4"
       />
       <span>{children}</span>

@@ -3,6 +3,7 @@
 import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/Button';
+import { FadeIn } from '@/components/FadeIn';
 import { testimonials as testimonialsData } from '@/lib/resume-data';
 
 const testimonials = testimonialsData.map((t, index) => ({
@@ -48,7 +49,7 @@ export function Testimonials() {
       />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-14">
+        <FadeIn className="text-center mb-14">
           <p className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
             <span className="h-px w-8 bg-brand-green/20 dark:bg-brand-yellow/20" />
             <span className="text-brand-green dark:text-brand-yellow">
@@ -58,14 +59,14 @@ export function Testimonials() {
           </p>
           <h2
             id="testimonials-heading"
-            className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white"
+            className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white"
           >
             What Clients Say
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-base lg:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
             Real stories from clients who trusted me with their projects
           </p>
-        </div>
+        </FadeIn>
 
         <div className="relative max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">

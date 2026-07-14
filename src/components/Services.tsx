@@ -1,5 +1,6 @@
 import { ButtonLink } from '@/components/Button';
 import { ApiUiIcon } from '@/components/ApiUiIcon';
+import { FadeIn } from '@/components/FadeIn';
 import { coreCompetencies, services } from '@/lib/resume-data';
 import { cn } from '@/lib/utils';
 
@@ -114,7 +115,7 @@ export function Services({ variant = 'section' }: ServicesProps) {
       </div>
 
       <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={cn('text-center', isPage ? 'mb-16' : 'mb-14')}>
+        <FadeIn className={cn('text-center', isPage ? 'mb-16' : 'mb-14')}>
           <p className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
             <span className="h-px w-8 bg-brand-green/20 dark:bg-brand-yellow/20" />
             <span className="text-brand-green dark:text-brand-yellow">
@@ -156,7 +157,7 @@ export function Services({ variant = 'section' }: ServicesProps) {
               </ButtonLink>
             </div>
           )}
-        </div>
+        </FadeIn>
 
         {isPage ? (
           <div className="mb-16 grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -164,7 +165,7 @@ export function Services({ variant = 'section' }: ServicesProps) {
               <p className="text-sm font-semibold text-brand-green dark:text-brand-yellow">
                 Specialized focus
               </p>
-              <h3 className="mt-3 text-2xl font-bold text-slate-900 dark:text-white">
+              <h3 className="mt-3 text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
                 Built for high-stakes systems
               </h3>
               <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">
@@ -211,7 +212,7 @@ export function Services({ variant = 'section' }: ServicesProps) {
               <p className="text-sm font-semibold text-brand-yellow">
                 Delivery proof
               </p>
-              <h3 className="mt-3 text-2xl font-bold">
+              <h3 className="mt-3 text-xl sm:text-2xl font-bold">
                 Measured outcomes for modern teams
               </h3>
               <p className="mt-3 text-sm text-white/80">
@@ -305,7 +306,7 @@ export function Services({ variant = 'section' }: ServicesProps) {
               <p className="text-sm font-semibold text-brand-green dark:text-brand-yellow">
                 Delivery
               </p>
-              <h3 className="mt-3 text-2xl font-bold text-slate-900 dark:text-white">
+              <h3 className="mt-3 text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
                 How projects move
               </h3>
               <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">
@@ -338,7 +339,7 @@ export function Services({ variant = 'section' }: ServicesProps) {
               <p className="text-sm font-semibold text-brand-green dark:text-brand-yellow">
                 Engagement
               </p>
-              <h3 className="mt-3 text-2xl font-bold text-slate-900 dark:text-white">
+              <h3 className="mt-3 text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
                 Ways to work together
               </h3>
               <div className="mt-5 space-y-4">

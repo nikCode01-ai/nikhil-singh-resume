@@ -37,8 +37,8 @@ export function Hero() {
       >
         <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-brand-green/5 to-transparent blur-3xl" />
         <div className="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full bg-gradient-to-tr from-brand-yellow/5 to-transparent blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-slate-200/30 dark:border-white/3" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full border border-slate-200/20 dark:border-white/2" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-slate-200/30 dark:border-white/[0.03]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full border border-slate-200/20 dark:border-white/[0.02]" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
@@ -232,7 +232,7 @@ export function Hero() {
                 ].map((stat) => (
                   <div
                     key={stat.label}
-                    className="text-center p-3 rounded-xl bg-white/60 dark:bg-white/5 backdrop-blur-sm border border-slate-200/50 dark:border-white/8"
+                    className="text-center p-3 rounded-xl bg-white/60 dark:bg-white/5 backdrop-blur-sm border border-slate-200/50 dark:border-white/[0.08] transition-all duration-300 hover:bg-white dark:hover:bg-white/8 hover:shadow-sm"
                   >
                     <div className="text-xl sm:text-2xl font-extrabold text-brand-green dark:text-brand-yellow">
                       {stat.value}

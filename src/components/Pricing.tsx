@@ -86,8 +86,8 @@ export function Pricing() {
                 key={plan.name}
                 className={
                   plan.emphasized
-                    ? 'relative rounded-3xl bg-brand-yellow p-7 text-brand-green shadow-2xl ring-1 ring-black/10'
-                    : 'relative rounded-3xl bg-white/5 p-7 text-white shadow-xl ring-1 ring-white/10'
+                    ? 'relative rounded-3xl bg-brand-yellow p-7 text-brand-green shadow-2xl ring-1 ring-black/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_60px_rgba(244,180,0,0.3)]'
+                    : 'relative rounded-3xl bg-white/5 p-7 text-white shadow-xl ring-1 ring-white/10 transition-all duration-300 hover:-translate-y-1 hover:bg-white/8 hover:shadow-2xl'
                 }
               >
                 <div className="flex items-start justify-between gap-4">

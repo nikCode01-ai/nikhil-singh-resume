@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { ButtonLink } from '@/components/Button';
+import { FadeIn } from '@/components/FadeIn';
 
 const faqs = [
   {
@@ -122,7 +123,7 @@ export function FAQ() {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="text-center mb-14">
+        <FadeIn className="text-center mb-14">
           <p className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
             <span className="h-px w-8 bg-brand-green/20 dark:bg-brand-yellow/20" />
             <span className="text-brand-green dark:text-brand-yellow">FAQ</span>
@@ -130,7 +131,7 @@ export function FAQ() {
           </p>
           <h2
             id="faq-heading"
-            className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white"
+            className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white"
           >
             Questions?{' '}
             <span className="text-brand-green dark:text-brand-yellow">
@@ -141,7 +142,7 @@ export function FAQ() {
             Find answers to commonly asked questions about my services,
             experience, and work process.
           </p>
-        </div>
+        </FadeIn>
 
         <div className="max-w-4xl mx-auto">
           <div className="space-y-2.5">

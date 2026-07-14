@@ -15,6 +15,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { Button } from '@/components/Button';
+import { FadeIn } from '@/components/FadeIn';
 
 export function ContactSection() {
   const [formData, setFormData] = useState({
@@ -85,7 +86,7 @@ export function ContactSection() {
       aria-labelledby="contact-heading"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-14 text-center">
+        <FadeIn className="mb-14 text-center">
           <p className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
             <span className="h-px w-8 bg-brand-green/20 dark:bg-brand-yellow/20" />
             <span className="text-brand-green dark:text-brand-yellow">
@@ -103,7 +104,7 @@ export function ContactSection() {
             Have a project in mind? I&apos;d love to hear about it. Fill out the
             form and I&apos;ll get back to you within 24 hours.
           </p>
-        </div>
+        </FadeIn>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 max-w-6xl mx-auto">
           {/* Contact Information - Left Column */}

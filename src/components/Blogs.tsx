@@ -23,7 +23,7 @@ export function Blogs({ limit }: BlogsProps) {
               <span className="h-px w-8 bg-brand-green/20 dark:bg-brand-yellow/20" />
               News & Blogs
             </p>
-            <h2 className="mt-3 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white">
+            <h2 className="mt-3 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
               Latest{' '}
               <span className="text-brand-green dark:text-brand-yellow">
                 Insights
