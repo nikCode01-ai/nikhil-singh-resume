@@ -6,10 +6,47 @@ import { notFound } from 'next/navigation';
 
 import { Card } from '@/components/Card';
 import {
-  getProjectBySlug,
+  getProjectBySlug as getLocalProjectBySlug,
   getRelatedProjects,
   projectSlugs,
+  type ProjectSlug,
 } from '@/lib/project-slugs';
+import {
+  getProjectBySlug as getStrapiProjectBySlug,
+  getProjects,
+  type StrapiProject,
+} from '@/lib/strapi';
+
+function mapStrapiProject(p: StrapiProject): ProjectSlug {
+  return {
+    id: p.documentId || String(p.id),
+    slug: p.slug,
+    name: p.name,
+    category: (p.category as ProjectSlug['category']) || 'repository',
+    tags: p.tags || [],
+    description: p.description,
+    longDescription: p.longDescription || p.description,
+    image: p.image?.url || '',
+    url: p.url,
+    githubUrl: p.githubUrl,
+    demoUrl: p.demoUrl,
+    date: p.date || '',
+    tech: p.tech || [],
+    features: p.features || [],
+    impact: p.impact || [],
+    status: (p.status as ProjectSlug['status']) || 'completed',
+    client: p.client,
+    duration: p.duration,
+    teamSize: p.teamSize,
+    role: p.role || '',
+    methodologies: p.methodologies || [],
+    challenges: p.challenges || [],
+    solutions: p.solutions || [],
+    results: p.results || [],
+    testimonials: p.testimonials,
+    metrics: p.metrics,
+  };
+}
 import {
   ArrowLeft,
   ExternalLink,
@@ -35,17 +72,27 @@ type PageProps = {
   }>;
 };
 
-export function generateStaticParams() {
-  return projectSlugs.map((project) => ({
-    slug: project.slug,
-  }));
+export async function generateStaticParams() {
+  let allSlugs: string[] = [];
+  try {
+    const strapiProjects = await getProjects();
+    allSlugs = strapiProjects.map((p) => p.slug);
+  } catch {}
+  const localSlugs = projectSlugs.map((p) => p.slug);
+  const merged = [...new Set([...allSlugs, ...localSlugs])];
+  return merged.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  let project: ProjectSlug | null = null;
+  try {
+    const strapiProject = await getStrapiProjectBySlug(slug);
+    if (strapiProject) project = mapStrapiProject(strapiProject);
+  } catch {}
+  if (!project) project = getLocalProjectBySlug(slug) || null;
 
   if (!project) {
     return {
@@ -91,7 +138,12 @@ export async function generateMetadata({
 
 export default async function ProjectPage({ params }: PageProps) {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  let project: ProjectSlug | null = null;
+  try {
+    const strapiProject = await getStrapiProjectBySlug(slug);
+    if (strapiProject) project = mapStrapiProject(strapiProject);
+  } catch {}
+  if (!project) project = getLocalProjectBySlug(slug) || null;
 
   if (!project) {
     notFound();

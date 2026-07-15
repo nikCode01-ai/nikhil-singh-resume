@@ -1,10 +1,66 @@
 import { MetadataRoute } from 'next';
-import { projectSlugs } from '@/lib/project-slugs';
-import { blogPosts } from '@/lib/blog-posts';
+import { projectSlugs, type ProjectSlug } from '@/lib/project-slugs';
+import { blogPosts, type BlogPostBodyBlock } from '@/lib/blog-posts';
+import { getProjects } from '@/lib/strapi';
+import { getBlogs } from '@/lib/strapi';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app';
+
+  let allProjectSlugs = projectSlugs;
+  let allBlogPosts = blogPosts;
+
+  try {
+    const strapiProjects = await getProjects();
+    if (strapiProjects.length > 0) {
+      allProjectSlugs = strapiProjects.map((p) => ({
+        id: String(p.id),
+        slug: p.slug,
+        name: p.name,
+        category: (p.category || 'repository') as ProjectSlug['category'],
+        tags: p.tags || [],
+        description: p.description,
+        longDescription: p.longDescription || p.description,
+        image: p.image?.url || '',
+        url: p.url,
+        githubUrl: p.githubUrl,
+        demoUrl: p.demoUrl,
+        date: p.date || '',
+        tech: p.tech || [],
+        features: p.features || [],
+        impact: p.impact || [],
+        status: (p.status || 'completed') as ProjectSlug['status'],
+        client: p.client,
+        duration: p.duration,
+        teamSize: p.teamSize,
+        role: p.role || '',
+        methodologies: p.methodologies || [],
+        challenges: p.challenges || [],
+        solutions: p.solutions || [],
+        results: p.results || [],
+        testimonials: p.testimonials,
+        metrics: p.metrics,
+      }));
+    }
+  } catch {}
+
+  try {
+    const strapiBlogs = await getBlogs();
+    if (strapiBlogs.length > 0) {
+      allBlogPosts = strapiBlogs.map((b) => ({
+        slug: b.slug,
+        title: b.title,
+        excerpt: b.excerpt,
+        category: b.category,
+        image: b.image?.url || undefined,
+        date: b.createdAt,
+        readingTime: b.readingTime,
+        tags: b.tags || [],
+        body: (b.body || []) as BlogPostBodyBlock[],
+      }));
+    }
+  } catch {}
 
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -82,7 +138,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const projectPages: MetadataRoute.Sitemap = [
-    ...projectSlugs.map((project) => ({
+    ...allProjectSlugs.map((project) => ({
       url: `${baseUrl}/projects/${project.slug}`,
       lastModified: new Date(project.date || Date.now()),
       changeFrequency: 'monthly' as const,
@@ -90,7 +146,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ];
 
-  const blogPages: MetadataRoute.Sitemap = blogPosts.map((post) => ({
+  const blogPages: MetadataRoute.Sitemap = allBlogPosts.map((post) => ({
     url: `${baseUrl}/blogs/${post.slug}`,
     lastModified: new Date(post.date),
     changeFrequency: 'monthly',

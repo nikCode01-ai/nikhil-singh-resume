@@ -6,8 +6,23 @@ import Script from 'next/script';
 
 import { Badge } from '@/components/Badge';
 import { Container } from '@/components/Container';
-import { blogPosts, getBlogPostBySlug } from '@/lib/blog-posts';
+import { blogPosts, getBlogPostBySlug, type BlogPost } from '@/lib/blog-posts';
+import { getBlogBySlug, type StrapiBlog } from '@/lib/strapi';
 import { ArrowLeft } from 'lucide-react';
+
+function mapStrapiPost(post: StrapiBlog): BlogPost {
+  return {
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt,
+    category: post.category,
+    image: post.image?.url || undefined,
+    date: post.createdAt,
+    readingTime: post.readingTime,
+    tags: post.tags || [],
+    body: (post.body || []) as BlogPost['body'],
+  };
+}
 
 type PageProps = {
   params: Promise<{
@@ -15,15 +30,30 @@ type PageProps = {
   }>;
 };
 
-export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+export async function generateStaticParams() {
+  const { getBlogs } = await import('@/lib/strapi');
+  let allSlugs: string[] = [];
+  try {
+    const strapiBlogs = await getBlogs();
+    allSlugs = strapiBlogs.map((b) => b.slug);
+  } catch {
+    allSlugs = [];
+  }
+  const localSlugs = blogPosts.map((post) => post.slug);
+  const merged = [...new Set([...allSlugs, ...localSlugs])];
+  return merged.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  let post: BlogPost | null = null;
+  try {
+    const strapiPost = await getBlogBySlug(slug);
+    if (strapiPost) post = mapStrapiPost(strapiPost);
+  } catch {}
+  if (!post) post = getBlogPostBySlug(slug) || null;
 
   if (!post) {
     return {
@@ -67,7 +97,12 @@ export async function generateMetadata({
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  let post: BlogPost | null = null;
+  try {
+    const strapiPost = await getBlogBySlug(slug);
+    if (strapiPost) post = mapStrapiPost(strapiPost);
+  } catch {}
+  if (!post) post = getBlogPostBySlug(slug) || null;
 
   if (!post) {
     notFound();

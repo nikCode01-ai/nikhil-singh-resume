@@ -5,9 +5,41 @@ import { Card } from '@/components/Card';
 import { Container } from '@/components/Container';
 import { Section } from '@/components/Section';
 import { flagshipProject } from '@/lib/resume-data';
-import { projectSlugs } from '@/lib/project-slugs';
+import { projectSlugs, type ProjectSlug } from '@/lib/project-slugs';
+import { getProjects, type StrapiProject } from '@/lib/strapi';
 import { ExternalLink, Trophy, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+
+function mapStrapiProject(p: StrapiProject): ProjectSlug {
+  return {
+    id: p.documentId || String(p.id),
+    slug: p.slug,
+    name: p.name,
+    category: (p.category as ProjectSlug['category']) || 'repository',
+    tags: p.tags || [],
+    description: p.description,
+    longDescription: p.longDescription || p.description,
+    image: p.image?.url || '',
+    url: p.url,
+    githubUrl: p.githubUrl,
+    demoUrl: p.demoUrl,
+    date: p.date || '',
+    tech: p.tech || [],
+    features: p.features || [],
+    impact: p.impact || [],
+    status: (p.status as ProjectSlug['status']) || 'completed',
+    client: p.client,
+    duration: p.duration,
+    teamSize: p.teamSize,
+    role: p.role || '',
+    methodologies: p.methodologies || [],
+    challenges: p.challenges || [],
+    solutions: p.solutions || [],
+    results: p.results || [],
+    testimonials: p.testimonials,
+    metrics: p.metrics,
+  };
+}
 
 export const metadata: Metadata = {
   title: 'Projects',
@@ -30,7 +62,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  let allProjects: ProjectSlug[] = [...projectSlugs];
+  try {
+    const strapiProjects = await getProjects();
+    if (strapiProjects.length > 0) {
+      allProjects = strapiProjects.map(mapStrapiProject);
+    }
+  } catch {}
+
   return (
     <div className="relative">
       <div
@@ -138,7 +178,7 @@ export default function ProjectsPage() {
             subtitle="Detailed case studies and implementations."
           >
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {projectSlugs.slice(0, 3).map((project) => (
+              {allProjects.slice(0, 3).map((project) => (
                 <Card
                   key={project.id}
                   className="group overflow-hidden hover:shadow-lg transition-shadow"
@@ -207,7 +247,7 @@ export default function ProjectsPage() {
 
           <Section title="All Projects" subtitle="Complete portfolio of work.">
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {projectSlugs.slice(3).map((project) => (
+              {allProjects.slice(3).map((project) => (
                 <Card
                   key={project.id}
                   className="group overflow-hidden hover:shadow-lg transition-shadow"

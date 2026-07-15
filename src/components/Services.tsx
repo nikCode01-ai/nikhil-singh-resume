@@ -1,8 +1,17 @@
 import { ButtonLink } from '@/components/Button';
 import { ApiUiIcon } from '@/components/ApiUiIcon';
 import { FadeIn } from '@/components/FadeIn';
-import { coreCompetencies, services } from '@/lib/resume-data';
+import { coreCompetencies, services as localServices } from '@/lib/resume-data';
+import { getServices, type StrapiService } from '@/lib/strapi';
 import { cn } from '@/lib/utils';
+
+function mapStrapiService(s: StrapiService) {
+  return {
+    name: s.name,
+    description: s.description,
+    technologies: s.technologies || [],
+  };
+}
 
 const getIconForService = (serviceName: string): string => {
   const serviceLower = serviceName.toLowerCase();
@@ -99,8 +108,16 @@ const engagementModels = [
   },
 ];
 
-export function Services({ variant = 'section' }: ServicesProps) {
+export async function Services({ variant = 'section' }: ServicesProps) {
   const isPage = variant === 'page';
+
+  let serviceList = localServices;
+  try {
+    const strapiServices = await getServices();
+    if (strapiServices.length > 0) {
+      serviceList = strapiServices.map(mapStrapiService);
+    }
+  } catch {}
 
   return (
     <section
@@ -256,7 +273,7 @@ export function Services({ variant = 'section' }: ServicesProps) {
         ) : null}
 
         <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((service, index) => (
+          {serviceList.map((service, index) => (
             <div key={index} className="group relative card-premium p-6 sm:p-8">
               <span
                 className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-brand-green via-brand-yellow to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-t-2xl"
@@ -288,14 +305,19 @@ export function Services({ variant = 'section' }: ServicesProps) {
                 ))}
               </div>
 
-              <div className="mt-5 flex items-center gap-2 text-sm font-semibold text-brand-green dark:text-brand-yellow group-hover:gap-3 transition-all duration-300">
+              <ButtonLink
+                href="/services"
+                variant="ghost"
+                size="sm"
+                className="mt-5 gap-2 px-0 text-sm font-semibold text-brand-green dark:text-brand-yellow group-hover:gap-3"
+              >
                 Learn more
                 <ApiUiIcon
                   name="ArrowRight"
                   size={16}
                   className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
                 />
-              </div>
+              </ButtonLink>
             </div>
           ))}
         </div>

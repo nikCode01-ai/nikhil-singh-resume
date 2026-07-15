@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button, ButtonLink } from '@/components/Button';
 import { additionalProjects, person } from '@/lib/resume-data';
 import { projectSlugs } from '@/lib/project-slugs';
+import type { StrapiProject } from '@/lib/strapi';
 import {
   ExternalLink,
   Calendar,
@@ -19,7 +20,24 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 
-const allProjects = [
+const STRAPI_URL =
+  process.env.NEXT_PUBLIC_STRAPI_URL || 'https://nik-be.onrender.com';
+
+function mapStrapiProject(p: StrapiProject) {
+  return {
+    name: p.name,
+    description: p.description,
+    image: p.image?.url || undefined,
+    category: p.category || 'repository',
+    tags: (p.tags || []).slice(0, 2),
+    url: p.url || person.gitlabUrl,
+    href: `/projects/${p.slug}`,
+    date: p.date || '',
+    tech: (p.tech || []).slice(0, 3),
+  };
+}
+
+const localProjects = [
   ...projectSlugs.map((project) => ({
     name: project.name,
     description: project.description,
@@ -59,8 +77,22 @@ export function Projects() {
   const [showAll, setShowAll] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [allProjects, setAllProjects] = useState(localProjects);
   const sectionRef = useRef<HTMLElement | null>(null);
   const prevShowAllRef = useRef(showAll);
+
+  useEffect(() => {
+    fetch(
+      `${STRAPI_URL}/api/projects?pagination[pageSize]=100&sort=createdAt:desc`
+    )
+      .then((res) => res.json())
+      .then((json: { data?: StrapiProject[] }) => {
+        if (json.data && json.data.length > 0) {
+          setAllProjects(json.data.map(mapStrapiProject));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const filterCategory = activeCategory.toLowerCase().replace(' ', '-');
   const filteredProjects =

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { blogPosts } from '@/lib/blog-posts';
+import { getBlogs, type StrapiBlog } from '@/lib/strapi';
 import { ButtonLink } from '@/components/Button';
 import { ArrowUpRight, Clock, Tag } from 'lucide-react';
 
@@ -8,11 +9,38 @@ type BlogsProps = {
   limit?: number;
 };
 
-export function Blogs({ limit }: BlogsProps) {
-  const posts =
-    typeof limit === 'number' ? blogPosts.slice(0, limit) : blogPosts;
-  const showViewAllButton =
-    typeof limit === 'number' && blogPosts.length > limit;
+function mapBlog(post: StrapiBlog) {
+  return {
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt,
+    category: post.category,
+    image: post.image?.url || undefined,
+    readingTime: post.readingTime,
+    tags: post.tags || [],
+  };
+}
+
+export async function Blogs({ limit }: BlogsProps) {
+  let posts: ReturnType<typeof mapBlog>[];
+  try {
+    const strapiPosts = await getBlogs();
+    posts = strapiPosts.map(mapBlog);
+  } catch {
+    posts = blogPosts.map((p) => ({
+      slug: p.slug,
+      title: p.title,
+      excerpt: p.excerpt,
+      category: p.category,
+      image: p.image,
+      readingTime: p.readingTime,
+      tags: p.tags,
+    }));
+  }
+  const totalPosts = posts.length;
+  const displayPosts =
+    typeof limit === 'number' ? posts.slice(0, limit) : posts;
+  const showViewAllButton = typeof limit === 'number' && totalPosts > limit;
 
   return (
     <section className="bg-gradient-to-b from-white to-slate-50/50 dark:from-slate-950 dark:to-slate-900/50 section-padding">
@@ -43,7 +71,7 @@ export function Blogs({ limit }: BlogsProps) {
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-3">
-          {posts.map((post) => (
+          {displayPosts.map((post) => (
             <Link
               key={post.slug}
               href={`/blogs/${post.slug}`}
