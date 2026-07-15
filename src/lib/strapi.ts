@@ -52,7 +52,14 @@ export type StrapiBlog = {
   readingTime: string;
   tags: string[];
   body: Record<string, unknown>[];
-  image?: { url: string; alternativeText?: string };
+  featured_image?: {
+    url: string;
+    alternativeText?: string;
+    name?: string;
+    width?: number;
+    height?: number;
+    formats?: Record<string, { url: string }>;
+  };
   createdAt: string;
   updatedAt: string;
 };
@@ -106,12 +113,22 @@ export type StrapiService = {
 export async function getBlogs(): Promise<StrapiBlog[]> {
   try {
     const res = await fetchStrapi<StrapiBlog[]>(
-      '/blogs?pagination[pageSize]=100&sort=createdAt:desc',
+      '/blogs?pagination[pageSize]=100&sort=createdAt:desc&populate=featured_image',
       {
         next: { revalidate: 300 },
       }
     );
-    return res.data;
+    return res.data.map((blog) => ({
+      ...blog,
+      featured_image: blog.featured_image
+        ? {
+            ...blog.featured_image,
+            url: blog.featured_image.url?.startsWith('http')
+              ? blog.featured_image.url
+              : `${STRAPI_URL}${blog.featured_image.url}`,
+          }
+        : undefined,
+    }));
   } catch {
     return [];
   }
@@ -120,9 +137,16 @@ export async function getBlogs(): Promise<StrapiBlog[]> {
 export async function getBlogBySlug(slug: string): Promise<StrapiBlog | null> {
   try {
     const res = await fetchStrapi<StrapiBlog[]>(
-      `/blogs?filters[slug][$eq]=${slug}`
+      `/blogs?filters[slug][$eq]=${slug}&populate=featured_image`
     );
-    return res.data[0] || null;
+    const blog = res.data[0] || null;
+    if (
+      blog?.featured_image?.url &&
+      !blog.featured_image.url.startsWith('http')
+    ) {
+      blog.featured_image.url = `${STRAPI_URL}${blog.featured_image.url}`;
+    }
+    return blog;
   } catch {
     return null;
   }

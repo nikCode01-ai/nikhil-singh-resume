@@ -16,7 +16,7 @@ function mapStrapiPost(post: StrapiBlog): BlogPost {
     title: post.title,
     excerpt: post.excerpt,
     category: post.category,
-    image: post.image?.url || undefined,
+    image: post.featured_image?.url || undefined,
     date: post.createdAt,
     readingTime: post.readingTime,
     tags: post.tags || [],

@@ -53,7 +53,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         title: b.title,
         excerpt: b.excerpt,
         category: b.category,
-        image: b.image?.url || undefined,
+        image: b.featured_image?.url || undefined,
         date: b.createdAt,
         readingTime: b.readingTime,
         tags: b.tags || [],
