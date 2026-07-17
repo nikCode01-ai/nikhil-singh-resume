@@ -144,47 +144,79 @@ export default function DashboardPage() {
   const fetchPhaseData = useCallback(async () => {
     try {
       const res = await fetch('/api/phases');
+      if (!res.ok) throw new Error(`Phase API failed: ${res.status}`);
       const json = await res.json();
       setPhaseData(json);
       if (json.requirements) {
         setRequirements(json.requirements);
       }
-    } catch {
-      console.error('Failed to fetch phase data');
+    } catch (error) {
+      console.error('Failed to fetch phase data', error);
+      setPhaseData({
+        phases: [],
+        requirements: '',
+        summary: {
+          totalPhases: 0,
+          completed: 0,
+          inProgress: 0,
+          pending: 0,
+          overallProgress: 0,
+        },
+      });
     }
   }, []);
 
   const fetchDocData = useCallback(async () => {
     try {
       const res = await fetch('/api/dashboard');
+      if (!res.ok) throw new Error(`Dashboard API failed: ${res.status}`);
       const json = await res.json();
       setDocData(json);
-    } catch {
-      console.error('Failed to fetch doc data');
+    } catch (error) {
+      console.error('Failed to fetch doc data', error);
+      setDocData({
+        docs: [],
+        summary: {
+          totalFiles: 0,
+          passCount: 0,
+          errorCount: 0,
+          pendingCount: 0,
+          warnCount: 0,
+          overallProgress: 0,
+          timestamp: new Date().toISOString(),
+        },
+      });
     }
   }, []);
 
   const fetchMessages = useCallback(async () => {
     try {
       const res = await fetch('/api/messages');
+      if (!res.ok) throw new Error(`Messages API failed: ${res.status}`);
       const json = await res.json();
       setMessages(json.messages || []);
-    } catch {
-      console.error('Failed to fetch messages');
+    } catch (error) {
+      console.error('Failed to fetch messages', error);
+      setMessages([]);
     }
   }, []);
 
   const fetchAll = useCallback(async () => {
     setRefreshing(true);
-    await Promise.all([fetchPhaseData(), fetchDocData(), fetchMessages()]);
-    setLoading(false);
-    setRefreshing(false);
+    try {
+      await Promise.all([fetchPhaseData(), fetchDocData(), fetchMessages()]);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
   }, [fetchPhaseData, fetchDocData, fetchMessages]);
 
   useEffect(() => {
-    fetchAll();
+    void fetchAll();
     // Auto-refresh every 5 seconds for messages
-    const interval = setInterval(fetchMessages, 5000);
+    const interval = setInterval(() => {
+      void fetchMessages();
+    }, 5000);
     return () => clearInterval(interval);
   }, [fetchAll, fetchMessages]);
 
