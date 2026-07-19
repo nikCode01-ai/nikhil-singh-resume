@@ -6,12 +6,13 @@ const ALLOWED_COMMANDS: Record<string, string> = {
   lint: 'npm run lint',
   typecheck: 'npx tsc --noEmit',
   format: 'npm run format',
-  dev: 'npm run dev',
   'verify-doc':
     'python -X utf8 -c "import docx; doc=docx.Document(\'docs/कार्यकारी सारांश.docx\'); [print(p.text) for p in doc.paragraphs]"',
   'list-docs': 'dir /b docs',
   'check-build': 'npm run build 2>&1 | head -20',
 };
+
+const COMMAND_TIMEOUT_MS = 120_000;
 
 export const runtime = 'nodejs';
 
@@ -43,6 +44,12 @@ export async function GET(req: NextRequest) {
         env: { ...process.env, FORCE_COLOR: '0' },
       });
 
+      const timeout = setTimeout(() => {
+        child.kill('SIGTERM');
+        send('error', 'Command timed out');
+        controller.close();
+      }, COMMAND_TIMEOUT_MS);
+
       send('start', JSON.stringify({ cmd, command: ALLOWED_COMMANDS[cmd] }));
 
       child.stdout?.on('data', (chunk: Buffer) => {
@@ -54,11 +61,13 @@ export async function GET(req: NextRequest) {
       });
 
       child.on('close', (code) => {
+        clearTimeout(timeout);
         send('done', JSON.stringify({ code, success: code === 0 }));
         controller.close();
       });
 
       child.on('error', (err) => {
+        clearTimeout(timeout);
         send('error', err.message);
         controller.close();
       });

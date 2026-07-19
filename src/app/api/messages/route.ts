@@ -67,8 +67,9 @@ export async function GET() {
 
     return NextResponse.json({ messages });
   } catch (error) {
+    console.error('Failed to read messages:', error);
     return NextResponse.json(
-      { error: 'Failed to read messages', details: String(error) },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
@@ -76,12 +77,29 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const authHeader = req.headers.get('authorization');
+    const adminToken = process.env.DASHBOARD_AUTH_TOKEN;
+
+    if (!adminToken || authHeader !== `Bearer ${adminToken}`) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
     const { from, content, type = 'reply' } = body;
 
-    if (!content) {
+    if (!content || typeof content !== 'string') {
       return NextResponse.json(
         { error: 'Content is required' },
+        { status: 400 }
+      );
+    }
+
+    if (content.length > 10000) {
+      return NextResponse.json(
+        { error: 'Content too long' },
         { status: 400 }
       );
     }
@@ -107,8 +125,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, message: newMessage });
   } catch (error) {
+    console.error('Failed to save message:', error);
     return NextResponse.json(
-      { error: 'Failed to save message', details: String(error) },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }

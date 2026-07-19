@@ -128,8 +128,9 @@ export async function GET() {
       },
     });
   } catch (error) {
+    console.error('Failed to scan docs directory:', error);
     return NextResponse.json(
-      { error: 'Failed to scan docs directory', details: String(error) },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }

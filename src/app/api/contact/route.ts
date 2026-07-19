@@ -1,14 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { name, email, message } = await request.json();
 
-    console.log('Received contact form submission:', { name, email, message });
-
-    if (!name || !email || !message) {
+    if (
+      !name ||
+      typeof name !== 'string' ||
+      !email ||
+      typeof email !== 'string' ||
+      !message ||
+      typeof message !== 'string'
+    ) {
       return NextResponse.json(
         { error: 'Name, email, and message are required' },
+        { status: 400 }
+      );
+    }
+
+    if (name.length > 100 || email.length > 254 || message.length > 5000) {
+      return NextResponse.json(
+        { error: 'Input too long' },
+        { status: 400 }
+      );
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
         { status: 400 }
       );
     }
@@ -19,25 +48,20 @@ export async function POST(request: NextRequest) {
     const twilioWhatsAppFrom = process.env.TWILIO_WHATSAPP_FROM;
     const myWhatsAppTo = process.env.WHATSAPP_TO;
 
-    console.log('Environment check:', {
-      hasResendKey: !!resendApiKey,
-      resendKeyPrefix: resendApiKey?.substring(0, 10),
-      hasTwilio: !!twilioAccountSid,
-    });
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeMessage = escapeHtml(message).replace(/\n/g, '<br>');
 
     const emailSubject = `Portfolio Contact: ${name}`;
     const emailHtml = `
       <h2>New Contact Form Submission</h2>
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Name:</strong> ${safeName}</p>
+      <p><strong>Email:</strong> ${safeEmail}</p>
       <p><strong>Message:</strong></p>
-      <p>${message.replace(/\n/g, '<br>')}</p>
+      <p>${safeMessage}</p>
     `;
 
-    // Send Email using Resend
     if (resendApiKey) {
-      console.log('Attempting to send email with Resend...');
-
       const emailResponse = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -53,19 +77,14 @@ export async function POST(request: NextRequest) {
         }),
       });
 
-      const emailResult = await emailResponse.text();
-      console.log('Resend response:', emailResponse.status, emailResult);
-
-      if (emailResponse.ok) {
-        console.log('Email sent successfully');
-      } else {
-        console.error('Resend error:', emailResult);
+      if (!emailResponse.ok) {
+        console.error(
+          'Resend email failed:',
+          emailResponse.status
+        );
       }
-    } else {
-      console.log('No RESEND_API_KEY found');
     }
 
-    // Send WhatsApp notification using Twilio
     if (
       twilioAccountSid &&
       twilioAuthToken &&
@@ -97,8 +116,7 @@ export async function POST(request: NextRequest) {
       { success: true, message: 'Message sent successfully!' },
       { status: 200 }
     );
-  } catch (error) {
-    console.error('Contact form error:', error);
+  } catch {
     return NextResponse.json(
       { error: 'Failed to send message' },
       { status: 500 }
