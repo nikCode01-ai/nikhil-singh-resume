@@ -17,7 +17,7 @@ services:
       - key: DATABASE_CLIENT
         value: postgres
       - key: DATABASE_URL
-        value: postgresql://postgres:T%40_p%2Fp6hSiS2bg7@db.ujqsoynvhcxilgnyvrzb.supabase.co:5432/postgres
+        sync: false
       - key: DATABASE_SSL
         value: 'true'
       - key: APP_KEYS

@@ -45,6 +45,10 @@
     "@codemirror/state": "6.7.0",
     "@codemirror/view": "6.43.5"
   },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": ["prettier --write", "prettier --check"],
+    "*.{json,md,css,yml,yaml}": ["prettier --write"]
+  },
   "strapi": {
     "uuid": "3d81613f-0cca-4dc1-85b6-69febab6f531",
     "installId": "27bfd54e1f28ef5546203937636b0e07ecb8a884b52dd4dcf7ef90ef409230c4"

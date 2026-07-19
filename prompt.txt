@@ -1,4 +1,0 @@
-https://nik-be.onrender.com/admin/plugins/upload?sort=createdAt:DESC&page=1&pageSize=10
-
-
-strapi m ye page open ni ho raha h 
