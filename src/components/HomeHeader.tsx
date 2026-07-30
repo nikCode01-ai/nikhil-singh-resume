@@ -11,7 +11,6 @@ import { person } from '@/lib/resume-data';
 
 const navItems = [
   { href: '/', label: 'Home' },
-  { href: '/dashboard', label: 'Dashboard' },
   { href: '/services', label: 'Services' },
   { href: '/about', label: 'About' },
   { href: '/price', label: 'Price' },
