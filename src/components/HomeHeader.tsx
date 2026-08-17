@@ -8,6 +8,7 @@ import { X } from 'lucide-react';
 import { Button, ButtonLink } from '@/components/Button';
 import { cn } from '@/lib/utils';
 import { person } from '@/lib/resume-data';
+import Image from 'next/image';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -72,8 +73,14 @@ export function HomeHeader() {
               className="flex items-center gap-3 group"
               aria-label={`${person.name} - Home`}
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-green font-bold text-white text-sm transition-all duration-300 group-hover:shadow-glow-green group-hover:scale-105 dark:bg-brand-yellow dark:text-brand-green">
-                {initials}
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl overflow-hidden transition-all duration-300 group-hover:shadow-glow-green group-hover:scale-105">
+                <Image
+                  src="/images/nik_profile.jpeg"
+                  width={40}
+                  height={40}
+                  className="h-full w-full object-cover"
+                  alt={person.name}
+                />
               </div>
               <div className="text-base font-bold tracking-tight text-slate-900 dark:text-white transition-colors group-hover:text-brand-green dark:group-hover:text-brand-yellow">
                 {person.name.split(' ')[0]}

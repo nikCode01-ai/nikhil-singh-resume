@@ -35,7 +35,9 @@ export type BlogPost = {
   body: BlogPostBodyBlock[];
 };
 
-export const blogPosts: BlogPost[] = [
+import generatedBlogsData from './generated-blogs.json';
+
+const hardcodedPosts: BlogPost[] = [
   {
     slug: 'building-ai-powered-fullstack-apps-nextjs-nodejs',
     title:
@@ -1056,6 +1058,11 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
+];
+
+export const blogPosts: BlogPost[] = [
+  ...hardcodedPosts,
+  ...(generatedBlogsData as BlogPost[]),
 ];
 
 export function getBlogPostBySlug(slug: string) {

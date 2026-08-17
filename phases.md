@@ -26,7 +26,7 @@
 - AI response chat bubbles mein dikhega
 - Loading mein typing indicator
 
-### Status: ✅ In Progress
+### Status: ✅ Done
 
 ---
 
@@ -64,7 +64,7 @@
 - `title`, `excerpt`, `category`, `tags`, `readingTime`
 - `body` blocks — headings, paragraphs, lists (existing format match)
 
-### Status: ⏳ Pending
+### Status: ✅ Done
 
 ---
 

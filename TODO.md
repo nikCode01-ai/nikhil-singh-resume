@@ -11,7 +11,7 @@
 - Frontend pushed to Vercel: https://nikhilsingh-eight.vercel.app
 - Supabase PostgreSQL connected and working
 
-### BROKEN - Content Manager not opening (CodeMirror crash)
+### DONE - Content Manager CodeMirror fix
 
 - Strapi admin Content Manager pages crash when opening blog entries
 - Known bug: @codemirror/state@6.7.1 has broken instanceof check

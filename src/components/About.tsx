@@ -31,6 +31,7 @@ import {
 import { ResumeDownloadButton } from '@/components/ResumeDownloadButton';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
 import { ButtonLink } from '@/components/Button';
+import Image from 'next/image';
 
 const statistics = [
   { icon: Code, value: '30+', label: 'Production Systems' },
@@ -53,15 +54,14 @@ export function About() {
           <div className="relative order-2 lg:order-1">
             <div className="relative mx-auto flex h-[300px] w-[300px] sm:h-[360px] sm:w-[360px] items-center justify-center">
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-green to-brand-greenDark dark:from-brand-yellow dark:to-brand-yellow/70 p-[3px]">
-                <div className="h-full w-full rounded-full bg-white dark:bg-slate-900 flex items-center justify-center">
-                  <span className="text-5xl sm:text-6xl font-extrabold text-brand-green dark:text-brand-yellow">
-                    {person.name
-                      .split(' ')
-                      .filter(Boolean)
-                      .slice(0, 2)
-                      .map((n) => n[0])
-                      .join('')}
-                  </span>
+                <div className="h-full w-full rounded-full bg-white dark:bg-slate-900 flex items-center justify-center overflow-hidden">
+                  <Image
+                    src="/images/nik_profile.jpeg"
+                    width={360}
+                    height={360}
+                    className="h-full w-full rounded-full object-cover"
+                    alt={person.name}
+                  />
                 </div>
               </div>
 

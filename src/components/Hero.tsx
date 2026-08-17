@@ -7,6 +7,7 @@ import { ApiUiIcon } from '@/components/ApiUiIcon';
 import { ApiAvatar } from '@/components/ApiAvatar';
 import { cn } from '@/lib/utils';
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 const summaryLines =
   professionalSummary
@@ -186,11 +187,13 @@ export function Hero() {
               <div className="relative mx-auto w-[280px] h-[280px] sm:w-[340px] sm:h-[340px] lg:w-[380px] lg:h-[380px]">
                 <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-green to-brand-greenDark dark:from-brand-yellow dark:to-brand-yellow/70 p-1 animate-glow">
                   <div className="h-full w-full rounded-full overflow-hidden bg-white dark:bg-slate-900 p-1">
-                    <ApiAvatar
-                      name={person.name}
-                      size={380}
+                    <Image
+                      src="/images/nik_profile.jpeg"
+                      width={380}
+                      height={380}
                       className="h-full w-full rounded-full object-cover"
                       alt={`${person.name} - ${person.role}`}
+                      priority
                     />
                   </div>
                 </div>
