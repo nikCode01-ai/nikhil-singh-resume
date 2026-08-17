@@ -55,12 +55,12 @@ export default function ContactPage() {
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-24 h-72 bg-gradient-to-b from-brand-green/5 to-transparent dark:from-brand-yellow/5"
+        className="pointer-events-none absolute inset-x-0 -top-24 h-72 bg-gradient-to-b from-brand-green/5 to-transparent dark:from-emerald-500/5"
       />
       <Container>
         <div className="relative py-10 motion-safe:animate-fade-in sm:py-14">
           <header className="space-y-3">
-            <p className="text-sm font-semibold text-brand-green dark:text-brand-yellow">
+            <p className="text-sm font-semibold text-brand-green dark:text-emerald-400">
               Contact
             </p>
             <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl">
@@ -84,7 +84,7 @@ export default function ContactPage() {
                         name="MapPin"
                         size={16}
                         color="brand-green"
-                        darkColor="brand-yellow"
+                        darkColor="brand-greenLight"
                         className="h-4 w-4"
                       />
                       <span>{person.location}</span>
@@ -96,7 +96,7 @@ export default function ContactPage() {
                         name="Clock"
                         size={16}
                         color="brand-green"
-                        darkColor="brand-yellow"
+                        darkColor="brand-greenLight"
                         className="h-4 w-4"
                       />
                       <span>{person.timezone}</span>

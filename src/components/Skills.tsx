@@ -209,11 +209,11 @@ export function Skills() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-14 text-center">
           <p className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
-            <span className="h-px w-8 bg-brand-green/20 dark:bg-brand-yellow/20" />
-            <span className="text-brand-green dark:text-brand-yellow">
+            <span className="h-px w-8 bg-brand-green/20 dark:bg-emerald-500/20" />
+            <span className="text-brand-green dark:text-emerald-400">
               Skills
             </span>
-            <span className="h-px w-8 bg-brand-green/20 dark:bg-brand-yellow/20" />
+            <span className="h-px w-8 bg-brand-green/20 dark:bg-emerald-500/20" />
           </p>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             Technical Skills & Tools
@@ -282,7 +282,7 @@ export function Skills() {
                 className="group flex w-full max-w-[190px] flex-col card-premium p-4"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 dark:bg-white/5 ring-1 ring-slate-200/50 dark:ring-white/8 transition-all duration-300 group-hover:scale-110 group-hover:ring-brand-green/20 dark:group-hover:ring-brand-yellow/20">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 dark:bg-white/5 ring-1 ring-slate-200/50 dark:ring-white/8 transition-all duration-300 group-hover:scale-110 group-hover:ring-brand-green/20 dark:group-hover:ring-emerald-500/30">
                     {logoSrc ? (
                       <Image
                         src={logoSrc}
@@ -296,7 +296,7 @@ export function Skills() {
                         name={fallbackIconName}
                         size={22}
                         color="brand-green"
-                        darkColor="brand-yellow"
+                        darkColor="brand-greenLight"
                         className="h-[22px] w-[22px]"
                         decorative
                       />
@@ -327,7 +327,7 @@ export function Skills() {
                   aria-valuemax={100}
                 >
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-brand-green to-brand-yellow transition-all duration-700 ease-out"
+                    className="h-full rounded-full bg-gradient-to-r from-brand-green to-emerald-400 transition-all duration-700 ease-out"
                     style={{ width: `${tool.proficiency}%` }}
                   />
                 </div>
@@ -373,17 +373,17 @@ export function Skills() {
             { icon: 'Award', value: 4, suffix: '+', label: 'Years Experience' },
           ].map((stat) => (
             <div key={stat.label} className="card-premium p-6 text-center">
-              <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-green/8 dark:bg-brand-yellow/8">
+              <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-green/8 dark:bg-emerald-500/10">
                 <ApiUiIcon
                   name={stat.icon}
                   size={22}
                   color="brand-green"
-                  darkColor="brand-yellow"
+                  darkColor="brand-greenLight"
                   className="h-5 w-5"
                   decorative
                 />
               </div>
-              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-brand-green dark:text-brand-yellow">
+              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-brand-green dark:text-brand-greenLight">
                 <AnimatedCounter to={stat.value} suffix={stat.suffix} />
               </div>
               <div className="mt-1 text-sm font-medium text-slate-600 dark:text-slate-300">

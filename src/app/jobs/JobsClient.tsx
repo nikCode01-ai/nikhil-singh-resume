@@ -455,13 +455,13 @@ export function JobsClient() {
     <div className="relative">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-24 h-72 bg-gradient-to-b from-brand-yellow/10 via-brand-cream to-transparent dark:from-brand-greenDark/40"
+        className="pointer-events-none absolute inset-x-0 -top-24 h-72 bg-gradient-to-b from-brand-green/10 via-brand-cream/30 to-transparent dark:from-brand-greenDark/40"
       />
 
       <Container className="max-w-7xl">
         <div className="relative py-10 motion-safe:animate-fade-in sm:py-14">
           <header className="space-y-3">
-            <p className="text-sm font-semibold text-brand-green dark:text-brand-yellow">
+            <p className="text-sm font-semibold text-brand-green dark:text-emerald-400">
               Opportunities
             </p>
             <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl">
@@ -494,7 +494,7 @@ export function JobsClient() {
                       setMinSalaryLpa(0);
                       setStart(1);
                     }}
-                    className="text-xs font-semibold text-brand-green hover:text-brand-greenDark dark:text-brand-yellow dark:hover:text-brand-yellow/80"
+                    className="text-xs font-semibold text-brand-green hover:text-brand-greenDark dark:text-emerald-400 dark:hover:text-emerald-300"
                   >
                     Clear
                   </button>
@@ -525,7 +525,7 @@ export function JobsClient() {
                                   });
                                   setStart(1);
                                 }}
-                                className="h-4 w-4 rounded border-slate-300 text-brand-green focus:ring-brand-yellow/40 dark:border-slate-700"
+                                className="h-4 w-4 rounded border-slate-300 text-brand-green focus:ring-brand-green/30 dark:border-slate-700"
                               />
                               <span>{mode}</span>
                             </label>
@@ -558,7 +558,7 @@ export function JobsClient() {
                                 });
                                 setStart(1);
                               }}
-                              className="h-4 w-4 rounded border-slate-300 text-brand-green focus:ring-brand-yellow/40 dark:border-slate-700"
+                              className="h-4 w-4 rounded border-slate-300 text-brand-green focus:ring-brand-green/30 dark:border-slate-700"
                             />
                             <span className="inline-flex items-center gap-2">
                               <Globe
@@ -583,7 +583,7 @@ export function JobsClient() {
                           setStart(1);
                         }}
                         placeholder="e.g. careers.company.com"
-                        className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/30 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+                        className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
                       />
                     </label>
                   </div>
@@ -601,7 +601,7 @@ export function JobsClient() {
                           setStart(1);
                         }}
                         placeholder="e.g. TCS, Infosys"
-                        className="h-10 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/30 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+                        className="h-10 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
                       />
                     </div>
                   </div>
@@ -678,7 +678,7 @@ export function JobsClient() {
                                 });
                                 setStart(1);
                               }}
-                              className="h-4 w-4 rounded border-slate-300 text-brand-green focus:ring-brand-yellow/40 dark:border-slate-700"
+                              className="h-4 w-4 rounded border-slate-300 text-brand-green focus:ring-brand-green/30 dark:border-slate-700"
                             />
                             <span>{dept}</span>
                           </label>
@@ -697,7 +697,7 @@ export function JobsClient() {
                         setDays(Number(e.target.value));
                         setStart(1);
                       }}
-                      className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/30 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+                      className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
                     >
                       <option value={7}>Last 7 days</option>
                       <option value={14}>Last 14 days</option>
@@ -744,7 +744,7 @@ export function JobsClient() {
                         setStart(1);
                       }}
                       placeholder='e.g. "Next.js" "GenAI" "Fastify"'
-                      className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/30 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+                      className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
                     />
                   </label>
 
@@ -758,7 +758,7 @@ export function JobsClient() {
                         setRole(e.target.value);
                         setStart(1);
                       }}
-                      className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/30 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+                      className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
                     />
                   </label>
 
@@ -772,7 +772,7 @@ export function JobsClient() {
                         setLocation(e.target.value);
                         setStart(1);
                       }}
-                      className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/30 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+                      className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
                     />
                   </label>
 
@@ -805,7 +805,7 @@ export function JobsClient() {
                           onChange={(e) =>
                             setSort(e.target.value as SortOption)
                           }
-                          className="h-9 rounded-xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-900 shadow-sm outline-none transition focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/30 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+                          className="h-9 rounded-xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-900 shadow-sm outline-none transition focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
                         >
                           <option value="recommended">Recommended</option>
                           <option value="newest">Newest</option>
@@ -950,7 +950,7 @@ export function JobsClient() {
                                         href={item.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="block text-sm font-semibold leading-6 text-slate-900 hover:text-brand-greenDark dark:text-slate-100 dark:hover:text-brand-yellow"
+                                        className="block text-sm font-semibold leading-6 text-slate-900 hover:text-brand-greenDark dark:text-slate-100 dark:hover:text-brand-greenLight"
                                       >
                                         {finalTitle}
                                       </a>
@@ -983,7 +983,7 @@ export function JobsClient() {
                                       <Bookmark
                                         className={
                                           isSaved
-                                            ? 'h-4 w-4 fill-brand-yellow text-brand-green'
+                                            ? 'h-4 w-4 fill-brand-green text-brand-green dark:fill-emerald-400 dark:text-emerald-400'
                                             : 'h-4 w-4 text-slate-600 dark:text-slate-300'
                                         }
                                         aria-hidden="true"

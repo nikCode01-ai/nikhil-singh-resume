@@ -205,7 +205,7 @@ export function ResumeDownloadButton({ variant = 'hero', label }: Props) {
                           {t.description}
                         </div>
                       </div>
-                      <div className="text-sm font-semibold text-brand-green dark:text-brand-yellow">
+                      <div className="text-sm font-semibold text-brand-green dark:text-brand-greenLight">
                         {isSelected ? 'Selected' : 'Preview'}
                       </div>
                     </div>
@@ -223,7 +223,7 @@ export function ResumeDownloadButton({ variant = 'hero', label }: Props) {
                   href={previewUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-sm font-semibold text-brand-green dark:text-brand-yellow"
+                  className="text-sm font-semibold text-brand-green dark:text-brand-greenLight"
                 >
                   Open in new tab
                 </a>

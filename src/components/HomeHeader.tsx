@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 
 import { Button, ButtonLink } from '@/components/Button';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { cn } from '@/lib/utils';
 import { person } from '@/lib/resume-data';
 import Image from 'next/image';
@@ -46,21 +47,12 @@ export function HomeHeader() {
     };
   }, [open]);
 
-  const initials = useMemo(() => {
-    return person.name
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((n) => n[0])
-      .join('');
-  }, []);
-
   return (
     <header className="fixed top-0 z-50 w-full" role="banner">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-3">
         <nav
           className={cn(
-            'rounded-2xl transition-all duration-500 ease-out',
+            'relative z-50 rounded-2xl transition-all duration-500 ease-out',
             scrolled
               ? 'bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl shadow-navbar-scrolled ring-1 ring-black/5 dark:ring-white/8'
               : 'bg-white/40 dark:bg-slate-900/40 backdrop-blur-md ring-1 ring-black/3 dark:ring-white/5'
@@ -82,7 +74,7 @@ export function HomeHeader() {
                   alt={person.name}
                 />
               </div>
-              <div className="text-base font-bold tracking-tight text-slate-900 dark:text-white transition-colors group-hover:text-brand-green dark:group-hover:text-brand-yellow">
+              <div className="text-base font-bold tracking-tight text-slate-900 dark:text-white transition-colors group-hover:text-brand-green dark:group-hover:text-brand-greenLight">
                 {person.name.split(' ')[0]}
               </div>
             </Link>
@@ -98,9 +90,9 @@ export function HomeHeader() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'relative px-3 py-2 rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950',
+                      'relative px-3 py-2 rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950',
                       active
-                        ? 'text-brand-green dark:text-brand-yellow font-semibold bg-brand-green/8 dark:bg-brand-yellow/10'
+                        ? 'text-brand-green dark:text-emerald-400 font-semibold bg-brand-green/8 dark:bg-emerald-500/10'
                         : 'hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/60 dark:hover:bg-white/6'
                     )}
                     aria-current={active ? 'page' : undefined}
@@ -108,7 +100,7 @@ export function HomeHeader() {
                     {item.label}
                     {active && (
                       <span
-                        className="absolute bottom-0.5 left-3 right-3 h-0.5 rounded-full bg-brand-green dark:bg-brand-yellow"
+                        className="absolute bottom-0.5 left-3 right-3 h-0.5 rounded-full bg-brand-green dark:bg-emerald-400"
                         aria-hidden="true"
                       />
                     )}
@@ -118,6 +110,8 @@ export function HomeHeader() {
             </nav>
 
             <div className="flex items-center gap-2">
+              <ThemeToggle />
+
               <ButtonLink
                 href="/contact"
                 variant="primary"
@@ -165,10 +159,10 @@ export function HomeHeader() {
       </div>
 
       {open && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-40 lg:hidden">
           <button
             type="button"
-            aria-label="Close menu"
+            aria-label="Close menu backdrop"
             onClick={() => setOpen(false)}
             className="absolute inset-0 bg-black/40 backdrop-blur-sm focus-visible:outline-none"
           />
@@ -200,7 +194,7 @@ export function HomeHeader() {
                     className={cn(
                       'flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200',
                       active
-                        ? 'bg-brand-green/8 dark:bg-brand-yellow/10 text-brand-green dark:text-brand-yellow font-semibold'
+                        ? 'bg-brand-green/8 dark:bg-emerald-500/10 text-brand-green dark:text-emerald-400 font-semibold'
                         : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100/60 dark:hover:bg-white/6'
                     )}
                     style={{ animationDelay: `${index * 30}ms` }}
@@ -209,7 +203,7 @@ export function HomeHeader() {
                     <span>{item.label}</span>
                     {active && (
                       <span
-                        className="h-2 w-2 rounded-full bg-brand-green dark:bg-brand-yellow"
+                        className="h-2 w-2 rounded-full bg-brand-green dark:bg-emerald-400"
                         aria-hidden="true"
                       />
                     )}

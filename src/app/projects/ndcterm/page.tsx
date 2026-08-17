@@ -48,7 +48,7 @@ export default function NdcTermPage() {
     <div className="relative">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-24 h-72 bg-gradient-to-b from-brand-green/5 to-transparent dark:from-brand-yellow/5"
+        className="pointer-events-none absolute inset-x-0 -top-24 h-72 bg-gradient-to-b from-brand-green/5 to-transparent dark:from-emerald-500/5"
       />
       <Container>
         <div className="relative py-10 motion-safe:animate-fade-in sm:py-14">
@@ -57,7 +57,7 @@ export default function NdcTermPage() {
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               Back to Projects
             </ButtonLink>
-            <span className="inline-flex items-center gap-2 rounded-full border border-brand-green/20 bg-brand-green/5 px-3 py-1 text-xs font-semibold text-brand-green dark:border-brand-yellow/20 dark:bg-brand-yellow/5 dark:text-brand-yellow">
+            <span className="inline-flex items-center gap-2 rounded-full border border-brand-green/20 bg-brand-green/5 px-3 py-1 text-xs font-semibold text-brand-green dark:border-emerald-500/20 dark:bg-emerald-500/5 dark:text-emerald-300">
               <Terminal className="h-4 w-4" aria-hidden="true" />
               Flagship System
             </span>
@@ -72,13 +72,13 @@ export default function NdcTermPage() {
                 {flagshipProject.description}
               </p>
               <div className="flex flex-wrap gap-2">
-                <Badge className="border-brand-green/20 bg-brand-green/5 text-brand-green dark:border-brand-yellow/20 dark:bg-brand-yellow/5 dark:text-brand-yellow">
+                <Badge className="border-brand-green/20 bg-brand-green/5 text-brand-green dark:border-emerald-500/20 dark:bg-emerald-500/5 dark:text-emerald-300">
                   NDC Integrations
                 </Badge>
-                <Badge className="border-brand-green/20 bg-brand-green/5 text-brand-green dark:border-brand-yellow/20 dark:bg-brand-yellow/5 dark:text-brand-yellow">
+                <Badge className="border-brand-green/20 bg-brand-green/5 text-brand-green dark:border-emerald-500/20 dark:bg-emerald-500/5 dark:text-emerald-300">
                   Real-time
                 </Badge>
-                <Badge className="border-brand-green/20 bg-brand-green/5 text-brand-green dark:border-brand-yellow/20 dark:bg-brand-yellow/5 dark:text-brand-yellow">
+                <Badge className="border-brand-green/20 bg-brand-green/5 text-brand-green dark:border-emerald-500/20 dark:bg-emerald-500/5 dark:text-emerald-300">
                   WebSockets
                 </Badge>
               </div>
@@ -117,11 +117,11 @@ export default function NdcTermPage() {
                       <p className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
                         {title}
                       </p>
-                      <p className="mt-1 text-sm font-semibold text-brand-green dark:text-brand-yellow">
+                      <p className="mt-1 text-sm font-semibold text-brand-green dark:text-emerald-400">
                         {subtitle}
                       </p>
                     </div>
-                    <div className="rounded-xl border border-brand-green/20 bg-brand-green/5 p-2 text-brand-green dark:border-brand-yellow/20 dark:bg-brand-yellow/5 dark:text-brand-yellow">
+                    <div className="rounded-xl border border-brand-green/20 bg-brand-green/5 p-2 text-brand-green dark:border-emerald-500/20 dark:bg-emerald-500/5 dark:text-emerald-300">
                       <Icon className="h-5 w-5" aria-hidden="true" />
                     </div>
                   </div>

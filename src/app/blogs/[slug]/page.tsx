@@ -145,20 +145,20 @@ export default async function BlogPostPage({ params }: PageProps) {
       <div className="relative">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 -top-24 h-72 bg-gradient-to-b from-brand-green/5 to-transparent dark:from-brand-yellow/5"
+          className="pointer-events-none absolute inset-x-0 -top-24 h-72 bg-gradient-to-b from-brand-green/5 to-transparent dark:from-emerald-500/5"
         />
         <Container>
           <div className="relative py-10 motion-safe:animate-fade-in sm:py-14">
             <Link
               href="/blogs"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-brand-green hover:text-brand-greenDark dark:text-brand-yellow dark:hover:text-brand-yellow/80"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-brand-green hover:text-brand-greenDark dark:text-emerald-400 dark:hover:text-emerald-300"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               <span>Back to Blogs</span>
             </Link>
 
             <header className="mt-6 space-y-3">
-              <p className="text-sm font-semibold text-brand-green dark:text-brand-yellow">
+              <p className="text-sm font-semibold text-brand-green dark:text-emerald-400">
                 {post.category}
               </p>
               <h1 className="text-3xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
@@ -259,7 +259,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                   return (
                     <div
                       key={`${block.type}-${index}`}
-                      className="mt-8 rounded-xl border border-brand-green/20 bg-brand-green/5 p-6 dark:border-brand-yellow/20 dark:bg-brand-yellow/5"
+                      className="mt-8 rounded-xl border border-brand-green/20 bg-brand-green/5 p-6 dark:border-emerald-500/20 dark:bg-emerald-500/5"
                     >
                       {block.heading && (
                         <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3">
@@ -271,7 +271,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                           <li key={link.href}>
                             <Link
                               href={link.href}
-                              className="text-sm font-semibold text-brand-green hover:text-brand-greenDark dark:text-brand-yellow dark:hover:text-brand-yellow/80 underline underline-offset-2"
+                              className="text-sm font-semibold text-brand-green hover:text-brand-greenDark dark:text-emerald-400 dark:hover:text-emerald-300 underline underline-offset-2"
                             >
                               {link.label} →
                             </Link>

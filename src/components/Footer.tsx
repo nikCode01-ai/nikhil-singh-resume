@@ -14,196 +14,288 @@ import {
   Mail,
   MapPin,
   Send,
+  ArrowUpRight,
+  Sparkles,
+  CheckCircle2,
 } from 'lucide-react';
 
 export function Footer() {
   const [email, setEmail] = useState('');
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const handleNewsletterSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (!email) return;
+    setIsSubscribed(true);
     setEmail('');
+    setTimeout(() => setIsSubscribed(false), 4000);
   };
 
-  const navigationLinks = [
+  const exploreLinks = [
     { name: 'Home', href: '/' },
     { name: 'Services', href: '/services' },
-    { name: 'Tools', href: '/tools' },
-    { name: 'About', href: '/about' },
     { name: 'Projects', href: '/projects' },
-    { name: 'Blogs', href: '/blogs' },
-    { name: 'Testimonials', href: '/testimonials' },
+    { name: 'Tools & Stack', href: '/tools' },
+    { name: 'About Me', href: '/about' },
+  ];
+
+  const resourceLinks = [
+    { name: 'Technical Blogs', href: '/blogs' },
+    { name: 'Client Testimonials', href: '/testimonials' },
+    { name: 'Pricing & Plans', href: '/price' },
+    { name: 'Job Board', href: '/jobs' },
     { name: 'FAQs', href: '/faqs' },
     { name: 'Contact', href: '/contact' },
   ];
 
   const socialLinks = [
     { icon: Linkedin, href: person.linkedinUrl, label: 'LinkedIn' },
-    { icon: Twitter, href: person.twitterUrl, label: 'Twitter' },
     { icon: Github, href: person.githubUrl, label: 'GitHub' },
     { icon: Gitlab, href: person.gitlabUrl, label: 'GitLab' },
+    { icon: Twitter, href: person.twitterUrl, label: 'Twitter' },
   ];
 
   return (
     <footer
-      className="bg-slate-900 dark:bg-slate-950 text-white"
+      className="relative overflow-hidden bg-slate-950 text-slate-200 border-t border-slate-800/80"
       role="contentinfo"
     >
-      {/* Connect Section */}
-      <section className="bg-gradient-to-r from-brand-green to-brand-greenDark py-10 sm:py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="mx-auto max-w-4xl">
-            <h2 className="text-xl sm:text-2xl font-bold mb-2">
-              Let&apos;s Connect
-            </h2>
-            <p className="text-sm sm:text-base mb-6 text-white/80 max-w-xl mx-auto">
-              Ready to start your next project? Let&apos;s discuss how I can
-              help bring your ideas to life.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <ButtonLink href="/contact" variant="accent" size="lg">
-              Start a Project
-            </ButtonLink>
-            <ResumeDownloadButton variant="about" label="Download Resume" />
+      {/* Background ambient glowing gradient */}
+      <div
+        className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-96 w-3/4 max-w-4xl bg-gradient-to-b from-brand-green/20 via-emerald-600/5 to-transparent blur-3xl opacity-60"
+        aria-hidden="true"
+      />
+
+      {/* Top CTA Banner */}
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+        <div className="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-b from-brand-green/30 via-slate-900/90 to-slate-900 p-8 sm:p-12 shadow-2xl backdrop-blur-xl">
+          {/* Inner subtle glow */}
+          <div
+            className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-brand-green/20 blur-3xl"
+            aria-hidden="true"
+          />
+
+          <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left">
+            <div className="max-w-2xl space-y-3">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-semibold text-emerald-400">
+                <Sparkles className="h-3.5 w-3.5" />
+                Let&apos;s Build Together
+              </div>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
+                Have a project or opportunity in mind?
+              </h2>
+              <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+                I help startups and enterprises build scalable web platforms,
+                high-speed backend systems, and modern AI-driven solutions.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center lg:justify-end gap-3 flex-shrink-0">
+              <ButtonLink
+                href="/contact"
+                variant="primary"
+                size="lg"
+                className="shadow-lg shadow-brand-green/20"
+              >
+                Start a Conversation
+                <ArrowUpRight className="h-4 w-4" />
+              </ButtonLink>
+              <ResumeDownloadButton variant="about" label="Download Resume" />
+            </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Main Footer Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
-          {/* Brand & Social */}
-          <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-brand-yellow">
-              {person.name}
-            </h3>
-            <p className="max-w-xs text-sm text-slate-400 leading-relaxed">
-              Full Stack Developer & Cloud Infrastructure Specialist, building
-              scalable web applications and real-time systems.
-            </p>
-            <div className="flex gap-2">
-              {socialLinks.map((social, index) => (
+      {/* Main Footer Links & Info Grid */}
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+          {/* Brand Col (4 cols) */}
+          <div className="lg:col-span-4 space-y-5">
+            <div className="space-y-2">
+              <Link href="/" className="inline-block">
+                <span className="text-2xl font-black tracking-tight text-white hover:opacity-90 transition-opacity">
+                  {person.name}
+                  <span className="text-brand-greenLight">.</span>
+                </span>
+              </Link>
+              <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
+                Full Stack Developer & Cloud Infrastructure Specialist crafting
+                high-performance real-time applications and robust backend
+                architectures.
+              </p>
+            </div>
+
+            {/* Live Availability Status */}
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-emerald-500/30 bg-emerald-950/40 px-3.5 py-1.5 text-xs font-medium text-emerald-300">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              Available for full-time & consulting
+            </div>
+
+            {/* Social Icons */}
+            <div className="flex items-center gap-2.5 pt-1">
+              {socialLinks.map((social) => (
                 <a
-                  key={index}
+                  key={social.label}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/8 text-slate-300 transition-all duration-200 hover:bg-brand-yellow hover:text-brand-green hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 transition-all duration-200 hover:border-emerald-500/40 hover:bg-brand-green hover:text-white hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green"
                 >
-                  <social.icon className="w-4 h-4" />
+                  <social.icon className="h-4 w-4" />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Navigation */}
-          <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white/60 mb-4">
-              Quick Links
-            </h4>
-            <ul className="space-y-1">
-              {navigationLinks.map((link) => (
+          {/* Explore Links (2 cols) */}
+          <div className="lg:col-span-2 space-y-4">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
+              Explore
+            </h3>
+            <ul className="space-y-2.5">
+              {exploreLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="inline-flex w-full items-center rounded-lg px-3 py-1.5 text-sm text-slate-400 transition-colors hover:bg-white/5 hover:text-brand-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                    className="group inline-flex items-center text-sm text-slate-400 transition-colors hover:text-white"
                   >
-                    {link.name}
+                    <span className="transition-transform group-hover:translate-x-1">
+                      {link.name}
+                    </span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
-          <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white/60 mb-4">
-              Contact
-            </h4>
+          {/* Resources Links (2 cols) */}
+          <div className="lg:col-span-2 space-y-4">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
+              Resources
+            </h3>
+            <ul className="space-y-2.5">
+              {resourceLinks.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="group inline-flex items-center text-sm text-slate-400 transition-colors hover:text-white"
+                  >
+                    <span className="transition-transform group-hover:translate-x-1">
+                      {link.name}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact & Newsletter (4 cols) */}
+          <div className="lg:col-span-4 space-y-6">
             <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-brand-yellow flex-shrink-0" />
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
+                Direct Contact
+              </h3>
+              <div className="space-y-2.5 text-sm text-slate-400">
                 <a
-                  className="text-sm text-slate-400 transition-colors hover:text-brand-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
-                  href={`tel:${person.phone}`}
-                >
-                  {person.phone}
-                </a>
-              </div>
-              <div className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-brand-yellow flex-shrink-0" />
-                <a
-                  className="text-sm text-slate-400 transition-colors hover:text-brand-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
                   href={`mailto:${person.email}`}
+                  className="flex items-center gap-2.5 hover:text-white transition-colors group"
                 >
-                  {person.email}
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-800 bg-slate-900 group-hover:border-emerald-500/40 text-brand-greenLight">
+                    <Mail className="h-3.5 w-3.5" />
+                  </div>
+                  <span>{person.email}</span>
                 </a>
-              </div>
-              <div className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-brand-yellow flex-shrink-0 mt-0.5" />
-                <span className="text-sm text-slate-400">
-                  {person.location}
-                </span>
+                <a
+                  href={`tel:${person.phone}`}
+                  className="flex items-center gap-2.5 hover:text-white transition-colors group"
+                >
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-800 bg-slate-900 group-hover:border-emerald-500/40 text-brand-greenLight">
+                    <Phone className="h-3.5 w-3.5" />
+                  </div>
+                  <span>{person.phone}</span>
+                </a>
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-800 bg-slate-900 text-brand-greenLight">
+                    <MapPin className="h-3.5 w-3.5" />
+                  </div>
+                  <span>{person.location}</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Newsletter */}
-          <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white/60 mb-4">
-              Newsletter
-            </h4>
-            <p className="text-sm text-slate-400 mb-3">
-              Get the latest updates about projects and tech insights.
-            </p>
-            <form
-              onSubmit={handleNewsletterSubmit}
-              className="flex flex-col gap-2"
-            >
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-brand-yellow focus:outline-none focus:ring-2 focus:ring-brand-yellow/20 transition-colors"
-                required
-                aria-label="Email for newsletter"
-              />
-              <Button
-                type="submit"
-                variant="accent"
-                size="md"
-                className="w-full"
-              >
-                <Send className="w-4 h-4" />
-                Subscribe
-              </Button>
-            </form>
+            {/* Newsletter Subscription Box */}
+            <div className="space-y-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
+              <div className="space-y-1">
+                <h4 className="text-xs font-bold text-white">
+                  Subscribe to Newsletter
+                </h4>
+                <p className="text-xs text-slate-400">
+                  Tech insights on Next.js, Cloud, and full-stack systems.
+                </p>
+              </div>
+
+              {isSubscribed ? (
+                <div className="flex items-center gap-2 rounded-xl bg-emerald-950/60 border border-emerald-500/30 p-2.5 text-xs font-medium text-emerald-300">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                  Thank you for subscribing!
+                </div>
+              ) : (
+                <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    required
+                    aria-label="Email address for newsletter"
+                    className="w-full min-w-0 rounded-xl border border-slate-800 bg-slate-950 px-3.5 py-2 text-xs text-white placeholder:text-slate-500 focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20 transition-all"
+                  />
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="sm"
+                    className="flex-shrink-0 h-auto py-2 px-3.5 text-xs rounded-xl"
+                  >
+                    <Send className="h-3.5 w-3.5" />
+                  </Button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Bottom Footer */}
-        <div className="border-t border-white/10 mt-10 pt-6">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-slate-500">
-              &copy; {new Date().getFullYear()} {person.name}. All rights
-              reserved.
+      {/* Bottom Bar */}
+      <div className="relative border-t border-slate-800/80 bg-slate-950/80">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <p>
+              &copy; {new Date().getFullYear()}{' '}
+              <span className="font-semibold text-slate-300">
+                {person.name}
+              </span>
+              . All rights reserved.
             </p>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              <a
+            <div className="flex items-center gap-5">
+              <Link
                 href="/terms-and-conditions"
-                className="text-sm text-slate-500 hover:text-brand-yellow transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                className="hover:text-slate-300 transition-colors"
               >
                 Terms & Conditions
-              </a>
+              </Link>
               <span className="text-slate-700" aria-hidden="true">
                 &bull;
               </span>
-              <a
+              <Link
                 href="/privacy-policy"
-                className="text-sm text-slate-500 hover:text-brand-yellow transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                className="hover:text-slate-300 transition-colors"
               >
                 Privacy Policy
-              </a>
+              </Link>
             </div>
           </div>
         </div>

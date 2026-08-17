@@ -10,3 +10,8 @@ build
 *.log
 .next
 nik_be/
+playwright-report/
+test-results/
+*.png
+!public/**/*.png
+!public/*.png

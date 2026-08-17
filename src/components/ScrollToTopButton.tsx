@@ -53,7 +53,7 @@ export function ScrollToTopButton() {
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
-            className="text-brand-green dark:text-brand-yellow"
+            className="text-brand-green dark:text-emerald-400"
             strokeDasharray={`${scrollProgress * 1.256} 125.6`}
             strokeLinecap="round"
             transform="rotate(-90 24 24)"
@@ -68,7 +68,7 @@ export function ScrollToTopButton() {
           aria-label="Back to top"
         >
           <ArrowUp
-            className="h-4 w-4 text-brand-green dark:text-brand-yellow"
+            className="h-4 w-4 text-brand-green dark:text-emerald-400"
             aria-hidden="true"
           />
         </Button>

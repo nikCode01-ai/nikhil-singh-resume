@@ -18,7 +18,7 @@ export default function PrivacyPolicyPage() {
     <div className="bg-white dark:bg-slate-950 section-padding">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
         <header className="mb-12">
-          <p className="text-sm font-semibold text-brand-green dark:text-brand-yellow">
+          <p className="text-sm font-semibold text-brand-green dark:text-emerald-400">
             Legal
           </p>
           <h1 className="mt-3 text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">
@@ -97,7 +97,7 @@ export default function PrivacyPolicyPage() {
                   href="https://vercel.com/legal/privacy-policy"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-brand-green dark:text-brand-yellow underline"
+                  className="text-brand-green dark:text-emerald-400 underline"
                 >
                   Privacy Policy
                 </a>
@@ -110,7 +110,7 @@ export default function PrivacyPolicyPage() {
                   href="https://policies.google.com/privacy"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-brand-green dark:text-brand-yellow underline"
+                  className="text-brand-green dark:text-emerald-400 underline"
                 >
                   Privacy Policy
                 </a>
@@ -183,7 +183,7 @@ export default function PrivacyPolicyPage() {
               If you have questions about this Privacy Policy, contact me at{' '}
               <a
                 href={`mailto:${person.email}`}
-                className="text-brand-green dark:text-brand-yellow underline"
+                className="text-brand-green dark:text-emerald-400 underline"
               >
                 {person.email}
               </a>
@@ -195,7 +195,7 @@ export default function PrivacyPolicyPage() {
         <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
           <Link
             href="/"
-            className="text-sm font-semibold text-brand-green dark:text-brand-yellow hover:underline"
+            className="text-sm font-semibold text-brand-green dark:text-emerald-400 hover:underline"
           >
             &larr; Back to Home
           </Link>

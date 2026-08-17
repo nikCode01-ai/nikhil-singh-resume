@@ -80,13 +80,13 @@
 
 ### Plan
 
-| Step | Task                                               | Status     |
-| ---- | -------------------------------------------------- | ---------- |
-| 1    | Read Hindi docx content (97 paragraphs + 2 tables) | ✅ Done    |
-| 2    | Convert to English markdown (zero skips)           | ✅ Done    |
-| 3    | Add missing citation references (15 restored)      | ✅ Done    |
-| 4    | Restructure to match existing MD conventions       | ✅ Done    |
-| 5    | Verify & finalize (user approval)                  | ⏳ Pending |
+| Step | Task                                               | Status  |
+| ---- | -------------------------------------------------- | ------- |
+| 1    | Read Hindi docx content (97 paragraphs + 2 tables) | ✅ Done |
+| 2    | Convert to English markdown (zero skips)           | ✅ Done |
+| 3    | Add missing citation references (15 restored)      | ✅ Done |
+| 4    | Restructure to match existing MD conventions       | ✅ Done |
+| 5    | Verify & finalize (user approval)                  | ✅ Done |
 
 ### Conventions Applied
 
@@ -103,4 +103,4 @@
 - `docs/13-EXECUTIVE-SUMMARY.md` (final)
 - `docs/DASHBOARD.md` (live tracker)
 
-### Status: ⏳ Phase 5 Pending (Verification)
+### Status: ✅ Done

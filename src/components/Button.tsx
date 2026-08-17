@@ -31,7 +31,7 @@ function buttonClassName({
   fullWidth,
 }: ButtonStyleProps) {
   const base =
-    'inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60 dark:focus-visible:ring-offset-slate-950 active:scale-[0.98]';
+    'inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60 dark:focus-visible:ring-offset-slate-950 active:scale-[0.98]';
 
   const variants: Record<ButtonVariant, string> = {
     primary: 'btn-brand',

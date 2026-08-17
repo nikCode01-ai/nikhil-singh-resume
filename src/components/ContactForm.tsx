@@ -79,7 +79,7 @@ export function ContactForm({ toEmail }: { toEmail: string }) {
             id="contact-name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-green dark:focus:border-brand-yellow focus:ring-2 focus:ring-brand-green/10 dark:focus:ring-brand-yellow/10 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-green focus:ring-2 focus:ring-brand-green/10 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
             placeholder="Your name"
             autoComplete="name"
             aria-required="true"
@@ -94,7 +94,7 @@ export function ContactForm({ toEmail }: { toEmail: string }) {
             id="contact-email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-green dark:focus:border-brand-yellow focus:ring-2 focus:ring-brand-green/10 dark:focus:ring-brand-yellow/10 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-green focus:ring-2 focus:ring-brand-green/10 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
             placeholder="you@example.com"
             autoComplete="email"
             inputMode="email"
@@ -112,7 +112,7 @@ export function ContactForm({ toEmail }: { toEmail: string }) {
           id="contact-message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="min-h-32 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-green dark:focus:border-brand-yellow focus:ring-2 focus:ring-brand-green/10 dark:focus:ring-brand-yellow/10 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+          className="min-h-32 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-green focus:ring-2 focus:ring-brand-green/10 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
           placeholder="Tell me what you are looking to build, timelines, and any context."
           aria-required="true"
           required

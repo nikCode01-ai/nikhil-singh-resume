@@ -17,7 +17,7 @@ export default function Error({ error, reset }: ErrorProps) {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-brand-cream px-4 py-16 dark:bg-slate-950">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-brand-yellow/20 blur-3xl" />
+        <div className="absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-emerald-500/10 blur-3xl" />
         <div className="absolute -bottom-20 right-0 h-80 w-80 rounded-full bg-brand-green/10 blur-3xl" />
       </div>
 
@@ -27,7 +27,7 @@ export default function Error({ error, reset }: ErrorProps) {
             name="X"
             size={26}
             color="brand-green"
-            darkColor="brand-yellow"
+            darkColor="brand-greenLight"
             className="h-6 w-6"
             decorative
           />

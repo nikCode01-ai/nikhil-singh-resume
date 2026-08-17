@@ -39,48 +39,49 @@ export default function Home() {
         <Hero />
       </section>
 
+      {/* Modern Feature Highlights Marquee / Strip */}
       <section
-        className="bg-gradient-to-r from-brand-green to-brand-greenDark py-4"
-        aria-label="Services offered"
+        className="relative border-y border-emerald-500/10 bg-slate-900/90 py-3.5 backdrop-blur-md"
+        aria-label="Core Specializations"
       >
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm font-medium text-white/90">
+          <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-2 text-xs sm:text-sm font-semibold text-slate-200">
             <span className="flex items-center gap-2">
               <span
-                className="h-1.5 w-1.5 rounded-full bg-brand-yellow"
+                className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"
                 aria-hidden="true"
               />
-              App Design
+              Airline NDC Integrations
             </span>
-            <span className="hidden sm:block text-white/30" aria-hidden="true">
-              |
-            </span>
-            <span className="flex items-center gap-2">
-              <span
-                className="h-1.5 w-1.5 rounded-full bg-brand-yellow"
-                aria-hidden="true"
-              />
-              Website Design
-            </span>
-            <span className="hidden sm:block text-white/30" aria-hidden="true">
-              |
+            <span className="hidden sm:block text-slate-700" aria-hidden="true">
+              &bull;
             </span>
             <span className="flex items-center gap-2">
               <span
-                className="h-1.5 w-1.5 rounded-full bg-brand-yellow"
+                className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"
                 aria-hidden="true"
               />
-              Dashboard
+              Full-Stack Next.js Platforms
             </span>
-            <span className="hidden sm:block text-white/30" aria-hidden="true">
-              |
+            <span className="hidden sm:block text-slate-700" aria-hidden="true">
+              &bull;
             </span>
             <span className="flex items-center gap-2">
               <span
-                className="h-1.5 w-1.5 rounded-full bg-brand-yellow"
+                className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"
                 aria-hidden="true"
               />
-              Wireframe
+              Real-Time WebSockets / SSE
+            </span>
+            <span className="hidden sm:block text-slate-700" aria-hidden="true">
+              &bull;
+            </span>
+            <span className="flex items-center gap-2">
+              <span
+                className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"
+                aria-hidden="true"
+              />
+              GenAI & Intelligent Systems
             </span>
           </div>
         </div>

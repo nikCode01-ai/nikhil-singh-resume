@@ -14,7 +14,7 @@ export default function AdminLayout({
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
       <nav className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm">
         <div className="container mx-auto">
-          <h1 className="text-xl font-bold text-brand-green dark:text-brand-yellow">
+          <h1 className="text-xl font-bold text-brand-green dark:text-emerald-400">
             Portfolio Admin
           </h1>
         </div>

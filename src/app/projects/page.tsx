@@ -75,12 +75,12 @@ export default async function ProjectsPage() {
     <div className="relative">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-24 h-72 bg-gradient-to-b from-brand-green/5 to-transparent dark:from-brand-yellow/5"
+        className="pointer-events-none absolute inset-x-0 -top-24 h-72 bg-gradient-to-b from-brand-green/5 to-transparent dark:from-emerald-500/5"
       />
       <Container>
         <div className="relative py-10 motion-safe:animate-fade-in sm:py-14">
           <header className="space-y-3">
-            <p className="text-sm font-semibold text-brand-green dark:text-brand-yellow">
+            <p className="text-sm font-semibold text-brand-green dark:text-emerald-400">
               Portfolio
             </p>
             <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl">
@@ -131,10 +131,7 @@ export default async function ProjectsPage() {
                     {flagshipProject.architecture}
                   </p>
                 </div>
-                <Trophy
-                  className="h-5 w-5 text-brand-yellow"
-                  aria-hidden="true"
-                />
+                <Trophy className="h-5 w-5 text-amber-400" aria-hidden="true" />
               </div>
 
               <div className="mt-5 grid gap-5 md:grid-cols-2">
@@ -196,7 +193,7 @@ export default async function ProjectsPage() {
                   ) : null}
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-3">
-                      <span className="rounded-full bg-brand-green/10 px-3 py-1 text-sm font-medium text-brand-green dark:bg-brand-yellow/15 dark:text-brand-yellow capitalize">
+                      <span className="rounded-full bg-brand-green/10 px-3 py-1 text-sm font-medium text-brand-green dark:bg-emerald-500/15 dark:text-emerald-300 capitalize">
                         {project.category.replace('-', ' ')}
                       </span>
                       {project.date && (
@@ -206,7 +203,7 @@ export default async function ProjectsPage() {
                       )}
                     </div>
 
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-brand-green dark:group-hover:text-brand-yellow transition-colors">
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-brand-green dark:group-hover:text-emerald-400 transition-colors">
                       {project.name}
                     </h3>
 
@@ -223,7 +220,7 @@ export default async function ProjectsPage() {
                     <div className="flex items-center justify-between">
                       <Link
                         href={`/projects/${project.slug}`}
-                        className="inline-flex items-center gap-2 text-brand-green font-semibold hover:text-brand-greenDark dark:text-brand-yellow dark:hover:text-brand-yellow/80 transition-colors"
+                        className="inline-flex items-center gap-2 text-brand-green font-semibold hover:text-brand-greenDark dark:text-emerald-400 dark:hover:text-emerald-300 transition-colors"
                       >
                         View Details
                         <ArrowRight className="h-4 w-4" />
@@ -265,7 +262,7 @@ export default async function ProjectsPage() {
                   ) : null}
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-3">
-                      <span className="rounded-full bg-brand-green/10 px-3 py-1 text-sm font-medium text-brand-green dark:bg-brand-yellow/15 dark:text-brand-yellow capitalize">
+                      <span className="rounded-full bg-brand-green/10 px-3 py-1 text-sm font-medium text-brand-green dark:bg-emerald-500/15 dark:text-emerald-300 capitalize">
                         {project.category.replace('-', ' ')}
                       </span>
                       {project.date && (
@@ -275,7 +272,7 @@ export default async function ProjectsPage() {
                       )}
                     </div>
 
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-brand-green dark:group-hover:text-brand-yellow transition-colors">
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-brand-green dark:group-hover:text-emerald-400 transition-colors">
                       {project.name}
                     </h3>
 
@@ -292,7 +289,7 @@ export default async function ProjectsPage() {
                     <div className="flex items-center justify-between">
                       <Link
                         href={`/projects/${project.slug}`}
-                        className="inline-flex items-center gap-2 text-brand-green font-semibold hover:text-brand-greenDark dark:text-brand-yellow dark:hover:text-brand-yellow/80 transition-colors"
+                        className="inline-flex items-center gap-2 text-brand-green font-semibold hover:text-brand-greenDark dark:text-emerald-400 dark:hover:text-emerald-300 transition-colors"
                       >
                         View Details
                         <ArrowRight className="h-4 w-4" />

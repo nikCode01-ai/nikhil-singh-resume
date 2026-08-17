@@ -188,7 +188,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
         <div className="relative container mx-auto px-4 h-full flex flex-col justify-end pb-16">
           <div className="flex items-center gap-3 mb-4">
-            <span className="px-4 py-2 rounded-full bg-brand-green/20 text-brand-green dark:bg-brand-yellow/20 dark:text-brand-yellow text-sm font-semibold backdrop-blur-sm border border-brand-green/30 dark:border-brand-yellow/30">
+            <span className="px-4 py-2 rounded-full bg-brand-green/20 text-brand-green dark:bg-emerald-500/20 dark:text-emerald-300 text-sm font-semibold backdrop-blur-sm border border-brand-green/30 dark:border-emerald-500/30">
               {project.category.replace('-', ' ')}
             </span>
             <span
@@ -196,7 +196,7 @@ export default async function ProjectPage({ params }: PageProps) {
                 project.status === 'completed'
                   ? 'bg-green-500/20 text-green-300 border-green-500/30'
                   : project.status === 'in-progress'
-                    ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30'
+                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
                     : 'bg-slate-500/20 text-slate-300 border-slate-500/30'
               }`}
             >
@@ -218,7 +218,7 @@ export default async function ProjectPage({ params }: PageProps) {
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3 bg-white text-slate-900 rounded-lg font-semibold hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-yellow focus-visible:ring-offset-2"
+                className="px-6 py-3 bg-white text-slate-900 rounded-lg font-semibold hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2"
               >
                 <ExternalLink className="h-5 w-5 mr-2 inline" />
                 View Live Project
@@ -229,7 +229,7 @@ export default async function ProjectPage({ params }: PageProps) {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3 bg-brand-green text-white rounded-lg font-semibold hover:bg-brand-greenDark transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-yellow focus-visible:ring-offset-2"
+                className="px-6 py-3 bg-brand-green text-white rounded-lg font-semibold hover:bg-brand-greenDark transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2"
               >
                 <GitBranch className="h-5 w-5 mr-2 inline" />
                 View Source Code
@@ -240,7 +240,7 @@ export default async function ProjectPage({ params }: PageProps) {
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3 bg-brand-yellow text-brand-green rounded-lg font-semibold hover:bg-brand-yellow/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-yellow focus-visible:ring-offset-2"
+                className="px-6 py-3 bg-brand-green/20 text-brand-green dark:text-brand-greenLight border border-brand-green/30 rounded-lg font-semibold hover:bg-brand-green hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2"
               >
                 <Zap className="h-5 w-5 mr-2 inline" />
                 View Demo
@@ -254,7 +254,7 @@ export default async function ProjectPage({ params }: PageProps) {
         <div className="mb-8">
           <Link
             href="/projects"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-green dark:text-brand-yellow hover:underline"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-green dark:text-emerald-400 hover:underline"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Projects
@@ -265,7 +265,7 @@ export default async function ProjectPage({ params }: PageProps) {
         <div className="mb-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="p-6 text-center bg-gradient-to-br from-brand-green/10 to-brand-green/5 dark:from-brand-green/20 dark:to-brand-green/10 border border-brand-green/20 rounded-2xl shadow-lg">
-              <Clock className="w-8 h-8 text-brand-green dark:text-brand-yellow mx-auto mb-3" />
+              <Clock className="w-8 h-8 text-brand-green dark:text-emerald-400 mx-auto mb-3" />
               <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">
                 Duration
               </p>
@@ -273,8 +273,8 @@ export default async function ProjectPage({ params }: PageProps) {
                 {project.duration || 'N/A'}
               </p>
             </div>
-            <div className="p-6 text-center bg-gradient-to-br from-brand-yellow/10 to-brand-yellow/5 dark:from-brand-yellow/20 dark:to-brand-yellow/10 border border-brand-yellow/20 rounded-2xl shadow-lg">
-              <Users className="w-8 h-8 text-brand-green dark:text-brand-yellow mx-auto mb-3" />
+            <div className="p-6 text-center bg-gradient-to-br from-emerald-500/10 to-teal-500/5 dark:from-emerald-500/20 dark:to-teal-500/10 border border-emerald-500/20 rounded-2xl shadow-lg">
+              <Users className="w-8 h-8 text-brand-green dark:text-emerald-400 mx-auto mb-3" />
               <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">
                 Team Size
               </p>
@@ -308,7 +308,7 @@ export default async function ProjectPage({ params }: PageProps) {
           <Card className="p-8 lg:p-12 bg-white dark:bg-slate-800 shadow-xl border-slate-200 dark:border-slate-700">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 bg-brand-green/10 rounded-xl">
-                <Target className="w-6 h-6 text-brand-green dark:text-brand-yellow" />
+                <Target className="w-6 h-6 text-brand-green dark:text-emerald-400" />
               </div>
               <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                 Project Overview
@@ -323,8 +323,8 @@ export default async function ProjectPage({ params }: PageProps) {
         {/* Key Features */}
         <div className="mb-16">
           <div className="flex items-center gap-3 mb-8">
-            <div className="p-3 bg-brand-yellow/10 rounded-xl">
-              <Rocket className="w-6 h-6 text-brand-green dark:text-brand-yellow" />
+            <div className="p-3 bg-emerald-500/10 rounded-xl">
+              <Rocket className="w-6 h-6 text-brand-green dark:text-emerald-400" />
             </div>
             <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
               Key Features
@@ -338,7 +338,7 @@ export default async function ProjectPage({ params }: PageProps) {
               >
                 <div className="flex items-start gap-3">
                   <div className="p-2 bg-brand-green/10 rounded-lg flex-shrink-0">
-                    <CheckCircle className="w-5 h-5 text-brand-green dark:text-brand-yellow" />
+                    <CheckCircle className="w-5 h-5 text-brand-green dark:text-emerald-400" />
                   </div>
                   <span className="text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
                     {feature}
@@ -364,7 +364,7 @@ export default async function ProjectPage({ params }: PageProps) {
               {project.tech.map((tech, index) => (
                 <span
                   key={index}
-                  className="px-4 py-2 bg-gradient-to-r from-brand-green/10 to-brand-green/5 dark:from-brand-yellow/20 dark:to-brand-yellow/10 text-brand-green dark:text-brand-yellow font-semibold rounded-lg border border-brand-green/20 dark:border-brand-yellow/30 hover:shadow-lg transition-all duration-300"
+                  className="px-4 py-2 bg-gradient-to-r from-brand-green/10 to-brand-green/5 dark:from-emerald-500/20 dark:to-teal-500/10 text-brand-green dark:text-emerald-300 font-semibold rounded-lg border border-brand-green/20 dark:border-emerald-500/30 hover:shadow-lg transition-all duration-300"
                 >
                   {tech}
                 </span>
@@ -377,8 +377,8 @@ export default async function ProjectPage({ params }: PageProps) {
         {project.metrics && project.metrics.length > 0 && (
           <div className="mb-16">
             <div className="flex items-center gap-3 mb-8">
-              <div className="p-3 bg-green-500/10 rounded-xl">
-                <TrendingUp className="w-6 h-6 text-green-600 dark:text-green-400" />
+              <div className="p-3 bg-emerald-500/10 rounded-xl">
+                <TrendingUp className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
               </div>
               <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                 Performance Metrics
@@ -389,8 +389,8 @@ export default async function ProjectPage({ params }: PageProps) {
                 <div key={index}>
                   <Card className="p-8 text-center bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 shadow-xl border-slate-200 dark:border-slate-700">
                     <div className="relative inline-block mb-4">
-                      <div className="absolute inset-0 bg-brand-green/20 dark:bg-brand-yellow/20 rounded-full blur-xl opacity-50" />
-                      <TrendingUp className="w-12 h-12 text-brand-green dark:text-brand-yellow relative" />
+                      <div className="absolute inset-0 bg-brand-green/20 dark:bg-emerald-500/20 rounded-full blur-xl opacity-50" />
+                      <TrendingUp className="w-12 h-12 text-brand-green dark:text-emerald-400 relative" />
                     </div>
                     <p className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                       {metric.value}
@@ -399,7 +399,7 @@ export default async function ProjectPage({ params }: PageProps) {
                       {metric.label}
                     </p>
                     {metric.improvement && (
-                      <span className="inline-block px-3 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 rounded-full text-sm font-semibold">
+                      <span className="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 rounded-full text-sm font-semibold">
                         {metric.improvement}
                       </span>
                     )}
@@ -428,7 +428,7 @@ export default async function ProjectPage({ params }: PageProps) {
               >
                 <div className="flex items-start gap-4">
                   <div className="p-2 bg-brand-green/20 rounded-lg flex-shrink-0">
-                    <TrendingUp className="w-5 h-5 text-brand-green dark:text-brand-yellow" />
+                    <TrendingUp className="w-5 h-5 text-brand-green dark:text-emerald-400" />
                   </div>
                   <span className="text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
                     {impact}
@@ -492,10 +492,10 @@ export default async function ProjectPage({ params }: PageProps) {
 
         {/* Results */}
         <div className="mb-16">
-          <Card className="p-8 lg:p-12 bg-gradient-to-br from-brand-green/10 to-brand-yellow/10 dark:from-brand-green/20 dark:to-brand-yellow/20 border border-brand-green/30 dark:border-brand-yellow/30 shadow-2xl">
+          <Card className="p-8 lg:p-12 bg-gradient-to-br from-brand-green/10 to-emerald-500/10 dark:from-brand-green/20 dark:to-emerald-500/20 border border-brand-green/30 dark:border-emerald-500/30 shadow-2xl">
             <div className="flex items-center gap-3 mb-8">
-              <div className="p-3 bg-brand-yellow/20 rounded-xl">
-                <Star className="w-6 h-6 text-brand-green dark:text-brand-yellow" />
+              <div className="p-3 bg-emerald-500/20 rounded-xl">
+                <Star className="w-6 h-6 text-brand-green dark:text-emerald-400" />
               </div>
               <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
                 Final Results
@@ -505,11 +505,11 @@ export default async function ProjectPage({ params }: PageProps) {
               {project.results.map((result, index) => (
                 <div
                   key={index}
-                  className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-2xl border border-brand-green/20 dark:border-brand-yellow/20"
+                  className="p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur rounded-2xl border border-brand-green/20 dark:border-emerald-500/20"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="p-2 bg-brand-yellow/20 rounded-lg flex-shrink-0">
-                      <Star className="w-5 h-5 text-brand-yellow" />
+                    <div className="p-2 bg-amber-500/20 rounded-lg flex-shrink-0">
+                      <Star className="w-5 h-5 text-amber-500" />
                     </div>
                     <span className="text-slate-700 dark:text-slate-300 font-semibold leading-relaxed">
                       {result}
@@ -525,8 +525,8 @@ export default async function ProjectPage({ params }: PageProps) {
         {project.testimonials && project.testimonials.length > 0 && (
           <div className="mb-16">
             <div className="flex items-center justify-center gap-3 mb-8">
-              <div className="p-3 bg-brand-yellow/10 rounded-xl">
-                <Star className="w-6 h-6 text-brand-green dark:text-brand-yellow" />
+              <div className="p-3 bg-emerald-500/10 rounded-xl">
+                <Star className="w-6 h-6 text-brand-green dark:text-emerald-400" />
               </div>
               <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
                 Client Testimonials
@@ -540,7 +540,7 @@ export default async function ProjectPage({ params }: PageProps) {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className="w-5 h-5 text-brand-yellow fill-current"
+                          className="w-5 h-5 text-amber-400 fill-current"
                         />
                       ))}
                     </div>
@@ -548,8 +548,8 @@ export default async function ProjectPage({ params }: PageProps) {
                       &ldquo;{testimonial.text}&rdquo;
                     </p>
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-brand-green/20 to-brand-yellow/20 dark:from-brand-green/30 dark:to-brand-yellow/30 rounded-full flex items-center justify-center ring-4 ring-brand-green/10 dark:ring-brand-yellow/10">
-                        <span className="text-brand-green dark:text-brand-yellow font-bold text-lg">
+                      <div className="w-12 h-12 bg-gradient-to-br from-brand-green/20 to-emerald-500/20 dark:from-brand-green/30 dark:to-emerald-500/30 rounded-full flex items-center justify-center ring-4 ring-brand-green/10 dark:ring-emerald-500/20">
+                        <span className="text-brand-green dark:text-emerald-300 font-bold text-lg">
                           {testimonial.author.charAt(0)}
                         </span>
                       </div>
@@ -574,7 +574,7 @@ export default async function ProjectPage({ params }: PageProps) {
           <div>
             <div className="flex items-center gap-3 mb-8">
               <div className="p-3 bg-brand-green/10 rounded-xl">
-                <Layers className="w-6 h-6 text-brand-green dark:text-brand-yellow" />
+                <Layers className="w-6 h-6 text-brand-green dark:text-emerald-400" />
               </div>
               <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
                 Related Projects
@@ -585,7 +585,7 @@ export default async function ProjectPage({ params }: PageProps) {
                 <div key={relatedProject.id}>
                   <Link href={`/projects/${relatedProject.slug}`}>
                     <Card className="overflow-hidden bg-white dark:bg-slate-800 shadow-xl hover:shadow-2xl transition-all duration-300 border-slate-200 dark:border-slate-700 cursor-pointer h-full flex flex-col">
-                      <div className="relative h-56 bg-gradient-to-br from-brand-yellow/20 to-brand-yellow/40">
+                      <div className="relative h-56 bg-gradient-to-br from-brand-green/20 to-emerald-500/20">
                         <Image
                           src={relatedProject.image}
                           alt={relatedProject.name}
@@ -596,16 +596,16 @@ export default async function ProjectPage({ params }: PageProps) {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                       </div>
                       <div className="p-6 flex-1 flex flex-col">
-                        <span className="inline-block px-3 py-1 bg-brand-green/10 dark:bg-brand-yellow/20 text-brand-green dark:text-brand-yellow rounded-full text-sm font-semibold mb-3 w-fit">
+                        <span className="inline-block px-3 py-1 bg-brand-green/10 dark:bg-emerald-500/20 text-brand-green dark:text-emerald-300 rounded-full text-sm font-semibold mb-3 w-fit">
                           {relatedProject.category.replace('-', ' ')}
                         </span>
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 hover:text-brand-green dark:hover:text-brand-yellow transition-colors">
+                        <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 hover:text-brand-green dark:hover:text-emerald-400 transition-colors">
                           {relatedProject.name}
                         </h3>
                         <p className="text-slate-600 dark:text-slate-400 mb-4 line-clamp-2 flex-1">
                           {relatedProject.description}
                         </p>
-                        <div className="flex items-center text-brand-green dark:text-brand-yellow font-semibold">
+                        <div className="flex items-center text-brand-green dark:text-emerald-400 font-semibold">
                           <span>View Project</span>
                           <ArrowLeft className="w-4 h-4 ml-2 rotate-180" />
                         </div>

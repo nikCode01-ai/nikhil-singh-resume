@@ -127,18 +127,18 @@ export async function Services({ variant = 'section' }: ServicesProps) {
       )}
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-brand-green/4 blur-3xl" />
-        <div className="absolute -bottom-32 right-0 h-80 w-80 rounded-full bg-brand-yellow/4 blur-3xl" />
+        <div className="absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-brand-green/5 blur-3xl" />
+        <div className="absolute -bottom-32 right-0 h-80 w-80 rounded-full bg-emerald-500/5 blur-3xl" />
       </div>
 
       <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
         <FadeIn className={cn('text-center', isPage ? 'mb-16' : 'mb-14')}>
           <p className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
-            <span className="h-px w-8 bg-brand-green/20 dark:bg-brand-yellow/20" />
-            <span className="text-brand-green dark:text-brand-yellow">
+            <span className="h-px w-8 bg-brand-green/20 dark:bg-emerald-500/20" />
+            <span className="text-brand-green dark:text-emerald-400">
               Services
             </span>
-            <span className="h-px w-8 bg-brand-green/20 dark:bg-brand-yellow/20" />
+            <span className="h-px w-8 bg-brand-green/20 dark:bg-emerald-500/20" />
           </p>
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             {isPage ? (
@@ -146,7 +146,7 @@ export async function Services({ variant = 'section' }: ServicesProps) {
             ) : (
               <>
                 What I{' '}
-                <span className="text-brand-green dark:text-brand-yellow">
+                <span className="text-brand-green dark:text-brand-greenLight">
                   Offer
                 </span>
               </>
@@ -179,7 +179,7 @@ export async function Services({ variant = 'section' }: ServicesProps) {
         {isPage ? (
           <div className="mb-16 grid grid-cols-1 gap-8 lg:grid-cols-2">
             <div className="card-premium p-8">
-              <p className="text-sm font-semibold text-brand-green dark:text-brand-yellow">
+              <p className="text-sm font-semibold text-brand-green dark:text-emerald-400">
                 Specialized focus
               </p>
               <h3 className="mt-3 text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
@@ -192,12 +192,12 @@ export async function Services({ variant = 'section' }: ServicesProps) {
               <div className="mt-6 space-y-4">
                 {heroHighlights.map((highlight) => (
                   <div key={highlight.title} className="flex items-start gap-4">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-green/8 dark:bg-brand-yellow/8 flex-shrink-0">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-green/8 dark:bg-emerald-500/10 flex-shrink-0">
                       <ApiUiIcon
                         name={highlight.icon}
                         size={20}
                         color="brand-green"
-                        darkColor="brand-yellow"
+                        darkColor="brand-greenLight"
                         className="h-5 w-5"
                         decorative
                       />
@@ -226,7 +226,7 @@ export async function Services({ variant = 'section' }: ServicesProps) {
             </div>
 
             <div className="rounded-2xl bg-gradient-to-br from-brand-green to-brand-greenDark p-8 text-white shadow-elevated">
-              <p className="text-sm font-semibold text-brand-yellow">
+              <p className="text-sm font-semibold text-emerald-300">
                 Delivery proof
               </p>
               <h3 className="mt-3 text-xl sm:text-2xl font-bold">
@@ -247,13 +247,13 @@ export async function Services({ variant = 'section' }: ServicesProps) {
                         <ApiUiIcon
                           name={stat.icon}
                           size={18}
-                          color="brand-yellow"
+                          color="white"
                           className="h-4 w-4"
                           decorative
                         />
                       </div>
                       <div>
-                        <div className="text-2xl font-bold text-brand-yellow">
+                        <div className="text-2xl font-bold text-emerald-300">
                           {stat.value}
                         </div>
                         <div className="text-xs text-white/80">
@@ -276,14 +276,14 @@ export async function Services({ variant = 'section' }: ServicesProps) {
           {serviceList.map((service, index) => (
             <div key={index} className="group relative card-premium p-6 sm:p-8">
               <span
-                className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-brand-green via-brand-yellow to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-t-2xl"
+                className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-brand-green via-emerald-400 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-t-2xl"
                 aria-hidden="true"
               />
-              <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-green/8 dark:bg-brand-yellow/8 transition-all duration-300 group-hover:bg-brand-green/12 dark:group-hover:bg-brand-yellow/12 group-hover:scale-110">
+              <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-green/8 dark:bg-emerald-500/10 transition-all duration-300 group-hover:bg-brand-green/15 dark:group-hover:bg-emerald-500/20 group-hover:scale-110">
                 <ApiUiIcon
                   name={getIconForService(service.name)}
                   size={24}
-                  className="h-6 w-6 text-brand-green dark:text-brand-yellow"
+                  className="h-6 w-6 text-brand-green dark:text-emerald-400"
                 />
               </div>
 
@@ -309,7 +309,7 @@ export async function Services({ variant = 'section' }: ServicesProps) {
                 href="/services"
                 variant="ghost"
                 size="sm"
-                className="mt-5 gap-2 px-0 text-sm font-semibold text-brand-green dark:text-brand-yellow group-hover:gap-3"
+                className="mt-5 gap-2 px-0 text-sm font-semibold text-brand-green dark:text-brand-greenLight group-hover:gap-3"
               >
                 Learn more
                 <ApiUiIcon
@@ -325,7 +325,7 @@ export async function Services({ variant = 'section' }: ServicesProps) {
         {isPage ? (
           <div className="mt-16 grid gap-8 lg:grid-cols-3">
             <div className="card-premium p-8 lg:col-span-2">
-              <p className="text-sm font-semibold text-brand-green dark:text-brand-yellow">
+              <p className="text-sm font-semibold text-brand-green dark:text-emerald-400">
                 Delivery
               </p>
               <h3 className="mt-3 text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
@@ -342,7 +342,7 @@ export async function Services({ variant = 'section' }: ServicesProps) {
                     className="rounded-2xl bg-slate-50 dark:bg-white/3 p-5 ring-1 ring-slate-100 dark:ring-white/5"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-green/8 dark:bg-brand-yellow/8 text-sm font-bold text-brand-green dark:text-brand-yellow">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-green/8 dark:bg-emerald-500/10 text-sm font-bold text-brand-green dark:text-emerald-400">
                         {String(stepIndex + 1).padStart(2, '0')}
                       </span>
                       <h4 className="text-base font-semibold text-slate-900 dark:text-white">
@@ -358,7 +358,7 @@ export async function Services({ variant = 'section' }: ServicesProps) {
             </div>
 
             <div className="card-premium p-8 bg-slate-50/50 dark:bg-white/2">
-              <p className="text-sm font-semibold text-brand-green dark:text-brand-yellow">
+              <p className="text-sm font-semibold text-brand-green dark:text-emerald-400">
                 Engagement
               </p>
               <h3 className="mt-3 text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
@@ -372,7 +372,7 @@ export async function Services({ variant = 'section' }: ServicesProps) {
                         name={model.icon}
                         size={18}
                         color="brand-green"
-                        darkColor="brand-yellow"
+                        darkColor="brand-greenLight"
                         className="h-4 w-4"
                         decorative
                       />

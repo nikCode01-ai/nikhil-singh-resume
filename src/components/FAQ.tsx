@@ -118,23 +118,23 @@ export function FAQ() {
       aria-labelledby="faq-heading"
     >
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-green/3 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-brand-yellow/3 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-green/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <FadeIn className="text-center mb-14">
           <p className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
-            <span className="h-px w-8 bg-brand-green/20 dark:bg-brand-yellow/20" />
-            <span className="text-brand-green dark:text-brand-yellow">FAQ</span>
-            <span className="h-px w-8 bg-brand-green/20 dark:bg-brand-yellow/20" />
+            <span className="h-px w-8 bg-brand-green/20 dark:bg-emerald-500/20" />
+            <span className="text-brand-green dark:text-emerald-400">FAQ</span>
+            <span className="h-px w-8 bg-brand-green/20 dark:bg-emerald-500/20" />
           </p>
           <h2
             id="faq-heading"
             className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white"
           >
             Questions?{' '}
-            <span className="text-brand-green dark:text-brand-yellow">
+            <span className="text-brand-green dark:text-brand-greenLight">
               Look here.
             </span>
           </h2>
@@ -152,7 +152,7 @@ export function FAQ() {
                 <div key={faq.id} className="card-premium overflow-hidden">
                   <button
                     onClick={() => toggleItem(faq.id)}
-                    className="w-full px-5 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between gap-4 transition-all duration-200 hover:bg-slate-50/50 dark:hover:bg-white/3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950 rounded-xl"
+                    className="w-full px-5 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between gap-4 transition-all duration-200 hover:bg-slate-50/50 dark:hover:bg-white/3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950 rounded-xl"
                     aria-expanded={isOpen}
                     aria-controls={`faq-answer-${faq.id}`}
                   >

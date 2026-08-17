@@ -54,16 +54,16 @@ const plans = [
 export function Pricing() {
   return (
     <div className="relative overflow-hidden bg-brand-green text-white">
-      <div className="pointer-events-none absolute inset-0 opacity-30 [background:radial-gradient(900px_circle_at_20%_10%,rgba(244,180,0,0.35),transparent_55%),radial-gradient(900px_circle_at_80%_30%,rgba(255,255,255,0.12),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-30 [background:radial-gradient(900px_circle_at_20%_10%,rgba(74,222,128,0.25),transparent_55%),radial-gradient(900px_circle_at_80%_30%,rgba(255,255,255,0.12),transparent_60%)]" />
       <Container>
         <div className="relative py-12 sm:py-16">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
             <div className="space-y-4">
-              <p className="text-sm font-semibold tracking-wide text-white/80">
+              <p className="text-sm font-semibold tracking-wide text-emerald-300">
                 Pricing Table
               </p>
               <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-                My <span className="text-brand-yellow">Pricing</span> Model
+                My <span className="text-emerald-300">Pricing</span> Model
               </h1>
             </div>
 
@@ -71,10 +71,10 @@ export function Pricing() {
               href="/contact"
               variant="primary"
               size="sm"
-              className="h-10 gap-2 rounded-full bg-brand-yellow px-6 text-brand-green hover:bg-brand-yellow/90"
+              className="h-10 gap-2 rounded-full bg-white px-6 text-brand-green hover:bg-slate-100 transition-colors shadow-sm font-bold"
             >
               Start a Project
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-green text-brand-yellow">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-green text-white">
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </span>
             </ButtonLink>
@@ -86,16 +86,21 @@ export function Pricing() {
                 key={plan.name}
                 className={
                   plan.emphasized
-                    ? 'relative rounded-3xl bg-brand-yellow p-7 text-brand-green shadow-2xl ring-1 ring-black/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_60px_rgba(244,180,0,0.3)]'
+                    ? 'relative rounded-3xl bg-white p-7 text-slate-900 shadow-2xl ring-2 ring-emerald-400/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_60px_rgba(34,197,94,0.25)]'
                     : 'relative rounded-3xl bg-white/5 p-7 text-white shadow-xl ring-1 ring-white/10 transition-all duration-300 hover:-translate-y-1 hover:bg-white/8 hover:shadow-2xl'
                 }
               >
+                {plan.emphasized && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-green px-3.5 py-1 text-xs font-bold text-white shadow-md">
+                    Most Popular
+                  </span>
+                )}
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p
                       className={
                         plan.emphasized
-                          ? 'text-base font-semibold'
+                          ? 'text-base font-bold text-brand-green'
                           : 'text-base font-semibold text-white'
                       }
                     >
@@ -105,8 +110,8 @@ export function Pricing() {
                       <div
                         className={
                           plan.emphasized
-                            ? 'text-4xl font-extrabold'
-                            : 'text-4xl font-extrabold text-brand-yellow'
+                            ? 'text-4xl font-extrabold text-slate-900'
+                            : 'text-4xl font-extrabold text-white'
                         }
                       >
                         {plan.price}
@@ -114,7 +119,7 @@ export function Pricing() {
                       <div
                         className={
                           plan.emphasized
-                            ? 'pb-1 text-sm font-medium text-brand-green/80'
+                            ? 'pb-1 text-sm font-medium text-slate-500'
                             : 'pb-1 text-sm font-medium text-white/70'
                         }
                       >
@@ -126,8 +131,8 @@ export function Pricing() {
                   <div
                     className={
                       plan.emphasized
-                        ? 'inline-flex h-10 w-10 items-center justify-center rounded-full bg-brand-green text-brand-yellow'
-                        : 'inline-flex h-10 w-10 items-center justify-center rounded-full bg-brand-yellow text-brand-green'
+                        ? 'inline-flex h-10 w-10 items-center justify-center rounded-full bg-brand-green text-white shadow-sm'
+                        : 'inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white'
                     }
                     aria-hidden="true"
                   >
@@ -142,18 +147,20 @@ export function Pricing() {
                       className={
                         f.enabled
                           ? plan.emphasized
-                            ? 'flex items-start gap-3 text-sm'
+                            ? 'flex items-start gap-3 text-sm text-slate-700'
                             : 'flex items-start gap-3 text-sm text-white/90'
-                          : 'flex items-start gap-3 text-sm text-white/35'
+                          : plan.emphasized
+                            ? 'flex items-start gap-3 text-sm text-slate-400'
+                            : 'flex items-start gap-3 text-sm text-white/35'
                       }
                     >
                       <span
                         className={
                           f.enabled
                             ? plan.emphasized
-                              ? 'mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-brand-green text-brand-yellow'
-                              : 'mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-brand-yellow text-brand-green'
-                            : 'mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-white/35'
+                              ? 'mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-brand-green/10 text-brand-green'
+                              : 'mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-400 text-slate-950'
+                            : 'mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-100 dark:bg-white/10 text-slate-400 dark:text-white/35'
                         }
                         aria-hidden="true"
                       >

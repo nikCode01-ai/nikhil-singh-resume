@@ -51,13 +51,13 @@ export async function Blogs({ limit }: BlogsProps) {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold text-brand-green dark:text-brand-yellow">
-              <span className="h-px w-8 bg-brand-green/20 dark:bg-brand-yellow/20" />
+            <p className="inline-flex items-center gap-2 text-sm font-semibold text-brand-green dark:text-emerald-400">
+              <span className="h-px w-8 bg-brand-green/20 dark:bg-emerald-500/20" />
               News & Blogs
             </p>
             <h2 className="mt-3 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
               Latest{' '}
-              <span className="text-brand-green dark:text-brand-yellow">
+              <span className="text-brand-green dark:text-brand-greenLight">
                 Insights
               </span>
             </h2>
@@ -79,7 +79,7 @@ export async function Blogs({ limit }: BlogsProps) {
             <Link
               key={post.slug}
               href={`/blogs/${post.slug}`}
-              className="group block card-premium overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950"
+              className="group block card-premium overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950"
             >
               <article>
                 <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-900">
@@ -88,7 +88,7 @@ export async function Blogs({ limit }: BlogsProps) {
                       src={post.image}
                       alt={post.title}
                       fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />
                   )}
@@ -96,7 +96,7 @@ export async function Blogs({ limit }: BlogsProps) {
                 </div>
                 <div className="p-5 sm:p-6">
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-green/8 dark:bg-brand-yellow/8 text-brand-green dark:text-brand-yellow text-xs font-semibold">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-green/8 dark:bg-emerald-500/10 text-brand-green dark:text-emerald-400 text-xs font-semibold">
                       <Tag className="w-3 h-3" />
                       {post.category}
                     </span>
@@ -105,7 +105,7 @@ export async function Blogs({ limit }: BlogsProps) {
                       {post.readingTime}
                     </span>
                   </div>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-green dark:group-hover:text-brand-yellow transition-colors">
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-green dark:group-hover:text-brand-greenLight transition-colors">
                     {post.title}
                   </h3>
                   <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300 line-clamp-2">
@@ -122,7 +122,7 @@ export async function Blogs({ limit }: BlogsProps) {
                         </span>
                       ))}
                     </div>
-                    <div className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-green dark:text-brand-yellow group-hover:gap-2.5 transition-all">
+                    <div className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-green dark:text-brand-greenLight group-hover:gap-2.5 transition-all">
                       Read More
                       <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
                     </div>

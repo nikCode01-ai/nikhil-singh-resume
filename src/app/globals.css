@@ -91,7 +91,7 @@
 
 @layer components {
   .btn-brand {
-    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60 dark:focus-visible:ring-offset-slate-950;
     background: linear-gradient(135deg, #1f4d37 0%, #173a2a 100%);
     color: white;
     border-radius: var(--radius-md);
@@ -129,7 +129,7 @@
   }
 
   .btn-brand-secondary {
-    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60 dark:focus-visible:ring-offset-slate-950;
     border: 1.5px solid var(--border);
     background: var(--card);
     color: var(--foreground);
@@ -152,29 +152,39 @@
     color: #f1f5f9;
   }
   html.dark .btn-brand-secondary:hover {
-    border-color: rgba(244, 180, 0, 0.4);
-    background: #1a2332;
-    color: #f4b400;
+    border-color: rgba(31, 77, 55, 0.5);
+    background: #1e3a2b;
+    color: #ffffff;
   }
 
   .btn-brand-accent {
-    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60;
-    background: linear-gradient(135deg, #f4b400 0%, #e5a800 100%);
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60 dark:focus-visible:ring-offset-slate-950;
+    background: #ffffff;
     color: #1f4d37;
+    border: 1.5px solid rgba(31, 77, 55, 0.15);
     border-radius: var(--radius-md);
     padding: 12px 28px;
-    box-shadow: 0 2px 8px rgba(244, 180, 0, 0.25);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
   .btn-brand-accent:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(244, 180, 0, 0.35);
+    background: #f8fafc;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   }
   .btn-brand-accent:active {
     transform: translateY(0);
   }
+  html.dark .btn-brand-accent {
+    background: #ffffff;
+    color: #1f4d37;
+    border-color: transparent;
+  }
+  html.dark .btn-brand-accent:hover {
+    background: #f1f5f9;
+  }
 
   .btn-brand-ghost {
-    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60 dark:focus-visible:ring-offset-slate-950;
     border: 1.5px solid transparent;
     background: transparent;
     color: var(--foreground);
@@ -190,11 +200,11 @@
   }
   html.dark .btn-brand-ghost:hover {
     background: #1a2332;
-    color: #f4b400;
+    color: #ffffff;
   }
 
   .btn-brand-pill {
-    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60 dark:focus-visible:ring-offset-slate-950;
     border: 1.5px solid var(--border);
     background: var(--card);
     color: var(--foreground);
@@ -214,21 +224,21 @@
     color: #f1f5f9;
   }
   html.dark .btn-brand-pill:hover {
-    border-color: rgba(244, 180, 0, 0.4);
-    color: #f4b400;
+    border-color: rgba(74, 222, 128, 0.4);
+    color: #ffffff;
   }
 
   .btn-brand-inverse {
-    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60;
-    border: 2px solid rgba(244, 180, 0, 0.5);
-    background: transparent;
-    color: #f4b400;
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60 dark:focus-visible:ring-offset-slate-950;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
     border-radius: var(--radius-md);
     padding: 12px 28px;
   }
   .btn-brand-inverse:hover {
-    border-color: #f4b400;
-    background: linear-gradient(135deg, #f4b400 0%, #e5a800 100%);
+    border-color: #ffffff;
+    background: #ffffff;
     color: #1f4d37;
     transform: translateY(-2px);
   }
