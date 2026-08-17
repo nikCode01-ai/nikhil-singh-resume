@@ -89,6 +89,35 @@
   }
 }
 
+/* Global Dark Mode Fixes */
+@layer utilities {
+  /* Automatically make dark slate text visible in dark mode */
+  html.dark .text-slate-900,
+  html.dark .text-slate-800,
+  html.dark .text-slate-700 {
+    color: var(--foreground);
+  }
+
+  html.dark .text-slate-600,
+  html.dark .text-slate-500 {
+    color: var(--muted);
+  }
+
+  /* Automatically convert light backgrounds to dark cards */
+  html.dark .bg-white,
+  html.dark .bg-slate-50,
+  html.dark .bg-slate-100 {
+    background-color: var(--card);
+  }
+
+  /* Automatically adapt borders */
+  html.dark .border-slate-100,
+  html.dark .border-slate-200,
+  html.dark .border-slate-300 {
+    border-color: var(--border);
+  }
+}
+
 @layer components {
   .btn-brand {
     @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60 dark:focus-visible:ring-offset-slate-950;
