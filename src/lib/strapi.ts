@@ -26,6 +26,7 @@ async function fetchStrapi<T>(
 
   const fetchOptions: RequestInit & { next?: { revalidate?: number } } = {
     headers,
+    signal: AbortSignal.timeout(5000),
   };
   if (options?.next) {
     fetchOptions.next = options.next;
@@ -33,13 +34,25 @@ async function fetchStrapi<T>(
   if (options?.cache) {
     fetchOptions.cache = options.cache as RequestCache;
   }
-  const res = await fetch(url, fetchOptions);
 
-  if (!res.ok) {
-    throw new Error(`Strapi API error: ${res.status} ${res.statusText}`);
+  try {
+    const res = await fetch(url, fetchOptions);
+
+    if (!res.ok) {
+      throw new Error(`Strapi API error: ${res.status} ${res.statusText}`);
+    }
+
+    const contentType = res.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      throw new Error(
+        `Invalid content-type: expected JSON, got ${contentType}`
+      );
+    }
+
+    return await res.json();
+  } catch (error) {
+    throw error;
   }
-
-  return res.json();
 }
 
 export type StrapiBlog = {

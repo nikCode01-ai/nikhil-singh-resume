@@ -1,0 +1,19 @@
+name: Update Stats Cards
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate Stats
+        uses: anuraghazra/github-readme-stats@master
+        with:
+          username: nikCode01-ai
+          token: ${{ secrets.GITHUB_TOKEN }}

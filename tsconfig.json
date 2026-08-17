@@ -23,16 +23,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": [
-    "node_modules",
-    "backend",
-    "nik_be",
-    "config",
-    "dist",
-    "build",
-    "src/api",
-    "src/admin",
-    "src/extensions",
-    "src/index.ts"
-  ]
+  "exclude": ["node_modules", "backend", "nik_be", "config", "dist", "build"]
 }

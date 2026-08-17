@@ -49,14 +49,16 @@ export async function POST(request: Request) {
       const content = fs.readFileSync(filePath, 'utf-8');
       try {
         generatedBlogs = JSON.parse(content);
-      } catch (e) {}
+      } catch {
+        generatedBlogs = [];
+      }
     }
 
     generatedBlogs.push(newBlog);
     fs.writeFileSync(filePath, JSON.stringify(generatedBlogs, null, 2));
 
     return NextResponse.json({ success: true, blog: newBlog });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Failed to generate blog' },
       { status: 500 }

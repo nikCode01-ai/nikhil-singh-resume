@@ -25,7 +25,11 @@ export async function Blogs({ limit }: BlogsProps) {
   let posts: ReturnType<typeof mapBlog>[];
   try {
     const strapiPosts = await getBlogs();
-    posts = strapiPosts.map(mapBlog);
+    if (strapiPosts && strapiPosts.length > 0) {
+      posts = strapiPosts.map(mapBlog);
+    } else {
+      throw new Error('No Strapi posts');
+    }
   } catch {
     posts = blogPosts.map((p) => ({
       slug: p.slug,

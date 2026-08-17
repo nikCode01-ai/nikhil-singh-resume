@@ -1,12 +1,24 @@
 'use client';
 
 import { useState } from 'react';
+import type { BlogPostBodyBlock } from '@/lib/blog-posts';
+
+interface GeneratedBlogPreview {
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  date: string;
+  readingTime: string;
+  tags: string[];
+  body: BlogPostBodyBlock[];
+}
 
 export default function AdminBlogsPage() {
   const [topic, setTopic] = useState('');
   const [category, setCategory] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [preview, setPreview] = useState<any>(null);
+  const [preview, setPreview] = useState<GeneratedBlogPreview | null>(null);
   const [message, setMessage] = useState('');
 
   const handleGenerate = async (e: React.FormEvent) => {
@@ -31,7 +43,7 @@ export default function AdminBlogsPage() {
       } else {
         setMessage(data.error || 'Failed to generate blog');
       }
-    } catch (err) {
+    } catch {
       setMessage('Error connecting to the server');
     } finally {
       setIsLoading(false);
@@ -119,7 +131,7 @@ export default function AdminBlogsPage() {
             </div>
             <p className="lead italic">{preview.excerpt}</p>
 
-            {preview.body.map((block: any, idx: number) => {
+            {preview.body.map((block: BlogPostBodyBlock, idx: number) => {
               if (block.type === 'heading')
                 return <h3 key={idx}>{block.text}</h3>;
               if (block.type === 'paragraph')

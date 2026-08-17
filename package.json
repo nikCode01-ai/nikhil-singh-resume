@@ -1,56 +1,52 @@
 {
-  "name": "nik-be",
+  "name": "portfolio-monorepo",
   "version": "0.1.0",
   "private": true,
-  "description": "A Strapi application",
   "scripts": {
-    "postinstall": "npm install @codemirror/state@6.7.0 @codemirror/view@6.43.5 --save-exact || true",
-    "build": "strapi build",
-    "console": "strapi console",
-    "deploy": "strapi deploy",
-    "dev": "strapi develop",
-    "develop": "strapi develop",
-    "start": "strapi start",
-    "strapi": "strapi",
-    "upgrade": "npx @strapi/upgrade latest",
-    "upgrade:dry": "npx @strapi/upgrade latest --dry"
-  },
-  "dependencies": {
-    "@codemirror/state": "6.7.0",
-    "@codemirror/view": "6.43.5",
-    "@strapi/admin": "5.50.1",
-    "@strapi/content-manager": "5.50.1",
-    "@strapi/content-type-builder": "5.50.1",
-    "@strapi/plugin-cloud": "5.50.1",
-    "@strapi/plugin-users-permissions": "5.50.1",
-    "@strapi/strapi": "5.50.1",
-    "@strapi/upload": "5.50.1",
-    "pg": "^8.13.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "^6.0.0",
-    "styled-components": "^6.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "typescript": "^5"
-  },
-  "engines": {
-    "node": ">=20.0.0 <=26.x.x",
-    "npm": ">=6.0.0"
-  },
-  "overrides": {
-    "@codemirror/state": "6.7.0",
-    "@codemirror/view": "6.43.5"
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "next dev",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "next build",
+    "build:backend": "cd backend && npm run build",
+    "start": "cd backend && npm run start",
+    "start:frontend": "next start",
+    "lint": "eslint",
+    "format": "prettier --write .",
+    "prepare": "husky"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": ["prettier --write", "prettier --check"],
-    "*.{json,md,css,yml,yaml}": ["prettier --write"]
+    "*.{ts,tsx,js,jsx}": [
+      "prettier --write",
+      "prettier --check"
+    ],
+    "*.{json,md,css,yml,yaml}": [
+      "prettier --write"
+    ]
   },
-  "strapi": {
-    "uuid": "3d81613f-0cca-4dc1-85b6-69febab6f531",
-    "installId": "27bfd54e1f28ef5546203937636b0e07ecb8a884b52dd4dcf7ef90ef409230c4"
+  "dependencies": {
+    "docx": "^9.5.1",
+    "framer-motion": "^12.30.0",
+    "lucide-react": "^0.563.0",
+    "next": "15.5.12",
+    "pdfkit": "^0.17.2",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/pdfkit": "^0.17.4",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "concurrently": "^10.0.3",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.12",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }

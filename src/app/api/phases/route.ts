@@ -156,7 +156,7 @@ export async function GET() {
       phases = parsePhasesFile(content);
     }
 
-    const _docs = getDocsInfo();
+    getDocsInfo();
     const requirements = getRequirements();
 
     const completed = phases.filter((p) => p.status === 'done').length;
