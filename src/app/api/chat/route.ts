@@ -4,7 +4,7 @@ import {
   professionalSummary,
   technicalSkills,
 } from '@/lib/resume-data';
-import { createIssue, getIssue, listIssues } from '@/lib/github';
+import { getIssue, listIssues } from '@/lib/github';
 
 export const runtime = 'nodejs';
 
@@ -35,11 +35,10 @@ function buildSystemPrompt() {
 
   const githubToolsSection = `
 You have access to GitHub issue management tools for this repository:
-- create_issue: Create a new issue (requires title and body, auto-tagged with 'ai-generated')
 - list_issues: View existing issues (optional: state='open'|'closed'|'all', limit)
 - get_issue: Get details of a specific issue (requires issue_number)
 
-When the user asks to create, view, or manage issues, use the appropriate tool.
+When the user asks to view or manage issues, use the appropriate tool.
 Be helpful and proactive in using these tools when the user's intent involves issue management.
 `;
 
@@ -86,27 +85,6 @@ const TOOLS = [
   {
     type: 'function' as const,
     function: {
-      name: 'create_issue',
-      description: 'Create a new GitHub issue in the repository',
-      parameters: {
-        type: 'object',
-        properties: {
-          title: {
-            type: 'string',
-            description: 'The title of the issue',
-          },
-          body: {
-            type: 'string',
-            description: 'The body/description of the issue',
-          },
-        },
-        required: ['title', 'body'],
-      },
-    },
-  },
-  {
-    type: 'function' as const,
-    function: {
       name: 'list_issues',
       description: 'List GitHub issues in the repository',
       parameters: {
@@ -150,19 +128,6 @@ async function executeToolCall(
 ): Promise<string> {
   try {
     switch (name) {
-      case 'create_issue': {
-        const title = String(args.title || '');
-        const body = String(args.body || '');
-        if (!title || !body) {
-          return 'Error: Both title and body are required for creating an issue.';
-        }
-        const result = await createIssue(title, body);
-        return JSON.stringify({
-          success: true,
-          issue: result,
-          message: `Issue #${result.number} created successfully`,
-        });
-      }
       case 'list_issues': {
         const state = (args.state as 'open' | 'closed' | 'all') || 'open';
         const limit = Number(args.limit) || 10;

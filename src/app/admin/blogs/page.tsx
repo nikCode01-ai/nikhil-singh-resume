@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { BlogPostBodyBlock } from '@/lib/blog-posts';
+import { generateBlog } from './actions';
 
 interface GeneratedBlogPreview {
   slug: string;
@@ -30,18 +31,12 @@ export default function AdminBlogsPage() {
     setPreview(null);
 
     try {
-      const res = await fetch('/api/blogs/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic, category }),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        setPreview(data.blog);
-        setMessage('Blog generated and saved successfully!');
+      const result = await generateBlog(topic, category);
+      if ('error' in result) {
+        setMessage(result.error || 'Failed to generate blog');
       } else {
-        setMessage(data.error || 'Failed to generate blog');
+        setPreview(result.blog);
+        setMessage('Blog generated and saved successfully!');
       }
     } catch {
       setMessage('Error connecting to the server');

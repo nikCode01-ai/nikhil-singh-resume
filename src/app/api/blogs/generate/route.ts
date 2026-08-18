@@ -4,6 +4,15 @@ import path from 'path';
 
 export async function POST(request: Request) {
   try {
+    const authHeader = request.headers.get('authorization');
+    const token = authHeader?.startsWith('Bearer ')
+      ? authHeader.split(' ')[1]
+      : null;
+
+    if (!token || token !== process.env.ADMIN_API_KEY) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { topic, category } = await request.json();
 
     if (!topic || !category) {
