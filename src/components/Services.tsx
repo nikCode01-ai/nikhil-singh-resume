@@ -274,7 +274,11 @@ export async function Services({ variant = 'section' }: ServicesProps) {
 
         <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
           {serviceList.map((service, index) => (
-            <div key={index} className="group relative card-premium p-6 sm:p-8">
+            <FadeIn
+              key={index}
+              delay={0.1 * index}
+              className="group relative card-premium p-6 sm:p-8"
+            >
               <span
                 className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-brand-green via-emerald-400 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-t-2xl"
                 aria-hidden="true"
@@ -318,7 +322,7 @@ export async function Services({ variant = 'section' }: ServicesProps) {
                   className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
                 />
               </ButtonLink>
-            </div>
+            </FadeIn>
           ))}
         </div>
 
@@ -337,8 +341,9 @@ export async function Services({ variant = 'section' }: ServicesProps) {
               </p>
               <div className="mt-6 grid gap-5 md:grid-cols-2">
                 {deliverySteps.map((step, stepIndex) => (
-                  <div
+                  <FadeIn
                     key={step.title}
+                    delay={0.1 * stepIndex}
                     className="rounded-2xl bg-slate-50 dark:bg-white/3 p-5 ring-1 ring-slate-100 dark:ring-white/5"
                   >
                     <div className="flex items-center gap-3">
@@ -352,7 +357,7 @@ export async function Services({ variant = 'section' }: ServicesProps) {
                     <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
                       {step.description}
                     </p>
-                  </div>
+                  </FadeIn>
                 ))}
               </div>
             </div>

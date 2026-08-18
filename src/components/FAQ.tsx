@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { ButtonLink } from '@/components/Button';
 import { FadeIn } from '@/components/FadeIn';
+import { motion } from 'framer-motion';
 
 const faqs = [
   {
@@ -145,11 +146,33 @@ export function FAQ() {
         </FadeIn>
 
         <div className="max-w-4xl mx-auto">
-          <div className="space-y-2.5">
+          <motion.div
+            className="space-y-2.5"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.1 },
+              },
+            }}
+          >
             {faqs.map((faq) => {
               const isOpen = openId === faq.id;
               return (
-                <div key={faq.id} className="card-premium overflow-hidden">
+                <motion.div
+                  key={faq.id}
+                  className="card-premium overflow-hidden"
+                  variants={{
+                    hidden: { opacity: 0, y: 15 },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      transition: { duration: 0.4, ease: 'easeOut' },
+                    },
+                  }}
+                >
                   <button
                     onClick={() => toggleItem(faq.id)}
                     className="w-full px-5 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between gap-4 transition-all duration-200 hover:bg-slate-50/50 dark:hover:bg-white/3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950 rounded-xl"
@@ -181,10 +204,10 @@ export function FAQ() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
 
           <div className="mt-12 text-center card-premium p-6 sm:p-8">
             <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-3">

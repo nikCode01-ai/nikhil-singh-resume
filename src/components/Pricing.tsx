@@ -1,7 +1,11 @@
+'use client';
+
 import { ButtonLink } from '@/components/Button';
 import { Container } from '@/components/Container';
 import { featuredProjects, flagshipProject } from '@/lib/resume-data';
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
+import { FadeIn } from '@/components/FadeIn';
+import { motion } from 'framer-motion';
 
 const plans = [
   {
@@ -57,32 +61,53 @@ export function Pricing() {
       <div className="pointer-events-none absolute inset-0 opacity-30 [background:radial-gradient(900px_circle_at_20%_10%,rgba(74,222,128,0.25),transparent_55%),radial-gradient(900px_circle_at_80%_30%,rgba(255,255,255,0.12),transparent_60%)]" />
       <Container>
         <div className="relative py-12 sm:py-16">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
-            <div className="space-y-4">
-              <p className="text-sm font-semibold tracking-wide text-emerald-300">
-                Pricing Table
-              </p>
-              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-                My <span className="text-emerald-300">Pricing</span> Model
-              </h1>
+          <FadeIn>
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+              <div className="space-y-4">
+                <p className="text-sm font-semibold tracking-wide text-emerald-300">
+                  Pricing Table
+                </p>
+                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+                  My <span className="text-emerald-300">Pricing</span> Model
+                </h1>
+              </div>
+
+              <ButtonLink
+                href="/contact"
+                variant="primary"
+                size="sm"
+                className="h-10 gap-2 rounded-full bg-white px-6 text-brand-green hover:bg-slate-100 transition-colors shadow-sm font-bold"
+              >
+                Start a Project
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-green text-white">
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </span>
+              </ButtonLink>
             </div>
+          </FadeIn>
 
-            <ButtonLink
-              href="/contact"
-              variant="primary"
-              size="sm"
-              className="h-10 gap-2 rounded-full bg-white px-6 text-brand-green hover:bg-slate-100 transition-colors shadow-sm font-bold"
-            >
-              Start a Project
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-green text-white">
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </span>
-            </ButtonLink>
-          </div>
-
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+          <motion.div
+            className="mt-10 grid gap-6 lg:grid-cols-3"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.15 },
+              },
+            }}
+          >
             {plans.map((plan) => (
-              <div
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.5, ease: 'easeOut' },
+                  },
+                }}
                 key={plan.name}
                 className={
                   plan.emphasized
@@ -174,9 +199,9 @@ export function Pricing() {
                 {plan.emphasized ? (
                   <div className="pointer-events-none absolute inset-x-6 -bottom-6 h-10 rounded-3xl bg-black/10 blur-xl" />
                 ) : null}
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <div className="mt-10 rounded-3xl bg-white/5 p-7 ring-1 ring-white/10">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
