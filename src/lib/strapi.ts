@@ -144,7 +144,10 @@ export async function getBlogs(): Promise<StrapiBlog[]> {
 export async function getBlogBySlug(slug: string): Promise<StrapiBlog | null> {
   try {
     const res = await fetchStrapi<StrapiBlog[]>(
-      `/blogs?filters[slug][$eq]=${slug}&populate=featured_image`
+      `/blogs?filters[slug][$eq]=${slug}&populate=featured_image`,
+      {
+        next: { revalidate: 300 },
+      }
     );
     const blog = res.data[0] || null;
     if (
@@ -188,7 +191,10 @@ export async function getProjectBySlug(
 ): Promise<StrapiProject | null> {
   try {
     const res = await fetchStrapi<StrapiProject[]>(
-      `/projects?filters[slug][$eq]=${slug}&populate=*`
+      `/projects?filters[slug][$eq]=${slug}&populate=*`,
+      {
+        next: { revalidate: 300 },
+      }
     );
     const project = res.data[0] || null;
     if (project?.image?.url && !project.image.url.startsWith('http')) {
