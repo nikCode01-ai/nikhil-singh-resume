@@ -51,7 +51,10 @@ export default function Home() {
               />
               Airline NDC Integrations
             </span>
-            <span className="hidden sm:block text-slate-700" aria-hidden="true">
+            <span
+              className="hidden sm:block text-emerald-500/40"
+              aria-hidden="true"
+            >
               &bull;
             </span>
             <span className="flex items-center gap-2">
@@ -61,7 +64,10 @@ export default function Home() {
               />
               Full-Stack Next.js Platforms
             </span>
-            <span className="hidden sm:block text-slate-700" aria-hidden="true">
+            <span
+              className="hidden sm:block text-emerald-500/40"
+              aria-hidden="true"
+            >
               &bull;
             </span>
             <span className="flex items-center gap-2">
@@ -71,7 +77,10 @@ export default function Home() {
               />
               Real-Time WebSockets / SSE
             </span>
-            <span className="hidden sm:block text-slate-700" aria-hidden="true">
+            <span
+              className="hidden sm:block text-emerald-500/40"
+              aria-hidden="true"
+            >
               &bull;
             </span>
             <span className="flex items-center gap-2">

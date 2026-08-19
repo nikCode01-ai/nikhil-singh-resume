@@ -97,6 +97,7 @@ const iconMap: Record<string, LucideIcon> = {
 const colorTokenMap: Record<string, string> = {
   'brand-green': '#1f4d37',
   'brand-greenDark': '#173a2a',
+  'brand-greenLight': '#34d399',
   'brand-yellow': '#f4b400',
   'brand-cream': '#f7f5ef',
   white: '#ffffff',

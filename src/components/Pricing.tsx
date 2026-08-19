@@ -76,7 +76,7 @@ export function Pricing() {
                 href="/contact"
                 variant="primary"
                 size="sm"
-                className="h-10 gap-2 rounded-full bg-white px-6 text-brand-green hover:bg-slate-100 transition-colors shadow-sm font-bold"
+                className="h-10 gap-2 rounded-full bg-white dark:bg-slate-900 px-6 text-brand-green dark:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shadow-sm font-bold"
               >
                 Start a Project
                 <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-green text-white">
@@ -111,12 +111,12 @@ export function Pricing() {
                 key={plan.name}
                 className={
                   plan.emphasized
-                    ? 'relative rounded-3xl bg-white p-7 text-slate-900 shadow-2xl ring-2 ring-emerald-400/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_60px_rgba(34,197,94,0.25)]'
+                    ? 'relative rounded-3xl bg-white dark:bg-slate-900 p-7 text-slate-900 dark:text-white shadow-2xl ring-2 ring-emerald-400/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_60px_rgba(34,197,94,0.25)]'
                     : 'relative rounded-3xl bg-white/5 p-7 text-white shadow-xl ring-1 ring-white/10 transition-all duration-300 hover:-translate-y-1 hover:bg-white/8 hover:shadow-2xl'
                 }
               >
                 {plan.emphasized && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-green px-3.5 py-1 text-xs font-bold text-white shadow-md">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-green dark:bg-emerald-600 px-3.5 py-1 text-xs font-bold text-white shadow-md">
                     Most Popular
                   </span>
                 )}
@@ -125,7 +125,7 @@ export function Pricing() {
                     <p
                       className={
                         plan.emphasized
-                          ? 'text-base font-bold text-brand-green'
+                          ? 'text-base font-bold text-brand-green dark:text-emerald-400'
                           : 'text-base font-semibold text-white'
                       }
                     >
@@ -135,7 +135,7 @@ export function Pricing() {
                       <div
                         className={
                           plan.emphasized
-                            ? 'text-4xl font-extrabold text-slate-900'
+                            ? 'text-4xl font-extrabold text-slate-900 dark:text-white'
                             : 'text-4xl font-extrabold text-white'
                         }
                       >
@@ -144,7 +144,7 @@ export function Pricing() {
                       <div
                         className={
                           plan.emphasized
-                            ? 'pb-1 text-sm font-medium text-slate-500'
+                            ? 'pb-1 text-sm font-medium text-slate-500 dark:text-slate-400'
                             : 'pb-1 text-sm font-medium text-white/70'
                         }
                       >
@@ -156,7 +156,7 @@ export function Pricing() {
                   <div
                     className={
                       plan.emphasized
-                        ? 'inline-flex h-10 w-10 items-center justify-center rounded-full bg-brand-green text-white shadow-sm'
+                        ? 'inline-flex h-10 w-10 items-center justify-center rounded-full bg-brand-green dark:bg-emerald-600 text-white shadow-sm'
                         : 'inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white'
                     }
                     aria-hidden="true"
@@ -172,10 +172,10 @@ export function Pricing() {
                       className={
                         f.enabled
                           ? plan.emphasized
-                            ? 'flex items-start gap-3 text-sm text-slate-700'
+                            ? 'flex items-start gap-3 text-sm text-slate-700 dark:text-slate-200'
                             : 'flex items-start gap-3 text-sm text-white/90'
                           : plan.emphasized
-                            ? 'flex items-start gap-3 text-sm text-slate-400'
+                            ? 'flex items-start gap-3 text-sm text-slate-400 dark:text-slate-500'
                             : 'flex items-start gap-3 text-sm text-white/35'
                       }
                     >
@@ -183,7 +183,7 @@ export function Pricing() {
                         className={
                           f.enabled
                             ? plan.emphasized
-                              ? 'mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-brand-green/10 text-brand-green'
+                              ? 'mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-brand-green/10 dark:bg-emerald-500/20 text-brand-green dark:text-emerald-400'
                               : 'mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-400 text-slate-950'
                             : 'mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-100 dark:bg-white/10 text-slate-400 dark:text-white/35'
                         }
