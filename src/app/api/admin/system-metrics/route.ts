@@ -28,12 +28,41 @@ async function checkServiceHealth(
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   const startTime = Date.now();
   try {
-    const events = getVisitorEvents();
+    const { searchParams } = new URL(request.url);
+    const timeframe = searchParams.get('timeframe') || '1d'; // '1d' | '7d' | '30d' | 'all'
+
+    const now = Date.now();
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const timeframeMs =
+      timeframe === '1d'
+        ? 1 * msPerDay
+        : timeframe === '7d'
+          ? 7 * msPerDay
+          : timeframe === '30d'
+            ? 30 * msPerDay
+            : Infinity;
+
+    const allEvents = getVisitorEvents();
     const activeSessions = getActiveSessions();
-    const messages = getInboxMessages();
+    const allMessages = getInboxMessages();
+
+    // Filter events and messages based on selected timeframe
+    const events =
+      timeframeMs === Infinity
+        ? allEvents
+        : allEvents.filter(
+            (e) => now - new Date(e.timestamp).getTime() <= timeframeMs
+          );
+
+    const messages =
+      timeframeMs === Infinity
+        ? allMessages
+        : allMessages.filter(
+            (m) => now - new Date(m.createdAt).getTime() <= timeframeMs
+          );
 
     // Check Real Services
     const [groqHealth, emailHealth, appServerHealth] = await Promise.all([

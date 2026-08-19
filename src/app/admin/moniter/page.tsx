@@ -74,15 +74,19 @@ interface LiveMonitorData {
 export default function AdminMonitorPage() {
   const [data, setData] = useState<LiveMonitorData | null>(null);
   const [pollInterval, setPollInterval] = useState<number>(3000); // 3s polling
+  const [timeframe, setTimeframe] = useState<'1d' | '7d' | '30d' | 'all'>('1d');
   const [isPaused, setIsPaused] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const fetchLiveMonitor = useCallback(async () => {
     try {
       setIsRefreshing(true);
-      const res = await fetch('/api/admin/system-metrics', {
-        headers: { 'Cache-Control': 'no-cache' },
-      });
+      const res = await fetch(
+        `/api/admin/system-metrics?timeframe=${timeframe}`,
+        {
+          headers: { 'Cache-Control': 'no-cache' },
+        }
+      );
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json: LiveMonitorData = await res.json();
       setData(json);
@@ -91,7 +95,7 @@ export default function AdminMonitorPage() {
     } finally {
       setIsRefreshing(false);
     }
-  }, []);
+  }, [timeframe]);
 
   useEffect(() => {
     fetchLiveMonitor();
@@ -133,6 +137,30 @@ export default function AdminMonitorPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
+            {/* Timeframe Filter Buttons: 1 Day, 7 Days, 30 Days, All */}
+            <div className="flex items-center bg-white/10 p-1 rounded-xl border border-white/15 backdrop-blur-md">
+              {(
+                [
+                  { id: '1d', label: '1 Day' },
+                  { id: '7d', label: '7 Days' },
+                  { id: '30d', label: '30 Days' },
+                  { id: 'all', label: 'All Time' },
+                ] as const
+              ).map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => setTimeframe(t.id)}
+                  className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    timeframe === t.id
+                      ? 'bg-emerald-500 text-white shadow-md'
+                      : 'text-slate-300 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+
             <select
               aria-label="Select refresh interval"
               value={pollInterval}
