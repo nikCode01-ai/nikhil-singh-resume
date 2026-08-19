@@ -168,12 +168,22 @@ export async function getBlogBySlug(slug: string): Promise<StrapiBlog | null> {
 export async function getProjects(): Promise<StrapiProject[]> {
   try {
     const res = await fetchStrapi<StrapiProject[]>(
-      '/projects?pagination[pageSize]=100&sort=createdAt:desc',
+      '/projects?pagination[pageSize]=100&sort=createdAt:desc&populate=*',
       {
         next: { revalidate: 300 },
       }
     );
-    return res.data;
+    return res.data.map((project) => ({
+      ...project,
+      image: project.image
+        ? {
+            ...project.image,
+            url: project.image.url?.startsWith('http')
+              ? project.image.url
+              : `${STRAPI_URL}${project.image.url}`,
+          }
+        : undefined,
+    }));
   } catch {
     return [];
   }
@@ -184,9 +194,13 @@ export async function getProjectBySlug(
 ): Promise<StrapiProject | null> {
   try {
     const res = await fetchStrapi<StrapiProject[]>(
-      `/projects?filters[slug][$eq]=${slug}`
+      `/projects?filters[slug][$eq]=${slug}&populate=*`
     );
-    return res.data[0] || null;
+    const project = res.data[0] || null;
+    if (project?.image?.url && !project.image.url.startsWith('http')) {
+      project.image.url = `${STRAPI_URL}${project.image.url}`;
+    }
+    return project;
   } catch {
     return null;
   }

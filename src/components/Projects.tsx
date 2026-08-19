@@ -26,10 +26,16 @@ const STRAPI_URL =
   process.env.NEXT_PUBLIC_STRAPI_URL || 'https://nik-be.onrender.com';
 
 function mapStrapiProject(p: StrapiProject) {
+  let imgUrl: string | undefined = undefined;
+  if (p.image?.url) {
+    imgUrl = p.image.url.startsWith('http')
+      ? p.image.url
+      : `${STRAPI_URL}${p.image.url}`;
+  }
   return {
     name: p.name,
     description: p.description,
-    image: p.image?.url || undefined,
+    image: imgUrl,
     category: p.category || 'repository',
     tags: (p.tags || []).slice(0, 2),
     url: p.url || person.gitlabUrl,
@@ -84,7 +90,7 @@ export function Projects() {
 
   useEffect(() => {
     fetch(
-      `${STRAPI_URL}/api/projects?pagination[pageSize]=100&sort=createdAt:desc`
+      `${STRAPI_URL}/api/projects?pagination[pageSize]=100&sort=createdAt:desc&populate=*`
     )
       .then((res) => res.json())
       .then((json: { data?: StrapiProject[] }) => {

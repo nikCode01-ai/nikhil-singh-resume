@@ -35,9 +35,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <section id="home" className="scroll-mt-24">
-        <Hero />
-      </section>
+      <Hero />
 
       {/* Modern Feature Highlights Marquee / Strip */}
       <section
@@ -87,37 +85,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="services" className="scroll-mt-24">
-        <Services />
-      </section>
-
-      <section id="about" className="scroll-mt-24">
-        <About />
-      </section>
-
-      <section id="skills" className="scroll-mt-24">
-        <LazySkills />
-      </section>
-
-      <section id="projects" className="scroll-mt-24">
-        <LazyProjects />
-      </section>
-
-      <section id="testimonials" className="scroll-mt-24">
-        <Testimonials />
-      </section>
-
-      <section id="blogs" className="scroll-mt-24">
-        <Blogs limit={3} />
-      </section>
-
-      <section id="faqs" className="scroll-mt-24">
-        <FAQ />
-      </section>
-
-      <section id="contact" className="scroll-mt-24">
-        <ContactSection />
-      </section>
+      <Services />
+      <About />
+      <LazySkills />
+      <LazyProjects />
+      <Testimonials />
+      <Blogs limit={3} />
+      <FAQ />
+      <ContactSection />
     </div>
   );
 }

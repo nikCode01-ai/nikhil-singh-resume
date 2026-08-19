@@ -4,7 +4,7 @@ test('homepage loads and animations render without breaking layout', async ({
   page,
 }) => {
   // Go to homepage
-  await page.goto('/');
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
 
   // Wait for the hero section to be visible
   const heroSection = page.locator('section', { hasText: "Hi, I'm" }).first();

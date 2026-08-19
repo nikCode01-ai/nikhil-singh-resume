@@ -121,8 +121,9 @@ export async function Services({ variant = 'section' }: ServicesProps) {
 
   return (
     <section
+      id="services"
       className={cn(
-        'relative overflow-hidden bg-white dark:bg-slate-950',
+        'relative overflow-hidden bg-white dark:bg-slate-950 scroll-mt-24',
         isPage ? 'section-padding' : 'py-20 sm:py-24'
       )}
     >

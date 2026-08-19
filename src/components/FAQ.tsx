@@ -115,7 +115,8 @@ export function FAQ() {
 
   return (
     <section
-      className="bg-white dark:bg-slate-950 section-padding relative overflow-hidden"
+      id="faqs"
+      className="bg-white dark:bg-slate-950 section-padding relative overflow-hidden scroll-mt-24"
       aria-labelledby="faq-heading"
     >
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">

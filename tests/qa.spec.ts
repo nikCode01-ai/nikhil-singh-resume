@@ -4,7 +4,7 @@ test.describe('UI Final QA Regression', () => {
   test('Home page sections (Services, FAQ, Contact) load and animations do not block interactions', async ({
     page,
   }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     // Check Services section
     const servicesSection = page.locator('#services');
@@ -31,10 +31,12 @@ test.describe('UI Final QA Regression', () => {
   test('Pricing page loads and animations do not block interactions', async ({
     page,
   }) => {
-    await page.goto('/price');
+    await page.goto('/price', { waitUntil: 'domcontentloaded' });
 
     // Wait for the pricing section to load
-    const pricingHeading = page.locator('text=Pricing Model');
+    const pricingHeading = page.getByRole('heading', {
+      name: /Pricing Model/i,
+    });
     await expect(pricingHeading).toBeVisible();
 
     // Check a plan element and ensure it's interactive
