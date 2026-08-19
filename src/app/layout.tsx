@@ -8,6 +8,8 @@ import { LazyChatbot } from '@/components/LazyChatbot';
 import { Footer } from '@/components/Footer';
 import { ScrollToTopButton } from '@/components/ScrollToTopButton';
 
+import { SITE_URL } from '@/lib/utils';
+
 const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
@@ -23,9 +25,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app'
-  ),
+  metadataBase: new URL(SITE_URL),
   title: {
     default:
       'Nikhil Singh | Senior Full Stack Developer | Next.js, React, Node.js Expert',

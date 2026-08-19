@@ -1,8 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { forwardRef, type ComponentPropsWithoutRef } from 'react';
-import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
+import type { LinkProps } from 'next/link';
+import { forwardRef } from 'react';
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  type HTMLMotionProps,
+} from 'framer-motion';
 
 import { cn } from '@/lib/utils';
 
@@ -56,7 +62,13 @@ function buttonClassName({
   );
 }
 
-type ButtonProps = ButtonStyleProps & ComponentPropsWithoutRef<'button'>;
+type ButtonProps = ButtonStyleProps &
+  Omit<
+    HTMLMotionProps<'button'>,
+    keyof ButtonStyleProps | 'ref' | 'children'
+  > & {
+    children?: React.ReactNode;
+  };
 
 function useHoverPosition() {
   const mouseX = useMotionValue(0);
@@ -113,8 +125,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const { mouseX, mouseY, handleMouseMove } = useHoverPosition();
 
     return (
-      <button
+      <motion.button
         ref={ref}
+        whileTap={{ scale: 0.95 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
         className={cn(buttonClassName({ variant, size, fullWidth }), className)}
         onMouseMove={handleMouseMove}
         {...props}
@@ -123,12 +137,22 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         <span className="relative z-10 flex items-center gap-2">
           {children}
         </span>
-      </button>
+      </motion.button>
     );
   }
 );
 
-type ButtonLinkProps = ButtonStyleProps & ComponentPropsWithoutRef<typeof Link>;
+type ButtonLinkProps = ButtonStyleProps &
+  Omit<
+    HTMLMotionProps<'a'>,
+    keyof ButtonStyleProps | 'ref' | keyof LinkProps | 'children'
+  > &
+  LinkProps & {
+    className?: string;
+    children?: React.ReactNode;
+  };
+
+const MotionLink = motion.create(Link);
 
 export function ButtonLink({
   variant = 'primary',
@@ -141,13 +165,15 @@ export function ButtonLink({
   const { mouseX, mouseY, handleMouseMove } = useHoverPosition();
 
   return (
-    <Link
+    <MotionLink
+      whileTap={{ scale: 0.95 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
       className={cn(buttonClassName({ variant, size, fullWidth }), className)}
       onMouseMove={handleMouseMove}
       {...props}
     >
       <ButtonGlow mouseX={mouseX} mouseY={mouseY} />
       <span className="relative z-10 flex items-center gap-2">{children}</span>
-    </Link>
+    </MotionLink>
   );
 }

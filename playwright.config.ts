@@ -32,7 +32,7 @@ export default defineConfig({
   webServer: {
     command: 'npx next start -p 3002',
     url: process.env.BASE_URL || 'http://localhost:3002',
-    reuseExistingServer: true,
+    reuseExistingServer: false,
     timeout: 120000,
   },
 });

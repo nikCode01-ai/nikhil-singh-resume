@@ -1,14 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { person } from '@/lib/resume-data';
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app';
+import { SITE_URL } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions',
   description: `Terms and Conditions for using ${person.name}'s portfolio website and services.`,
-  alternates: { canonical: `${siteUrl}/terms-and-conditions` },
+  alternates: { canonical: `${SITE_URL}/terms-and-conditions` },
 };
 
 export default function TermsPage() {
@@ -35,7 +33,7 @@ export default function TermsPage() {
               1. Acceptance of Terms
             </h2>
             <p>
-              By accessing or using {siteUrl} (the &quot;Website&quot;), you
+              By accessing or using {SITE_URL} (the &quot;Website&quot;), you
               agree to be bound by these Terms &amp; Conditions. If you do not
               agree to these terms, please do not use the Website.
             </p>

@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
     ],
   },
   serverExternalPackages: ['pdfkit'],
-  transpilePackages: ['lucide-react'],
+  transpilePackages: ['lucide-react', 'framer-motion'],
 };
 
 export default nextConfig;

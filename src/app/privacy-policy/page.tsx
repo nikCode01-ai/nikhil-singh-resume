@@ -1,14 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { person } from '@/lib/resume-data';
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://nikhilsingh-eight.vercel.app';
+import { SITE_URL } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: `Privacy Policy for ${person.name}'s portfolio website. Learn how your data is collected, used, and protected.`,
-  alternates: { canonical: `${siteUrl}/privacy-policy` },
+  alternates: { canonical: `${SITE_URL}/privacy-policy` },
 };
 
 export default function PrivacyPolicyPage() {
@@ -37,7 +35,7 @@ export default function PrivacyPolicyPage() {
             <p>
               This Privacy Policy describes how {person.name} (&quot;I&quot;,
               &quot;me&quot;, or &quot;my&quot;) collects, uses, and protects
-              your personal information when you visit {siteUrl} (the
+              your personal information when you visit {SITE_URL} (the
               &quot;Website&quot;). By using this Website, you agree to the
               practices described in this policy.
             </p>
