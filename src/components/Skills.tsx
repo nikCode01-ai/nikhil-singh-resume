@@ -8,6 +8,7 @@ import { Button } from '@/components/Button';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
 import { ApiUiIcon } from '@/components/ApiUiIcon';
 import { technicalSkills } from '@/lib/resume-data';
+import { motion } from 'framer-motion';
 
 const skillProficiency: Record<string, number> = {
   HTML5: 95,
@@ -269,7 +270,7 @@ export function Skills() {
 
         {/* Skills Grid */}
         <div className="grid grid-cols-2 justify-items-center gap-3 sm:gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-          {visibleTools.map((tool) => {
+          {visibleTools.map((tool, index) => {
             const key = `${tool.category}:${tool.name}`;
             const logoSrc = skillLogoSrcMap[tool.name];
             const fallbackIconName = fallbackIconNameFromCategory(
@@ -277,8 +278,16 @@ export function Skills() {
             );
 
             return (
-              <div
+              <motion.div
                 key={key}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-30px' }}
+                transition={{
+                  duration: 0.35,
+                  delay: Math.min(index * 0.03, 0.3),
+                }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 className="group flex w-full max-w-[190px] flex-col card-premium p-4"
               >
                 <div className="flex items-start justify-between gap-2">
@@ -331,7 +340,7 @@ export function Skills() {
                     style={{ width: `${tool.proficiency}%` }}
                   />
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

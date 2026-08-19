@@ -10,6 +10,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { cn } from '@/lib/utils';
 import { person } from '@/lib/resume-data';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -158,73 +159,84 @@ export function HomeHeader() {
         </nav>
       </div>
 
-      {open && (
-        <div className="fixed inset-0 z-40 lg:hidden">
-          <button
-            type="button"
-            aria-label="Close menu backdrop"
-            onClick={() => setOpen(false)}
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm focus-visible:outline-none"
-          />
+      <AnimatePresence>
+        {open && (
+          <div className="fixed inset-0 z-40 lg:hidden">
+            <motion.button
+              type="button"
+              aria-label="Close menu backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setOpen(false)}
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm focus-visible:outline-none"
+            />
 
-          <div className="absolute right-3 top-16 w-[calc(100%-24px)] max-w-sm overflow-hidden rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl ring-1 ring-black/10 dark:ring-white/10 animate-fade-down">
-            <div className="flex items-center justify-between border-b border-slate-200/60 dark:border-white/8 px-5 py-4">
-              <div className="text-sm font-bold text-slate-900 dark:text-white">
-                Navigation
-              </div>
-              <Button
-                type="button"
-                aria-label="Close"
-                onClick={() => setOpen(false)}
-                variant="icon"
-                className="h-9 w-9 rounded-xl border-0 bg-slate-100 dark:bg-white/8 text-slate-600 dark:text-slate-300 shadow-none hover:bg-slate-200 dark:hover:bg-white/12"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
-
-            <nav className="px-3 py-2" aria-label="Mobile navigation">
-              {navItems.map((item, index) => {
-                const active = pathname === item.href;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setOpen(false)}
-                    className={cn(
-                      'flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200',
-                      active
-                        ? 'bg-brand-green/8 dark:bg-emerald-500/10 text-brand-green dark:text-emerald-400 font-semibold'
-                        : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100/60 dark:hover:bg-white/6'
-                    )}
-                    style={{ animationDelay: `${index * 30}ms` }}
-                    aria-current={active ? 'page' : undefined}
-                  >
-                    <span>{item.label}</span>
-                    {active && (
-                      <span
-                        className="h-2 w-2 rounded-full bg-brand-green dark:bg-emerald-400"
-                        aria-hidden="true"
-                      />
-                    )}
-                  </Link>
-                );
-              })}
-
-              <div className="mt-3 px-1 pb-2">
-                <ButtonLink
-                  href="/contact"
-                  variant="primary"
-                  size="md"
-                  fullWidth
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: -10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: -10 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="absolute right-3 top-16 w-[calc(100%-24px)] max-w-sm overflow-hidden rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl ring-1 ring-black/10 dark:ring-white/10"
+            >
+              <div className="flex items-center justify-between border-b border-slate-200/60 dark:border-white/8 px-5 py-4">
+                <div className="text-sm font-bold text-slate-900 dark:text-white">
+                  Navigation
+                </div>
+                <Button
+                  type="button"
+                  aria-label="Close"
+                  onClick={() => setOpen(false)}
+                  variant="icon"
+                  className="h-9 w-9 rounded-xl border-0 bg-slate-100 dark:bg-white/8 text-slate-600 dark:text-slate-300 shadow-none hover:bg-slate-200 dark:hover:bg-white/12"
                 >
-                  Let&apos;s Talk
-                </ButtonLink>
+                  <X className="h-5 w-5" />
+                </Button>
               </div>
-            </nav>
+
+              <nav className="px-3 py-2" aria-label="Mobile navigation">
+                {navItems.map((item) => {
+                  const active = pathname === item.href;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      className={cn(
+                        'flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200',
+                        active
+                          ? 'bg-brand-green/8 dark:bg-emerald-500/10 text-brand-green dark:text-emerald-400 font-semibold'
+                          : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100/60 dark:hover:bg-white/6'
+                      )}
+                      aria-current={active ? 'page' : undefined}
+                    >
+                      <span>{item.label}</span>
+                      {active && (
+                        <span
+                          className="h-2 w-2 rounded-full bg-brand-green dark:bg-emerald-400"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </Link>
+                  );
+                })}
+
+                <div className="mt-3 px-1 pb-2">
+                  <ButtonLink
+                    href="/contact"
+                    variant="primary"
+                    size="md"
+                    fullWidth
+                  >
+                    Let&apos;s Talk
+                  </ButtonLink>
+                </div>
+              </nav>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </header>
   );
 }

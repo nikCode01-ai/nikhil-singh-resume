@@ -1,1 +1,93 @@
-[]
+[
+  {
+    "slug": "ai-increase-scabilty",
+    "title": "The Comprehensive Guide to ai increase scabilty",
+    "excerpt": "An in-depth look at ai increase scabilty and its impact on modern frontend development.",
+    "category": "frontend",
+    "date": "Aug 2026",
+    "readingTime": "5 min read",
+    "tags": ["ai", "frontend", "Architecture", "Best Practices"],
+    "body": [
+      {
+        "type": "heading",
+        "text": "Understanding ai increase scabilty"
+      },
+      {
+        "type": "paragraph",
+        "text": "ai increase scabilty is reshaping how we build scalable applications in frontend. Understanding the underlying principles allows engineers to create resilient, maintainable systems."
+      },
+      {
+        "type": "heading",
+        "text": "Core Architecture & Implementation"
+      },
+      {
+        "type": "paragraph",
+        "text": "When implementing ai increase scabilty in production, key considerations include latency, fault tolerance, and developer experience."
+      },
+      {
+        "type": "list",
+        "items": [
+          "Zero-latency caching strategies",
+          "Modular component boundaries",
+          "Automated verification and error tracking"
+        ]
+      },
+      {
+        "type": "heading",
+        "text": "Summary & Best Practices"
+      },
+      {
+        "type": "paragraph",
+        "text": "Adopting ai increase scabilty with proper best practices ensures long-term scalability and robust developer velocity."
+      }
+    ]
+  },
+  {
+    "slug": "next-js-15-server-actions-caching-strategies",
+    "title": "The Comprehensive Guide to Next.js 15 Server Actions & Caching Strategies",
+    "excerpt": "An in-depth look at Next.js 15 Server Actions & Caching Strategies and its impact on modern Full-Stack Development development.",
+    "category": "Full-Stack Development",
+    "date": "Aug 2026",
+    "readingTime": "5 min read",
+    "tags": [
+      "Next.js",
+      "Full-Stack Development",
+      "Architecture",
+      "Best Practices"
+    ],
+    "body": [
+      {
+        "type": "heading",
+        "text": "Understanding Next.js 15 Server Actions & Caching Strategies"
+      },
+      {
+        "type": "paragraph",
+        "text": "Next.js 15 Server Actions & Caching Strategies is reshaping how we build scalable applications in Full-Stack Development. Understanding the underlying principles allows engineers to create resilient, maintainable systems."
+      },
+      {
+        "type": "heading",
+        "text": "Core Architecture & Implementation"
+      },
+      {
+        "type": "paragraph",
+        "text": "When implementing Next.js 15 Server Actions & Caching Strategies in production, key considerations include latency, fault tolerance, and developer experience."
+      },
+      {
+        "type": "list",
+        "items": [
+          "Zero-latency caching strategies",
+          "Modular component boundaries",
+          "Automated verification and error tracking"
+        ]
+      },
+      {
+        "type": "heading",
+        "text": "Summary & Best Practices"
+      },
+      {
+        "type": "paragraph",
+        "text": "Adopting Next.js 15 Server Actions & Caching Strategies with proper best practices ensures long-term scalability and robust developer velocity."
+      }
+    ]
+  }
+]

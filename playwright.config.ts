@@ -22,11 +22,19 @@ export default defineConfig({
     },
     {
       name: 'Mobile iPhone',
-      use: { ...devices['iPhone 13'] },
+      use: {
+        ...devices['iPhone 13'],
+        browserName: 'chromium',
+        channel: 'chrome',
+      },
     },
     {
       name: 'Tablet iPad',
-      use: { ...devices['iPad (gen 7)'] },
+      use: {
+        ...devices['iPad (gen 7)'],
+        browserName: 'chromium',
+        channel: 'chrome',
+      },
     },
   ],
   webServer: {

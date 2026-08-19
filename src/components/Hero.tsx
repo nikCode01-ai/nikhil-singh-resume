@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Magnetic from '@/components/Magnetic';
+import { AnimatedCounter } from '@/components/AnimatedCounter';
 
 const summaryLines =
   professionalSummary
@@ -329,16 +330,20 @@ export function Hero() {
               {/* Metric Stats Cards */}
               <div className="mt-8 grid grid-cols-3 gap-3">
                 {[
-                  { value: '30+', label: 'Projects Built' },
-                  { value: '25+', label: 'Global Clients' },
-                  { value: '99.9%', label: 'Uptime SLA' },
+                  { to: 30, suffix: '+', label: 'Projects Built' },
+                  { to: 25, suffix: '+', label: 'Global Clients' },
+                  { to: 99.9, decimals: 1, suffix: '%', label: 'Uptime SLA' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
-                    className="text-center p-3.5 rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-200/80 dark:border-slate-800 transition-all duration-300 hover:border-emerald-500/40 hover:-translate-y-0.5 shadow-xs"
+                    className="text-center p-3.5 rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-200/80 dark:border-slate-800 transition-all duration-300 hover:border-emerald-500/40 hover:-translate-y-0.5 shadow-xs group"
                   >
-                    <div className="text-xl sm:text-2xl font-black text-brand-green dark:text-brand-greenLight">
-                      {stat.value}
+                    <div className="text-xl sm:text-2xl font-black text-brand-green dark:text-brand-greenLight transition-transform duration-300 group-hover:scale-105">
+                      <AnimatedCounter
+                        to={stat.to}
+                        decimals={stat.decimals || 0}
+                        suffix={stat.suffix}
+                      />
                     </div>
                     <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400 mt-1">
                       {stat.label}
