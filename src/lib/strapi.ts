@@ -35,24 +35,18 @@ async function fetchStrapi<T>(
     fetchOptions.cache = options.cache as RequestCache;
   }
 
-  try {
-    const res = await fetch(url, fetchOptions);
+  const res = await fetch(url, fetchOptions);
 
-    if (!res.ok) {
-      throw new Error(`Strapi API error: ${res.status} ${res.statusText}`);
-    }
-
-    const contentType = res.headers.get('content-type') || '';
-    if (!contentType.includes('application/json')) {
-      throw new Error(
-        `Invalid content-type: expected JSON, got ${contentType}`
-      );
-    }
-
-    return await res.json();
-  } catch (error) {
-    throw error;
+  if (!res.ok) {
+    throw new Error(`Strapi API error: ${res.status} ${res.statusText}`);
   }
+
+  const contentType = res.headers.get('content-type') || '';
+  if (!contentType.includes('application/json')) {
+    throw new Error(`Invalid content-type: expected JSON, got ${contentType}`);
+  }
+
+  return await res.json();
 }
 
 export type StrapiBlog = {

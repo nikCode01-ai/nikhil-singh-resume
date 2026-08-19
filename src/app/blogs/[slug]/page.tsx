@@ -6,9 +6,10 @@ import Script from 'next/script';
 
 import { Badge } from '@/components/Badge';
 import { Container } from '@/components/Container';
+import { ReadingProgress } from '@/components/ReadingProgress';
 import { blogPosts, getBlogPostBySlug, type BlogPost } from '@/lib/blog-posts';
 import { getBlogBySlug, type StrapiBlog } from '@/lib/strapi';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ListTree } from 'lucide-react';
 
 function mapStrapiPost(post: StrapiBlog): BlogPost {
   return {
@@ -135,8 +136,21 @@ export default async function BlogPostPage({ params }: PageProps) {
     },
   };
 
+  const headings = post.body
+    .filter(
+      (b): b is Extract<typeof b, { type: 'heading' }> => b.type === 'heading'
+    )
+    .map((b) => ({
+      text: b.text,
+      id: b.text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, ''),
+    }));
+
   return (
     <>
+      <ReadingProgress />
       <Script
         id="article-schema"
         type="application/ld+json"
@@ -201,15 +215,46 @@ export default async function BlogPostPage({ params }: PageProps) {
               </div>
             ) : null}
 
+            {headings.length > 1 && (
+              <div className="mt-8 rounded-2xl border border-brand-green/20 bg-brand-green/5 p-5 sm:p-6 dark:border-emerald-500/20 dark:bg-emerald-500/5">
+                <div className="flex items-center gap-2 text-sm font-bold text-brand-green dark:text-emerald-400 mb-3">
+                  <ListTree className="h-4 w-4" />
+                  <span>Table of Contents</span>
+                </div>
+                <nav aria-label="Table of contents">
+                  <ol className="space-y-2 text-sm">
+                    {headings.map((h, i) => (
+                      <li key={h.id} className="flex items-baseline gap-2">
+                        <span className="text-xs font-semibold text-brand-green/70 dark:text-emerald-400/70">
+                          {i + 1}.
+                        </span>
+                        <a
+                          href={`#${h.id}`}
+                          className="text-slate-700 dark:text-slate-300 hover:text-brand-green dark:hover:text-emerald-400 transition-colors font-medium"
+                        >
+                          {h.text}
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                </nav>
+              </div>
+            )}
+
             <div className="mt-10 border-t border-slate-200 dark:border-slate-800" />
 
             <article className="mt-8">
               {post.body.map((block, index) => {
                 if (block.type === 'heading') {
+                  const headingId = block.text
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/(^-|-$)/g, '');
                   return (
                     <h2
                       key={`${block.type}-${index}`}
-                      className="mt-10 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl"
+                      id={headingId}
+                      className="mt-10 scroll-mt-24 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl"
                     >
                       {block.text}
                     </h2>
