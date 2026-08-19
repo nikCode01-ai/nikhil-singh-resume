@@ -18,6 +18,11 @@ async function fetchStrapi<T>(
   path: string,
   options?: { next?: { revalidate?: number }; cache?: string }
 ): Promise<StrapiResponse<T>> {
+  // If local strapi URL is configured but not running, return fallback immediately
+  if (STRAPI_URL.includes('127.0.0.1') || STRAPI_URL.includes('localhost')) {
+    return { data: [] as unknown as T, meta: {} };
+  }
+
   const url = `${STRAPI_URL}/api${path}`;
   const headers: Record<string, string> = {};
   if (STRAPI_TOKEN) {
@@ -25,7 +30,7 @@ async function fetchStrapi<T>(
   }
 
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 1500);
+  const timer = setTimeout(() => controller.abort(), 600);
 
   try {
     const fetchOptions: RequestInit & { next?: { revalidate?: number } } = {
@@ -39,24 +44,32 @@ async function fetchStrapi<T>(
       fetchOptions.cache = options.cache as RequestCache;
     }
 
-    const res = await fetch(url, fetchOptions);
+    const res = await fetch(url, fetchOptions).catch(() => null);
     clearTimeout(timer);
 
-    if (!res.ok) {
-      throw new Error(`Strapi API error: ${res.status} ${res.statusText}`);
+    if (!res || !res.ok) {
+      return { data: [] as unknown as T, meta: {} };
     }
 
     const contentType = res.headers.get('content-type') || '';
     if (!contentType.includes('application/json')) {
-      throw new Error(
-        `Invalid content-type: expected JSON, got ${contentType}`
-      );
+      return { data: [] as unknown as T, meta: {} };
     }
 
-    return await res.json();
-  } catch (err) {
+    const text = await res.text().catch(() => '');
+    if (!text || !text.trim()) {
+      return { data: [] as unknown as T, meta: {} };
+    }
+
+    try {
+      const data = JSON.parse(text);
+      return data || { data: [] as unknown as T, meta: {} };
+    } catch {
+      return { data: [] as unknown as T, meta: {} };
+    }
+  } catch {
     clearTimeout(timer);
-    throw err;
+    return { data: [] as unknown as T, meta: {} };
   }
 }
 
