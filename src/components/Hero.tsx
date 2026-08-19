@@ -8,6 +8,8 @@ import { cn } from '@/lib/utils';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
+import Magnetic from '@/components/Magnetic';
 
 const summaryLines =
   professionalSummary
@@ -38,8 +40,21 @@ export function Hero() {
         className="absolute inset-0 overflow-hidden pointer-events-none"
         aria-hidden="true"
       >
-        <div className="absolute -top-40 -right-40 w-[550px] h-[550px] rounded-full bg-gradient-to-br from-brand-green/10 to-transparent blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-[450px] h-[450px] rounded-full bg-gradient-to-tr from-emerald-500/10 to-transparent blur-3xl" />
+        <motion.div
+          animate={{ scale: [1, 1.05, 1], opacity: [0.5, 0.8, 0.5] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -top-40 -right-40 w-[550px] h-[550px] rounded-full bg-gradient-to-br from-brand-green/10 to-transparent blur-3xl"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.7, 0.5] }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: 1,
+          }}
+          className="absolute -bottom-40 -left-40 w-[450px] h-[450px] rounded-full bg-gradient-to-tr from-emerald-500/10 to-transparent blur-3xl"
+        />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] rounded-full border border-slate-200/40 dark:border-white/[0.03]" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[950px] h-[950px] rounded-full border border-slate-200/20 dark:border-white/[0.02]" />
       </div>
@@ -66,29 +81,76 @@ export function Hero() {
             </div>
 
             {/* Headline */}
-            <h1
-              className={cn(
-                'text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.1] tracking-tight text-slate-900 dark:text-white transition-all duration-700 delay-100',
-                isVisible
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-4'
-              )}
+            <motion.h1
+              initial="hidden"
+              animate={isVisible ? 'visible' : 'hidden'}
+              variants={{
+                visible: {
+                  transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+                },
+                hidden: {},
+              }}
+              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.1] tracking-tight text-slate-900 dark:text-white"
             >
-              <span className="block text-slate-700 dark:text-slate-300 text-2xl sm:text-3xl lg:text-4xl font-semibold mb-1">
+              <motion.span
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { type: 'spring', damping: 12, stiffness: 100 },
+                  },
+                }}
+                className="block text-slate-700 dark:text-slate-300 text-2xl sm:text-3xl lg:text-4xl font-semibold mb-1"
+              >
                 Hi, I&apos;m
-              </span>
-              <span className="block bg-gradient-to-r from-brand-green via-emerald-600 to-teal-500 dark:from-emerald-400 dark:via-emerald-300 dark:to-teal-300 bg-clip-text text-transparent pb-1">
+              </motion.span>
+              <motion.span
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { type: 'spring', damping: 12, stiffness: 100 },
+                  },
+                }}
+                className="block bg-gradient-to-r from-brand-green via-emerald-600 to-teal-500 dark:from-emerald-400 dark:via-emerald-300 dark:to-teal-300 bg-clip-text text-transparent pb-1"
+              >
                 {person.name}
-              </span>
-              <span className="block mt-2 text-xl sm:text-2xl lg:text-3xl font-semibold text-slate-600 dark:text-slate-400 tracking-normal">
+              </motion.span>
+              <motion.span
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { type: 'spring', damping: 12, stiffness: 100 },
+                  },
+                }}
+                className="block mt-2 text-xl sm:text-2xl lg:text-3xl font-semibold text-slate-600 dark:text-slate-400 tracking-normal"
+              >
                 {person.role}
-              </span>
+              </motion.span>
               {person.tagline && (
-                <span className="block mt-1.5 text-sm sm:text-base lg:text-lg font-medium text-slate-500 dark:text-slate-400 tracking-normal">
+                <motion.span
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      transition: {
+                        type: 'spring',
+                        damping: 12,
+                        stiffness: 100,
+                      },
+                    },
+                  }}
+                  className="block mt-1.5 text-sm sm:text-base lg:text-lg font-medium text-slate-500 dark:text-slate-400 tracking-normal"
+                >
                   {person.tagline}
-                </span>
+                </motion.span>
               )}
-            </h1>
+            </motion.h1>
 
             {/* Bio Summary */}
             <p
@@ -111,19 +173,25 @@ export function Hero() {
                   : 'opacity-0 translate-y-4'
               )}
             >
-              <ButtonLink
-                href="/contact"
-                variant="primary"
-                size="lg"
-                className="shadow-lg shadow-brand-green/20 gap-2"
-              >
-                Hire Me
-                <ArrowUpRight className="h-4 w-4" />
-              </ButtonLink>
-              <ButtonLink href="/projects" variant="secondary" size="lg">
-                View Projects
-              </ButtonLink>
-              <ResumeDownloadButton variant="hero" label="Download Resume" />
+              <Magnetic>
+                <ButtonLink
+                  href="/contact"
+                  variant="primary"
+                  size="lg"
+                  className="shadow-lg shadow-brand-green/20 gap-2"
+                >
+                  Hire Me
+                  <ArrowUpRight className="h-4 w-4" />
+                </ButtonLink>
+              </Magnetic>
+              <Magnetic>
+                <ButtonLink href="/projects" variant="secondary" size="lg">
+                  View Projects
+                </ButtonLink>
+              </Magnetic>
+              <Magnetic>
+                <ResumeDownloadButton variant="hero" label="Download Resume" />
+              </Magnetic>
             </div>
 
             {/* Quick Contact Micro-Cards */}
@@ -207,7 +275,15 @@ export function Hero() {
                 </div>
 
                 {/* Floating Badge: Available for Work */}
-                <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-4 py-2 shadow-xl border border-slate-200/80 dark:border-slate-800 flex items-center gap-2 animate-float">
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                  className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-4 py-2 shadow-xl border border-slate-200/80 dark:border-slate-800 flex items-center gap-2"
+                >
                   <span
                     className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"
                     aria-hidden="true"
@@ -215,27 +291,39 @@ export function Hero() {
                   <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                     Open for Opportunities
                   </span>
-                </div>
+                </motion.div>
 
                 {/* Floating Badge: Senior Full Stack */}
-                <div
-                  className="absolute -right-2 top-1/4 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-3.5 py-2 shadow-xl border border-slate-200/80 dark:border-slate-800 animate-float"
-                  style={{ animationDelay: '1s' }}
+                <motion.div
+                  animate={{ y: [0, -12, 0] }}
+                  transition={{
+                    duration: 4.5,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: 1,
+                  }}
+                  className="absolute -right-2 top-1/4 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-3.5 py-2 shadow-xl border border-slate-200/80 dark:border-slate-800"
                 >
                   <span className="text-xs font-extrabold text-brand-green dark:text-brand-greenLight">
                     Full Stack Architect
                   </span>
-                </div>
+                </motion.div>
 
                 {/* Floating Badge: 4+ Years Experience */}
-                <div
-                  className="absolute -left-2 bottom-1/3 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-3.5 py-2 shadow-xl border border-slate-200/80 dark:border-slate-800 animate-float"
-                  style={{ animationDelay: '2s' }}
+                <motion.div
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{
+                    duration: 3.5,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: 2,
+                  }}
+                  className="absolute -left-2 bottom-1/3 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-3.5 py-2 shadow-xl border border-slate-200/80 dark:border-slate-800"
                 >
                   <span className="text-xs font-extrabold text-brand-green dark:text-brand-greenLight">
                     4+ Years Exp
                   </span>
-                </div>
+                </motion.div>
               </div>
 
               {/* Metric Stats Cards */}

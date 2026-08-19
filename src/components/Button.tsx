@@ -1,11 +1,14 @@
 'use client';
 
 import Link from 'next/link';
+import { forwardRef } from 'react';
 import {
-  forwardRef,
-  type ButtonHTMLAttributes,
-  type ComponentPropsWithoutRef,
-} from 'react';
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  type HTMLMotionProps,
+} from 'framer-motion';
+import type { LinkProps } from 'next/link';
 
 import { cn } from '@/lib/utils';
 
@@ -31,7 +34,7 @@ function buttonClassName({
   fullWidth,
 }: ButtonStyleProps) {
   const base =
-    'inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60 dark:focus-visible:ring-offset-slate-950 active:scale-[0.98]';
+    'relative overflow-hidden inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60 dark:focus-visible:ring-offset-slate-950 group';
 
   const variants: Record<ButtonVariant, string> = {
     primary: 'btn-brand',
@@ -60,29 +63,75 @@ function buttonClassName({
 }
 
 type ButtonProps = ButtonStyleProps &
-  Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof ButtonStyleProps>;
+  Omit<
+    HTMLMotionProps<'button'>,
+    keyof ButtonStyleProps | 'ref' | 'children'
+  > & {
+    children?: React.ReactNode;
+  };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(
-    { variant = 'primary', size = 'md', fullWidth, className, ...props },
+    {
+      variant = 'primary',
+      size = 'md',
+      fullWidth,
+      className,
+      children,
+      ...props
+    },
     ref
   ) {
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    function handleMouseMove({
+      currentTarget,
+      clientX,
+      clientY,
+    }: React.MouseEvent) {
+      const { left, top } = currentTarget.getBoundingClientRect();
+      mouseX.set(clientX - left);
+      mouseY.set(clientY - top);
+    }
+
     return (
-      <button
+      <motion.button
         ref={ref}
+        whileTap={{ scale: 0.95 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
         className={cn(buttonClassName({ variant, size, fullWidth }), className)}
+        onMouseMove={handleMouseMove}
         {...props}
-      />
+      >
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100"
+          style={{
+            background: useMotionTemplate`
+              radial-gradient(
+                100px circle at ${mouseX}px ${mouseY}px,
+                rgba(16, 185, 129, 0.15),
+                transparent 80%
+              )
+            `,
+          }}
+        />
+        <span className="relative z-10 flex items-center gap-2">
+          {children}
+        </span>
+      </motion.button>
     );
   }
 );
 
 type ButtonLinkProps = ButtonStyleProps &
   Omit<
-    ComponentPropsWithoutRef<typeof Link>,
-    keyof ButtonStyleProps | 'className'
-  > & {
+    HTMLMotionProps<'a'>,
+    keyof ButtonStyleProps | 'ref' | keyof LinkProps | 'children'
+  > &
+  LinkProps & {
     className?: string;
+    children?: React.ReactNode;
   };
 
 export function ButtonLink({
@@ -90,12 +139,45 @@ export function ButtonLink({
   size = 'md',
   fullWidth,
   className,
+  children,
   ...props
 }: ButtonLinkProps) {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({
+    currentTarget,
+    clientX,
+    clientY,
+  }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  const MotionLink = motion.create(Link);
+
   return (
-    <Link
+    <MotionLink
+      whileTap={{ scale: 0.95 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
       className={cn(buttonClassName({ variant, size, fullWidth }), className)}
+      onMouseMove={handleMouseMove}
       {...props}
-    />
+    >
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              100px circle at ${mouseX}px ${mouseY}px,
+              rgba(16, 185, 129, 0.15),
+              transparent 80%
+            )
+          `,
+        }}
+      />
+      <span className="relative z-10 flex items-center gap-2">{children}</span>
+    </MotionLink>
   );
 }

@@ -1,14 +1,5 @@
-import type { Metadata } from 'next';
 import { ButtonLink } from '@/components/Button';
 import { Home, ArrowRight } from 'lucide-react';
-
-export const metadata: Metadata = {
-  title: 'Page Not Found',
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
 
 export default function NotFound() {
   return (
