@@ -134,6 +134,8 @@ type ButtonLinkProps = ButtonStyleProps &
     children?: React.ReactNode;
   };
 
+const MotionLink = motion.create(Link);
+
 export function ButtonLink({
   variant = 'primary',
   size = 'md',
@@ -154,8 +156,6 @@ export function ButtonLink({
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
   }
-
-  const MotionLink = motion.create(Link);
 
   return (
     <MotionLink
