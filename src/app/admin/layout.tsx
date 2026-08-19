@@ -8,6 +8,7 @@ import {
   Sparkles,
   Database,
   Activity,
+  Search,
 } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -60,6 +61,13 @@ export default function AdminLayout({
               >
                 <Sparkles className="h-3.5 w-3.5 text-amber-500" />
                 AI Blog Studio
+              </Link>
+              <Link
+                href="/admin/seo"
+                className="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-green dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center gap-1.5"
+              >
+                <Search className="h-3.5 w-3.5 text-blue-500" />
+                Google Search & SEO
               </Link>
             </nav>
           </div>

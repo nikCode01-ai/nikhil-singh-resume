@@ -3,6 +3,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 interface Phase {
   id: string;

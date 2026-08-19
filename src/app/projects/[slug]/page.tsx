@@ -72,6 +72,8 @@ type PageProps = {
   }>;
 };
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   let allSlugs: string[] = [];
   try {

@@ -43,20 +43,28 @@ async function fetchStrapi<T>(
     clearTimeout(timer);
 
     if (!res.ok) {
-      throw new Error(`Strapi API error: ${res.status} ${res.statusText}`);
+      return { data: [] as unknown as T, meta: {} };
     }
 
     const contentType = res.headers.get('content-type') || '';
     if (!contentType.includes('application/json')) {
-      throw new Error(
-        `Invalid content-type: expected JSON, got ${contentType}`
-      );
+      return { data: [] as unknown as T, meta: {} };
     }
 
-    return await res.json();
-  } catch (err) {
+    const text = await res.text();
+    if (!text || !text.trim()) {
+      return { data: [] as unknown as T, meta: {} };
+    }
+
+    try {
+      const data = JSON.parse(text);
+      return data || { data: [] as unknown as T, meta: {} };
+    } catch {
+      return { data: [] as unknown as T, meta: {} };
+    }
+  } catch {
     clearTimeout(timer);
-    throw err;
+    return { data: [] as unknown as T, meta: {} };
   }
 }
 
@@ -136,6 +144,7 @@ export async function getBlogs(): Promise<StrapiBlog[]> {
         next: { revalidate: 300 },
       }
     );
+    if (!res || !Array.isArray(res.data)) return [];
     return res.data.map((blog) => ({
       ...blog,
       featured_image: blog.featured_image
@@ -160,6 +169,7 @@ export async function getBlogBySlug(slug: string): Promise<StrapiBlog | null> {
         next: { revalidate: 300 },
       }
     );
+    if (!res || !Array.isArray(res.data)) return null;
     const blog = res.data[0] || null;
     if (
       blog?.featured_image?.url &&
@@ -181,6 +191,7 @@ export async function getProjects(): Promise<StrapiProject[]> {
         next: { revalidate: 300 },
       }
     );
+    if (!res || !Array.isArray(res.data)) return [];
     return res.data.map((project) => ({
       ...project,
       image: project.image
@@ -207,6 +218,7 @@ export async function getProjectBySlug(
         next: { revalidate: 300 },
       }
     );
+    if (!res || !Array.isArray(res.data)) return null;
     const project = res.data[0] || null;
     if (project?.image?.url && !project.image.url.startsWith('http')) {
       project.image.url = `${STRAPI_URL}${project.image.url}`;
@@ -225,6 +237,7 @@ export async function getServices(): Promise<StrapiService[]> {
         next: { revalidate: 300 },
       }
     );
+    if (!res || !Array.isArray(res.data)) return [];
     return res.data;
   } catch {
     return [];

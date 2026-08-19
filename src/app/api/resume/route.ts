@@ -15,6 +15,7 @@ import {
 } from '@/lib/resume-data';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 type PdfDoc = PDFKit.PDFDocument;
 

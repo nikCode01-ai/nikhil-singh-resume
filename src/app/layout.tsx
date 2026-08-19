@@ -8,6 +8,7 @@ import { LazyChatbot } from '@/components/LazyChatbot';
 import { Footer } from '@/components/Footer';
 import { ScrollToTopButton } from '@/components/ScrollToTopButton';
 import { ReadingProgress } from '@/components/ReadingProgress';
+import { RealTracker } from '@/components/RealTracker';
 
 import { SITE_URL } from '@/lib/utils';
 
@@ -271,6 +272,7 @@ export default function RootLayout({
           Skip to main content
         </a>
         <ReadingProgress />
+        <RealTracker />
         <div className="flex min-h-screen flex-col">
           <HomeHeader />
           <div className="h-20 lg:h-24" aria-hidden="true" />

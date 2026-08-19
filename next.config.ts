@@ -15,7 +15,6 @@ const nextConfig: NextConfig = {
     ],
   },
   serverExternalPackages: ['pdfkit'],
-  transpilePackages: ['lucide-react'],
   async redirects() {
     return [
       {
