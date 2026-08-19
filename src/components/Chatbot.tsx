@@ -1,22 +1,23 @@
 'use client';
 
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import {
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import { Bot, Send, X } from 'lucide-react';
+  Bot,
+  Send,
+  X,
+  Mic,
+  MicOff,
+  Volume2,
+  VolumeX,
+  Calendar,
+  Copy,
+  Check,
+  CheckCircle2,
+  ExternalLink,
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-import { cn } from '@/lib/utils';
-import {
-  featuredProjects,
-  person,
-  professionalSummary,
-  technicalSkills,
-} from '@/lib/resume-data';
+import { person } from '@/lib/resume-data';
 
 type ChatRole = 'user' | 'assistant';
 
@@ -26,15 +27,20 @@ type ChatMessage = {
   content: string;
 };
 
-type MenuKey = 'main' | 'skills' | 'projects' | 'contact' | 'resume';
+interface ISpeechRecognitionInstance {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start: () => void;
+  stop: () => void;
+  onresult: ((event: ISpeechEvent) => void) | null;
+  onerror: (() => void) | null;
+  onend: (() => void) | null;
+}
 
-type MenuOption = {
-  key: string;
-  label: string;
-  action: () => void;
-};
-
-type ChatMode = 'menu' | 'ai';
+interface ISpeechEvent {
+  results: Array<Array<{ transcript: string }>>;
+}
 
 function formatChatMessage(text: string): string {
   if (!text) return '';
@@ -47,494 +53,676 @@ function formatChatMessage(text: string): string {
 export function Chatbot() {
   const idBase = useId();
   const [open, setOpen] = useState(false);
-  const [menu, setMenu] = useState<MenuKey>('main');
-  const [mode, setMode] = useState<ChatMode>('menu');
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>(() => [
     {
       id: `${idBase}-welcome`,
       role: 'assistant',
-      content: `Hi! Choose an option below to learn about ${person.name}, or switch to AI Chat to ask anything.`,
+      content: `Hi! 👋 I'm Nikhil's AI Assistant. Ask me anything about his projects, skills, pricing, or click below to schedule a call!`,
     },
   ]);
+
+  // Voice Speech-to-Text state
+  const [isListening, setIsListening] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
+  const recognitionRef = useRef<ISpeechRecognitionInstance | null>(null);
+
+  // Voice Text-to-Speech state
+  const [voiceEnabled, setVoiceEnabled] = useState(false);
+  const [currentlySpeakingId, setCurrentlySpeakingId] = useState<string | null>(
+    null
+  );
+
+  // Booking Modal State
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [bookingName, setBookingName] = useState('');
+  const [bookingEmail, setBookingEmail] = useState('');
+  const [bookingDate, setBookingDate] = useState('');
+  const [bookingTime, setBookingTime] = useState('04:00 PM');
+  const [bookingTopic, setBookingTopic] = useState(
+    'Senior Full-Stack Role / Consultation'
+  );
+  const [bookingNotes, setBookingNotes] = useState('');
+  const [isSubmittingBooking, setIsSubmittingBooking] = useState(false);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [gcalUrl, setGcalUrl] = useState('');
+
+  const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
 
   const listRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const pushTurn = useCallback(
-    (userText: string, assistantText: string) => {
-      const now = Date.now();
-      const userMessage: ChatMessage = {
-        id: `${idBase}-u-${now}`,
-        role: 'user',
-        content: userText,
-      };
+  // Initialize Speech Recognition
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const SpeechRecognitionConstructor =
+        (
+          window as unknown as {
+            SpeechRecognition?: new () => ISpeechRecognitionInstance;
+          }
+        ).SpeechRecognition ||
+        (
+          window as unknown as {
+            webkitSpeechRecognition?: new () => ISpeechRecognitionInstance;
+          }
+        ).webkitSpeechRecognition;
 
-      const botMessage: ChatMessage = {
-        id: `${idBase}-a-${now + 1}`,
-        role: 'assistant',
-        content: assistantText,
-      };
+      if (SpeechRecognitionConstructor) {
+        setSpeechSupported(true);
+        const recognition = new SpeechRecognitionConstructor();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
 
-      setMessages((prev) => [...prev, userMessage, botMessage]);
+        recognition.onresult = (event: ISpeechEvent) => {
+          const transcript = event.results?.[0]?.[0]?.transcript;
+          if (transcript) {
+            setInputValue(transcript);
+          }
+          setIsListening(false);
+        };
+
+        recognition.onerror = () => {
+          setIsListening(false);
+        };
+
+        recognition.onend = () => {
+          setIsListening(false);
+        };
+
+        recognitionRef.current = recognition;
+      }
+    }
+  }, []);
+
+  const toggleListening = () => {
+    if (!speechSupported || !recognitionRef.current) {
+      alert(
+        'Speech recognition is not supported in this browser. Please use Chrome or Edge.'
+      );
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+      } catch (err) {
+        console.error('Speech recognition error:', err);
+      }
+    }
+  };
+
+  const speakText = useCallback(
+    (text: string, msgId: string) => {
+      if (typeof window === 'undefined' || !('speechSynthesis' in window))
+        return;
+
+      if (currentlySpeakingId === msgId) {
+        window.speechSynthesis.cancel();
+        setCurrentlySpeakingId(null);
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+      const cleanText = formatChatMessage(text);
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+
+      utterance.onend = () => setCurrentlySpeakingId(null);
+      utterance.onerror = () => setCurrentlySpeakingId(null);
+
+      setCurrentlySpeakingId(msgId);
+      window.speechSynthesis.speak(utterance);
     },
-    [idBase]
+    [currentlySpeakingId]
   );
 
-  const sendMessage = useCallback(async () => {
-    const text = inputValue.trim();
-    if (!text || isLoading) return;
+  const sendMessage = useCallback(
+    async (customText?: string) => {
+      const text = (customText || inputValue).trim();
+      if (!text || isLoading) return;
 
-    const userMessage: ChatMessage = {
-      id: `${idBase}-u-${Date.now()}`,
-      role: 'user',
-      content: text,
-    };
+      const userMessage: ChatMessage = {
+        id: `${idBase}-u-${Date.now()}`,
+        role: 'user',
+        content: text,
+      };
 
-    setMessages((prev) => [...prev, userMessage]);
-    setInputValue('');
-    setIsLoading(true);
+      setMessages((prev) => [...prev, userMessage]);
+      setInputValue('');
+      setIsLoading(true);
 
+      try {
+        const apiMessages = [...messages, userMessage]
+          .filter((m) => m.role === 'user' || m.role === 'assistant')
+          .slice(-12)
+          .map((m) => ({ role: m.role, content: m.content }));
+
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: apiMessages }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Failed to get response');
+        }
+
+        const botId = `${idBase}-a-${Date.now() + 1}`;
+        const botMessage: ChatMessage = {
+          id: botId,
+          role: 'assistant',
+          content: data.reply,
+        };
+
+        setMessages((prev) => [...prev, botMessage]);
+
+        if (voiceEnabled) {
+          speakText(data.reply, botId);
+        }
+      } catch (err) {
+        const errorMessage: ChatMessage = {
+          id: `${idBase}-a-${Date.now() + 1}`,
+          role: 'assistant',
+          content: `Sorry, something went wrong. ${
+            err instanceof Error ? err.message : 'Please try again later.'
+          }`,
+        };
+        setMessages((prev) => [...prev, errorMessage]);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [inputValue, isLoading, messages, idBase, voiceEnabled, speakText]
+  );
+
+  const handleBookingSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!bookingName || !bookingEmail || !bookingDate || !bookingTime) return;
+
+    setIsSubmittingBooking(true);
     try {
-      const apiMessages = [...messages, userMessage]
-        .filter((m) => m.role === 'user' || m.role === 'assistant')
-        .slice(-12)
-        .map((m) => ({ role: m.role, content: m.content }));
-
-      const res = await fetch('/api/chat', {
+      const res = await fetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: apiMessages }),
+        body: JSON.stringify({
+          name: bookingName,
+          email: bookingEmail,
+          date: bookingDate,
+          time: bookingTime,
+          topic: bookingTopic,
+          notes: bookingNotes,
+        }),
       });
-
       const data = await res.json();
+      if (data.success) {
+        setBookingSuccess(true);
+        setGcalUrl(data.gcalUrl || '');
 
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to get response');
+        const botMessage: ChatMessage = {
+          id: `${idBase}-a-booking-${Date.now()}`,
+          role: 'assistant',
+          content: `🎉 Awesome! Call requested for **${bookingDate} at ${bookingTime}**.\n\nA calendar invite request has been sent to ${person.name}'s command center. You can also add it to your Google Calendar directly.`,
+        };
+        setMessages((prev) => [...prev, botMessage]);
       }
-
-      const botMessage: ChatMessage = {
-        id: `${idBase}-a-${Date.now() + 1}`,
-        role: 'assistant',
-        content: data.reply,
-      };
-
-      setMessages((prev) => [...prev, botMessage]);
     } catch (err) {
-      const errorMessage: ChatMessage = {
-        id: `${idBase}-a-${Date.now() + 1}`,
-        role: 'assistant',
-        content: `Sorry, something went wrong. ${err instanceof Error ? err.message : 'Please try again later.'}`,
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      console.error('Booking failed:', err);
     } finally {
-      setIsLoading(false);
+      setIsSubmittingBooking(false);
     }
-  }, [inputValue, isLoading, messages, idBase]);
+  };
 
-  const openResume = useCallback(
-    (template: '1' | '2', format: 'pdf' | 'docx') => {
-      const url = `/api/resume?template=${template}&format=${format}&disposition=attachment`;
-      window.open(url, '_blank', 'noopener,noreferrer');
-    },
-    []
-  );
+  const handleCopy = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedMsgId(id);
+    setTimeout(() => setCopiedMsgId(null), 2000);
+  };
 
-  const menuOptions = useMemo<MenuOption[]>(() => {
-    const skillsEntries = Object.entries(technicalSkills) as Array<
-      [string, string[]]
-    >;
-
-    if (menu === 'skills') {
-      return [
-        ...skillsEntries.map(([category, skills]) => ({
-          key: `skill-${category}`,
-          label: category,
-          action: () => {
-            pushTurn(category, skills.join(', '));
-          },
-        })),
-        {
-          key: 'back-main',
-          label: 'Back',
-          action: () => setMenu('main'),
-        },
-      ];
-    }
-
-    if (menu === 'projects') {
-      const projectOptions: MenuOption[] = featuredProjects.map((p) => ({
-        key: `project-${p.name}`,
-        label: p.name,
-        action: () => {
-          const lines = [p.description];
-          if (p.tech?.length) lines.push(`Tech: ${p.tech.join(', ')}`);
-          if ('url' in p && p.url) lines.push(p.url);
-          if ('date' in p && p.date) lines.push(p.date);
-          pushTurn(p.name, lines.join('\n'));
-        },
-      }));
-
-      return [
-        ...projectOptions,
-        {
-          key: 'back-main',
-          label: 'Back',
-          action: () => setMenu('main'),
-        },
-      ];
-    }
-
-    if (menu === 'contact') {
-      const options: MenuOption[] = [
-        {
-          key: 'email',
-          label: 'Email',
-          action: () => pushTurn('Email', person.email),
-        },
-        {
-          key: 'phone',
-          label: 'Phone',
-          action: () => pushTurn('Phone', person.phone),
-        },
-        {
-          key: 'linkedin',
-          label: 'LinkedIn',
-          action: () => {
-            pushTurn('LinkedIn', person.linkedinUrl);
-            window.open(person.linkedinUrl, '_blank', 'noopener,noreferrer');
-          },
-        },
-        {
-          key: 'gitlab',
-          label: 'GitLab',
-          action: () => {
-            pushTurn('GitLab', `${person.gitlabUrl} (${person.gitlabHandle})`);
-            window.open(person.gitlabUrl, '_blank', 'noopener,noreferrer');
-          },
-        },
-      ];
-
-      if (person.location) {
-        options.push({
-          key: 'location',
-          label: 'Location',
-          action: () => pushTurn('Location', person.location),
-        });
-      }
-
-      options.push({
-        key: 'back-main',
-        label: 'Back',
-        action: () => setMenu('main'),
-      });
-
-      return options;
-    }
-
-    if (menu === 'resume') {
-      return [
-        {
-          key: 'pdf-t1',
-          label: 'Download PDF (Template 1)',
-          action: () => {
-            pushTurn('Download PDF (Template 1)', 'Opening download...');
-            openResume('1', 'pdf');
-          },
-        },
-        {
-          key: 'pdf-t2',
-          label: 'Download PDF (Template 2)',
-          action: () => {
-            pushTurn('Download PDF (Template 2)', 'Opening download...');
-            openResume('2', 'pdf');
-          },
-        },
-        {
-          key: 'docx-t1',
-          label: 'Download DOCX (Template 1)',
-          action: () => {
-            pushTurn('Download DOCX (Template 1)', 'Opening download...');
-            openResume('1', 'docx');
-          },
-        },
-        {
-          key: 'docx-t2',
-          label: 'Download DOCX (Template 2)',
-          action: () => {
-            pushTurn('Download DOCX (Template 2)', 'Opening download...');
-            openResume('2', 'docx');
-          },
-        },
-        {
-          key: 'back-main',
-          label: 'Back',
-          action: () => setMenu('main'),
-        },
-      ];
-    }
-
-    return [
-      {
-        key: 'about',
-        label: 'About / Summary',
-        action: () => pushTurn('About / Summary', professionalSummary),
-      },
-      {
-        key: 'skills',
-        label: 'Skills',
-        action: () => {
-          pushTurn('Skills', 'Choose a skill category:');
-          setMenu('skills');
-        },
-      },
-      {
-        key: 'projects',
-        label: 'Projects',
-        action: () => {
-          pushTurn('Projects', 'Choose a project:');
-          setMenu('projects');
-        },
-      },
-      {
-        key: 'contact',
-        label: 'Contact',
-        action: () => {
-          pushTurn('Contact', 'Choose a contact method:');
-          setMenu('contact');
-        },
-      },
-      {
-        key: 'resume',
-        label: 'Download Resume',
-        action: () => {
-          pushTurn('Download Resume', 'Choose a format:');
-          setMenu('resume');
-        },
-      },
-    ];
-  }, [menu, openResume, pushTurn]);
-
+  // Auto-scroll messages list
   useEffect(() => {
     if (!open) return;
     const el = listRef.current;
     if (!el) return;
     el.scrollTop = el.scrollHeight;
-  }, [open, messages.length]);
-
-  useEffect(() => {
-    if (!open) return;
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
-    };
-
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [open]);
-
-  useEffect(() => {
-    if (open && mode === 'ai') {
-      inputRef.current?.focus();
-    }
-  }, [open, mode]);
+  }, [open, messages, isLoading]);
 
   return (
-    <div className="fixed bottom-4 right-4 z-[60] sm:bottom-6 sm:right-6">
-      {open ? (
-        <div
-          role="dialog"
-          aria-label="Chatbot"
-          className={cn(
-            'flex h-[540px] max-h-[75vh] w-[92vw] max-w-[420px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/10',
-            'origin-bottom-right animate-fade-up',
-            'dark:bg-slate-950 dark:ring-white/10'
-          )}
+    <>
+      {/* Floating Chat Trigger Button */}
+      <div className="fixed bottom-5 right-5 z-50">
+        <motion.button
+          type="button"
+          onClick={() => setOpen((prev) => !prev)}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.95 }}
+          className="relative group flex items-center gap-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 p-3.5 text-white shadow-xl shadow-emerald-600/30 hover:shadow-emerald-500/50 transition-all duration-300 border border-emerald-400/40 cursor-pointer"
+          aria-label={open ? 'Close Chat' : 'Open AI Assistant'}
         >
-          <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-gradient-to-r from-brand-green to-brand-greenDark px-4 py-3 text-white">
-            <div className="min-w-0">
-              <div className="truncate text-sm font-semibold">Ask Nikhil</div>
-              <div className="text-xs text-white/80">
-                {mode === 'ai'
-                  ? 'AI-powered answers'
-                  : 'Quick answers from this portfolio'}
+          {open ? (
+            <X className="h-6 w-6" />
+          ) : (
+            <>
+              <div className="relative">
+                <Bot className="h-6 w-6" />
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-400" />
+              </div>
+              <span className="hidden sm:inline-block pr-1 text-xs font-bold tracking-wide">
+                Ask AI or Book Call
+              </span>
+            </>
+          )}
+        </motion.button>
+      </div>
+
+      {/* Main Chat Interface Modal */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.94, y: 20 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed bottom-20 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[420px] max-h-[82vh] h-[640px] flex flex-col rounded-3xl border border-slate-200/80 dark:border-slate-800/80 bg-white/95 dark:bg-slate-900/95 shadow-2xl backdrop-blur-xl overflow-hidden font-sans"
+          >
+            {/* Ambient Background Glows */}
+            <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/10 dark:bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/10 dark:bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+
+            {/* Header */}
+            <div className="relative z-10 flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-slate-100 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center text-white shadow-md">
+                    <Bot className="w-5 h-5" />
+                  </div>
+                  <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-white dark:border-slate-900" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <h3 className="font-bold text-sm text-slate-900 dark:text-white">
+                      Nikhil AI
+                    </h3>
+                    <span className="px-1.5 py-0.2 rounded text-[10px] font-extrabold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+                      ONLINE
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    Voice & Scheduling Enabled
+                  </p>
+                </div>
+              </div>
+
+              {/* Action Buttons in Header */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setShowBookingModal(true)}
+                  title="Schedule a Call"
+                  className="p-2 rounded-xl text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 transition-colors flex items-center gap-1 text-xs font-bold cursor-pointer"
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span className="hidden sm:inline">Book</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setVoiceEnabled(!voiceEnabled)}
+                  title={
+                    voiceEnabled ? 'Mute AI Voice' : 'Enable AI Voice Reply'
+                  }
+                  className={`p-2 rounded-xl transition-colors cursor-pointer ${
+                    voiceEnabled
+                      ? 'bg-emerald-500/20 text-emerald-500'
+                      : 'text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  {voiceEnabled ? (
+                    <Volume2 className="w-4 h-4" />
+                  ) : (
+                    <VolumeX className="w-4 h-4" />
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
               </div>
             </div>
 
-            <button
-              type="button"
-              aria-label="Close chat"
-              onClick={() => setOpen(false)}
-              className={cn(
-                'inline-flex h-9 w-9 items-center justify-center rounded-full',
-                'bg-white/10 text-white transition-colors hover:bg-white/20',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-brand-greenDark'
-              )}
+            {/* Quick Action Prompt Chips */}
+            <div className="relative z-10 px-3.5 py-2 border-b border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+              <button
+                onClick={() => setShowBookingModal(true)}
+                className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-700 dark:text-emerald-300 whitespace-nowrap flex items-center gap-1 transition-colors shrink-0 cursor-pointer"
+              >
+                <Calendar className="w-3 h-3 text-emerald-500" />
+                <span>📅 Book a 1:1 Call</span>
+              </button>
+
+              <button
+                onClick={() =>
+                  sendMessage('What is your full-stack & airline tech stack?')
+                }
+                className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 whitespace-nowrap shrink-0 transition-colors cursor-pointer"
+              >
+                🚀 Tech Stack
+              </button>
+
+              <button
+                onClick={() =>
+                  sendMessage(
+                    'Tell me about your NDC airline booking projects.'
+                  )
+                }
+                className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 whitespace-nowrap shrink-0 transition-colors cursor-pointer"
+              >
+                ✈️ NDC Projects
+              </button>
+
+              <button
+                onClick={() =>
+                  sendMessage(
+                    'What are your freelance pricing and retainer packages?'
+                  )
+                }
+                className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 whitespace-nowrap shrink-0 transition-colors cursor-pointer"
+              >
+                💰 Pricing Rates
+              </button>
+            </div>
+
+            {/* Messages Scroll Area */}
+            <div
+              ref={listRef}
+              className="relative z-10 flex-1 overflow-y-auto p-4 space-y-3.5 text-xs sm:text-sm"
             >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
+              {messages.map((m) => {
+                const isUser = m.role === 'user';
+                const isSpeaking = currentlySpeakingId === m.id;
 
-          <div
-            ref={listRef}
-            className="flex-1 overflow-y-auto bg-slate-50 px-4 py-3 dark:bg-slate-900/40"
-          >
-            <div className="space-y-2">
-              {messages.map((m) => (
-                <div
-                  key={m.id}
-                  className={cn(
-                    'flex',
-                    m.role === 'user' ? 'justify-end' : 'justify-start'
-                  )}
-                >
+                return (
                   <div
-                    className={cn(
-                      'max-w-[86%] whitespace-pre-line rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed shadow-sm',
-                      m.role === 'user'
-                        ? 'rounded-br-md bg-brand-green text-white'
-                        : 'rounded-bl-md bg-white text-slate-900 ring-1 ring-black/5 dark:bg-slate-950 dark:text-slate-100 dark:ring-white/10'
-                    )}
+                    key={m.id}
+                    className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}
                   >
-                    {formatChatMessage(m.content)}
-                  </div>
-                </div>
-              ))}
+                    <div
+                      className={`relative max-w-[85%] rounded-2xl px-4 py-2.5 shadow-xs leading-relaxed ${
+                        isUser
+                          ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-br-xs'
+                          : 'bg-slate-100 dark:bg-slate-800/90 text-slate-800 dark:text-slate-200 border border-slate-200/50 dark:border-slate-700/50 rounded-bl-xs'
+                      }`}
+                    >
+                      <div className="whitespace-pre-wrap">{m.content}</div>
 
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="rounded-bl-md rounded-2xl bg-white px-3.5 py-2.5 shadow-sm ring-1 ring-black/5 dark:bg-slate-950 dark:ring-white/10">
-                    <div className="flex items-center gap-1">
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.3s]" />
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.15s]" />
-                      <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400" />
+                      {/* Assistant message tools (Voice playback & Copy) */}
+                      {!isUser && (
+                        <div className="flex items-center gap-2 mt-2 pt-1.5 border-t border-slate-200/50 dark:border-slate-700/50 text-[10px] text-slate-400">
+                          <button
+                            type="button"
+                            onClick={() => speakText(m.content, m.id)}
+                            className="flex items-center gap-1 hover:text-emerald-500 transition-colors cursor-pointer"
+                            title="Listen to this reply"
+                          >
+                            <Volume2
+                              className={`w-3 h-3 ${isSpeaking ? 'text-emerald-500 animate-pulse' : ''}`}
+                            />
+                            <span>{isSpeaking ? 'Speaking...' : 'Listen'}</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleCopy(m.content, m.id)}
+                            className="flex items-center gap-1 hover:text-emerald-500 transition-colors cursor-pointer"
+                            title="Copy reply"
+                          >
+                            {copiedMsgId === m.id ? (
+                              <>
+                                <Check className="w-3 h-3 text-emerald-500" />
+                                <span className="text-emerald-500">Copied</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="w-3 h-3" />
+                                <span>Copy</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
+                );
+              })}
+
+              {/* Loading indicator */}
+              {isLoading && (
+                <div className="flex items-center gap-2 text-slate-400 text-xs py-1">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" />
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:0.2s]" />
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:0.4s]" />
+                  <span className="text-[11px] ml-1 font-mono text-emerald-600 dark:text-emerald-400">
+                    Thinking...
+                  </span>
                 </div>
               )}
             </div>
-          </div>
 
-          <div className="border-t border-slate-200 bg-white/90 p-3 backdrop-blur dark:border-slate-800 dark:bg-slate-950/70">
-            <div className="mb-2 flex gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setMode('menu');
-                  setMenu('main');
-                }}
-                className={cn(
-                  'flex-1 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors',
-                  mode === 'menu'
-                    ? 'bg-brand-green text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
-                )}
-              >
-                Menu
-              </button>
-              <button
-                type="button"
-                onClick={() => setMode('ai')}
-                className={cn(
-                  'flex-1 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors',
-                  mode === 'ai'
-                    ? 'bg-brand-green text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
-                )}
-              >
-                AI Chat
-              </button>
-            </div>
+            {/* In-Chat Meeting Booking Form Overlay */}
+            <AnimatePresence>
+              {showBookingModal && (
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 15 }}
+                  className="relative z-20 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 sm:p-5 shadow-2xl"
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center gap-1.5">
+                      <Calendar className="w-4 h-4 text-emerald-500" />
+                      <span>Schedule a 1:1 Intro Call</span>
+                    </h4>
+                    <button
+                      onClick={() => setShowBookingModal(false)}
+                      className="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
 
-            {mode === 'menu' ? (
-              <div className="flex max-h-28 flex-wrap gap-2 overflow-y-auto pr-1">
-                {menuOptions.map((o) => (
+                  {bookingSuccess ? (
+                    <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center space-y-3">
+                      <CheckCircle2 className="w-8 h-8 mx-auto text-emerald-500" />
+                      <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                        Meeting Request Dispatched to Admin!
+                      </p>
+                      {gcalUrl && (
+                        <a
+                          href={gcalUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500 transition-colors"
+                        >
+                          <span>Add to Google Calendar</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      )}
+                      <div>
+                        <button
+                          onClick={() => {
+                            setShowBookingModal(false);
+                            setBookingSuccess(false);
+                          }}
+                          className="text-[11px] text-slate-500 underline hover:text-slate-700 cursor-pointer"
+                        >
+                          Return to Chat
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <form
+                      onSubmit={handleBookingSubmit}
+                      className="space-y-2.5 text-xs"
+                    >
+                      <div className="grid grid-cols-2 gap-2">
+                        <input
+                          type="text"
+                          required
+                          placeholder="Your Name"
+                          value={bookingName}
+                          onChange={(e) => setBookingName(e.target.value)}
+                          className="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white"
+                        />
+                        <input
+                          type="email"
+                          required
+                          placeholder="Your Email"
+                          value={bookingEmail}
+                          onChange={(e) => setBookingEmail(e.target.value)}
+                          className="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <input
+                          type="date"
+                          required
+                          value={bookingDate}
+                          onChange={(e) => setBookingDate(e.target.value)}
+                          className="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white"
+                        />
+                        <select
+                          value={bookingTime}
+                          onChange={(e) => setBookingTime(e.target.value)}
+                          className="px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white"
+                        >
+                          <option value="11:00 AM">11:00 AM IST</option>
+                          <option value="02:00 PM">02:00 PM IST</option>
+                          <option value="04:00 PM">04:00 PM IST</option>
+                          <option value="07:00 PM">07:00 PM IST</option>
+                          <option value="09:30 PM">
+                            09:30 PM IST (US ET Morning)
+                          </option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="Discussion Topic / Role"
+                          value={bookingTopic}
+                          onChange={(e) => setBookingTopic(e.target.value)}
+                          className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white"
+                        />
+                      </div>
+
+                      <div>
+                        <textarea
+                          rows={2}
+                          placeholder="Additional Notes or requirements..."
+                          value={bookingNotes}
+                          onChange={(e) => setBookingNotes(e.target.value)}
+                          className="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white"
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={isSubmittingBooking}
+                        className="w-full py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer"
+                      >
+                        {isSubmittingBooking
+                          ? 'Scheduling...'
+                          : 'Confirm Call Request'}
+                      </button>
+                    </form>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Input Bar */}
+            <div className="relative z-10 p-3 border-t border-slate-100 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md">
+              {isListening && (
+                <div className="flex items-center justify-between mb-2 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+                    <span>Listening... speak now</span>
+                  </div>
                   <button
-                    key={o.key}
                     type="button"
-                    onClick={o.action}
-                    className={cn(
-                      'inline-flex items-center justify-center rounded-full border border-slate-200/80 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm',
-                      'transition-colors hover:bg-slate-50 active:scale-[0.98]',
-                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white',
-                      'dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900 dark:focus-visible:ring-offset-slate-950'
-                    )}
+                    onClick={toggleListening}
+                    className="text-[10px] uppercase font-bold underline cursor-pointer"
                   >
-                    {o.label}
+                    Done
                   </button>
-                ))}
-              </div>
-            ) : (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  sendMessage();
-                }}
-                className="flex items-center gap-2"
-              >
+                </div>
+              )}
+
+              <div className="flex items-center gap-2">
+                {/* Voice Input Microphone Button */}
+                <button
+                  type="button"
+                  onClick={toggleListening}
+                  title={
+                    isListening
+                      ? 'Stop Listening'
+                      : 'Voice Input (Speak to Bot)'
+                  }
+                  className={`p-2.5 rounded-xl transition-all cursor-pointer ${
+                    isListening
+                      ? 'bg-red-500 text-white animate-pulse shadow-md shadow-red-500/30'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-emerald-500/10 hover:text-emerald-500'
+                  }`}
+                >
+                  {isListening ? (
+                    <MicOff className="w-4 h-4" />
+                  ) : (
+                    <Mic className="w-4 h-4" />
+                  )}
+                </button>
+
                 <input
                   ref={inputRef}
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Ask me anything..."
-                  disabled={isLoading}
-                  className={cn(
-                    'flex-1 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400',
-                    'focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20',
-                    'disabled:cursor-not-allowed disabled:opacity-50',
-                    'dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500',
-                    'dark:focus:border-brand-green dark:focus:ring-brand-green/20'
-                  )}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      sendMessage();
+                    }
+                  }}
+                  placeholder="Ask a question or speak..."
+                  className="flex-1 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 transition-all"
                 />
+
                 <button
-                  type="submit"
-                  disabled={!inputValue.trim() || isLoading}
-                  className={cn(
-                    'inline-flex h-9 w-9 items-center justify-center rounded-full',
-                    'bg-brand-green text-white shadow-sm transition-colors hover:bg-brand-greenDark',
-                    'disabled:cursor-not-allowed disabled:opacity-50',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white'
-                  )}
+                  type="button"
+                  onClick={() => sendMessage()}
+                  disabled={isLoading || !inputValue.trim()}
+                  className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white shadow-md transition-all cursor-pointer disabled:cursor-not-allowed"
                 >
-                  <Send className="h-4 w-4" />
+                  <Send className="w-4 h-4" />
                 </button>
-              </form>
-            )}
-          </div>
-        </div>
-      ) : null}
-
-      {!open ? (
-        <button
-          type="button"
-          aria-label={open ? 'Close chat' : 'Open chat'}
-          aria-expanded={open}
-          onClick={() => setOpen(true)}
-          className={cn(
-            'group relative inline-flex h-14 w-14 items-center justify-center overflow-hidden rounded-full',
-            'bg-gradient-to-br from-brand-green to-brand-greenDark text-white',
-            'shadow-xl ring-1 ring-black/10',
-            'transition-all duration-200 ease-out',
-            'hover:-translate-y-0.5 hover:shadow-2xl',
-            'active:translate-y-0 active:scale-[0.98]',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-white',
-            'dark:ring-white/10 dark:focus-visible:ring-offset-slate-950'
-          )}
-        >
-          <span
-            aria-hidden="true"
-            className={cn(
-              'pointer-events-none absolute inset-0 rounded-full',
-              'bg-white/15 opacity-0 transition-opacity duration-200',
-              'group-hover:opacity-100'
-            )}
-          />
-
-          <Bot className="relative h-6 w-6" />
-        </button>
-      ) : null}
-    </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

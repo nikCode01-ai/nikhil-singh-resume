@@ -194,7 +194,7 @@ export default function RootLayout({
                 email: 'nikhilcool974@gmail.com',
                 telephone: '+91 8532856980',
                 sameAs: [
-                  'https://github.com/nikhilcool974',
+                  'https://github.com/nikCode01-ai',
                   'https://linkedin.com/in/nikhil-code05',
                   'https://gitlab.com/nikhilcool974',
                   'https://twitter.com/nikhilcool974',

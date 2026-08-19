@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { addInboxMessage } from '@/lib/inbox-store';
 
 function escapeHtml(str: string): string {
   return str
@@ -11,7 +12,7 @@ function escapeHtml(str: string): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, message } = await request.json();
+    const { name, email, message, service, phone, type } = await request.json();
 
     if (
       !name ||
@@ -28,10 +29,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (name.length > 100 || email.length > 254 || message.length > 5000) {
-      return NextResponse.json(
-        { error: 'Input too long' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Input too long' }, { status: 400 });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -40,6 +38,22 @@ export async function POST(request: NextRequest) {
         { error: 'Invalid email format' },
         { status: 400 }
       );
+    }
+
+    // Persist to Admin Inbox
+    try {
+      addInboxMessage({
+        name,
+        email,
+        message,
+        type: type === 'booking' ? 'booking' : 'contact',
+        meta: {
+          service: typeof service === 'string' ? service : undefined,
+          phone: typeof phone === 'string' ? phone : undefined,
+        },
+      });
+    } catch (saveErr) {
+      console.error('Failed to save to inbox store:', saveErr);
     }
 
     const resendApiKey = process.env.RESEND_API_KEY;
@@ -78,10 +92,7 @@ export async function POST(request: NextRequest) {
       });
 
       if (!emailResponse.ok) {
-        console.error(
-          'Resend email failed:',
-          emailResponse.status
-        );
+        console.error('Resend email failed:', emailResponse.status);
       }
     }
 
