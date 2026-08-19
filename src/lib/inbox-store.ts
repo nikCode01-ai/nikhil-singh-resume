@@ -22,54 +22,7 @@ export interface InboxMessage {
 const INBOX_FILE_DIR = join(process.cwd(), 'docs');
 const INBOX_FILE = join(INBOX_FILE_DIR, 'INBOX_MESSAGES.json');
 
-const INITIAL_MESSAGES: InboxMessage[] = [
-  {
-    id: 'msg-101',
-    name: 'Sarah Jenkins',
-    email: 'sarah.j@traveltech-group.com',
-    subject: 'Aviation NDC Booking Engine Integration Project',
-    message:
-      'Hello Nikhil, we saw your NDC Terminal project with American and United Airlines APIs. We are looking for a senior consultant to lead our multi-airline aggregation backend.',
-    type: 'contact',
-    status: 'new',
-    timestamp: new Date(Date.now() - 3600000 * 4).toISOString(),
-    meta: {
-      budget: '$8,000 - $15,000',
-      service: 'Airline NDC Integration',
-    },
-  },
-  {
-    id: 'msg-102',
-    name: 'David Miller',
-    email: 'david@fintechspark.io',
-    subject: 'Interview for Senior Fullstack & Next.js Role',
-    message:
-      'Hi Nikhil, your portfolio and production metrics (99.9% uptime, microservices) are very impressive. Can we schedule a 30-minute technical discussion this week?',
-    type: 'booking',
-    status: 'read',
-    timestamp: new Date(Date.now() - 3600000 * 24).toISOString(),
-    meta: {
-      date: '2026-08-22',
-      time: '04:00 PM IST',
-      service: 'Technical Interview',
-    },
-  },
-  {
-    id: 'msg-103',
-    name: 'Elena Rostova',
-    email: 'elena@luxurystays.ch',
-    subject: 'High-Performance Event Ticketing Web App',
-    message:
-      'We need a high-concurrency ticketing portal similar to Panama Kosher Fest 2026. Looking for your availability for a 2-month contract.',
-    type: 'contact',
-    status: 'replied',
-    timestamp: new Date(Date.now() - 3600000 * 72).toISOString(),
-    meta: {
-      budget: 'Monthly Retainer ₹45,000',
-      service: 'Web App Development',
-    },
-  },
-];
+const INITIAL_MESSAGES: InboxMessage[] = [];
 
 export function getInboxMessages(): InboxMessage[] {
   try {

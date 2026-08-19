@@ -131,14 +131,19 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${inter.variable} ${geistMono.variable} min-h-screen bg-brand-cream font-sans text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100`}
       >
-        <Script id="theme-init" strategy="beforeInteractive">{`(() => {
+        <script
+          id="theme-init"
+          dangerouslySetInnerHTML={{
+            __html: `(() => {
     try {
       const saved = localStorage.getItem('theme');
       const preferredDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       const theme = (saved === 'dark' || saved === 'light') ? saved : (preferredDark ? 'dark' : 'light');
       document.documentElement.classList.toggle('dark', theme === 'dark');
     } catch (_) {}
-  })();`}</Script>
+  })();`,
+          }}
+        />
         {process.env.NEXT_PUBLIC_GA4_ID && (
           <>
             <Script

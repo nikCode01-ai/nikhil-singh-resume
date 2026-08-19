@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Sparkles,
   Database,
+  Activity,
 } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -45,6 +46,13 @@ export default function AdminLayout({
                 className="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-green dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               >
                 Dashboard
+              </Link>
+              <Link
+                href="/admin/moniter"
+                className="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-green dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center gap-1.5"
+              >
+                <Activity className="h-3.5 w-3.5 text-emerald-500" />
+                Live Monitor
               </Link>
               <Link
                 href="/admin/blogs"

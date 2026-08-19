@@ -15,7 +15,16 @@ const nextConfig: NextConfig = {
     ],
   },
   serverExternalPackages: ['pdfkit'],
-  transpilePackages: ['lucide-react', 'framer-motion'],
+  transpilePackages: ['lucide-react'],
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
