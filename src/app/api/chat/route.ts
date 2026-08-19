@@ -44,7 +44,8 @@ Be helpful and proactive in using these tools when the user's intent involves is
 
   const lines = [
     `You are a helpful assistant for ${person.name}'s portfolio website.`,
-    'Answer concisely and professionally.',
+    'Answer concisely, briefly, and professionally.',
+    'Keep your replies short and clear. Avoid excessive bolding or asterisks (**) in your output.',
     'If asked for contact details, provide them.',
     'Prefer using the portfolio data below; if something is unknown, say so.',
     githubToolsSection,
@@ -459,7 +460,7 @@ export async function POST(request: Request) {
         q
       )
     ) {
-      return `Hello! 👋 I am **${person.name}'s AI Portfolio Assistant**.\n\nNikhil is a **Senior Full-Stack Developer** with 4+ years of experience specializing in:\n- ✈️ **Airline NDC API Integrations** (American, United, Copa Airlines, AirGateway)\n- ⚡ **Next.js 16, React, Node.js, Fastify & TypeScript**\n- 🔄 **Real-Time Architectures** (WebSockets, SSE, Sub-30s Bookings)\n- 🤖 **GenAI / LLM Integration & RAG Solutions**\n\nHow can I help you today? You can ask about his **projects**, **skills**, **pricing**, or **contact details**!`;
+      return `Hi there! 👋 I am Nikhil's portfolio assistant.\n\nNikhil is a Senior Full-Stack & Airline NDC Developer with 4+ years of experience in Next.js, Node.js, and real-time booking engines.\n\nHow can I help you? You can ask about his projects, skills, pricing, or contact info!`;
     }
 
     // Skills & Technologies
@@ -468,7 +469,7 @@ export async function POST(request: Request) {
         q
       )
     ) {
-      return `### 🛠️ Nikhil's Core Technical Stack:\n\n- **Frontend**: React, Next.js (App Router), TypeScript, Tailwind CSS, Framer Motion\n- **Backend**: Node.js, Fastify, Express, REST APIs, GraphQL, Microservices\n- **Real-Time**: WebSockets, Server-Sent Events (SSE)\n- **Databases**: MongoDB, PostgreSQL, MySQL, Redis, BigQuery\n- **Cloud & DevOps**: AWS (EC2, S3, RDS, Lambda), Docker, CI/CD Pipelines, Nginx, PM2\n- **Aviation & Travel**: NDC APIs (American Airlines, United, Copa, 25+ airlines via AirGateway), GDS, Fare Engines\n- **GenAI / LLM**: LangChain, OpenAI API, Vector DBs, RAG Architectures\n\nWould you like more details on a specific project or technology?`;
+      return `Nikhil's core technical stack:\n• Frontend: Next.js 16, React, TypeScript, Tailwind CSS\n• Backend: Node.js, Fastify, Express, WebSockets, SSE\n• Cloud & DB: AWS, Docker, MongoDB, PostgreSQL, Redis\n• Aviation: NDC APIs (American, United, Copa Airlines)\n• AI & Tools: GenAI LLMs, LangChain, RAG architectures`;
     }
 
     // Projects
@@ -477,7 +478,7 @@ export async function POST(request: Request) {
         q
       )
     ) {
-      return `### 🚀 Featured Production Projects:\n\n1. **NDC Terminal & Airline Booking Engine**: Real-time multi-airline booking system integrating American Airlines, United, Copa, and AirGateway with sub-30s booking flow.\n2. **Panama Kosher Fest 2026**: High-scale international festival ticketing & event management platform.\n3. **Fresh Kosher Cruises**: Luxury cruise booking and marketing platform with interactive itinerary mapping.\n4. **AI-Powered Chatbots & RAG Systems**: Customer support automation with sentiment analysis and real-time streaming.\n\nYou can explore interactive live demos on the [Projects page](/projects).`;
+      return `Featured projects built by Nikhil:\n1. NDC Terminal — Multi-airline booking system (American, United, Copa).\n2. Panama Kosher Fest 2026 — International ticketing & event platform.\n3. Fresh Kosher Cruises — Luxury cruise booking platform.\n4. AI Support Chatbots — Real-time automated support.\n\nYou can explore live demos on the /projects page!`;
     }
 
     // Contact, Hire, Email, Phone
@@ -486,23 +487,23 @@ export async function POST(request: Request) {
         q
       )
     ) {
-      return `### 📬 Get in Touch with Nikhil Singh:\n\n- 📧 **Email**: [${person.email}](mailto:${person.email})\n- 📱 **Phone**: [${person.phone}](tel:${person.phone})\n- 📍 **Location**: ${person.location || 'India'}\n- 💼 **LinkedIn**: [Nikhil Singh LinkedIn](${person.linkedinUrl})\n- 🦊 **GitLab**: [${person.gitlabHandle}](${person.gitlabUrl})\n\nYou can also submit your project requirements directly through the [Contact Form](/contact)!`;
+      return `Get in touch with Nikhil Singh:\n• Email: ${person.email}\n• Phone: ${person.phone}\n• Location: ${person.location || 'India'}\n• LinkedIn: ${person.linkedinUrl}\n• GitLab: ${person.gitlabUrl}\n\nYou can also leave a message directly on the /contact page!`;
     }
 
     // Pricing, Cost, Rates
     if (
       /price|pricing|rate|cost|hourly|package|retainer|charge|quote/i.test(q)
     ) {
-      return `### 💼 Flexible Pricing Options:\n\n- **Hourly Model**: ₹500 / hour (Quick bug fixes, Next.js tweaks, API debugging)\n- **Monthly Retainer**: ₹45,000 / month (~80 dedicated hrs, feature delivery, AWS deployment)\n- **Quarterly Retainer**: ₹1,15,000 / quarter (End-to-end architecture, NDC integrations, performance tuning)\n\nCheck out the full breakdown on the [Pricing page](/price) or reach out for a custom project quote.`;
+      return `Pricing & Engagement options:\n• Hourly: ₹500 / hr\n• Monthly Retainer: ₹45,000 / mo (~80 dedicated hrs)\n• Quarterly Retainer: ₹1,15,000 / quarter (Full architecture & deployment)\n\nCheck out the full details on the /price page!`;
     }
 
     // Resume / CV
     if (/resume|cv|download|experience\s*details/i.test(q)) {
-      return `📄 You can download Nikhil's resume directly in PDF or DOCX format:\n- [Download Resume (PDF)](/api/resume?template=1&format=pdf&disposition=attachment)\n- [Download Resume (DOCX)](/api/resume?template=1&format=docx&disposition=attachment)\n\nFeel free to ask if you have specific questions about his past roles or achievements!`;
+      return `Download Nikhil's resume:\n• PDF: /api/resume?template=1&format=pdf\n• DOCX: /api/resume?template=1&format=docx`;
     }
 
     // Default Fallback
-    return `Thank you for reaching out! Nikhil Singh is a **Senior Full-Stack & NDC Airline Integrations Developer** with over 4 years of experience delivering 30+ scalable production applications with 99.9% uptime.\n\nYou can explore:\n- 🚀 **Projects**: [View Projects](/projects)\n- 🛠️ **Skills & Tools**: [View Skills](/skills)\n- 💰 **Pricing & Rates**: [View Pricing](/price)\n- 📬 **Contact Nikhil**: [Get in Touch](/contact)\n\nHow else can I assist you with your project?`;
+    return `Nikhil Singh is a Senior Full-Stack & Airline NDC Developer with 4+ years of experience delivering 30+ production systems with 99.9% uptime.\n\nYou can ask about:\n• Projects (/projects)\n• Skills (/skills)\n• Pricing (/price)\n• Contact details (/contact)`;
   }
 
   try {

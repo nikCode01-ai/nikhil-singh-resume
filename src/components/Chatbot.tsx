@@ -36,6 +36,14 @@ type MenuOption = {
 
 type ChatMode = 'menu' | 'ai';
 
+function formatChatMessage(text: string): string {
+  if (!text) return '';
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1')
+    .replace(/^###?\s+/gm, '');
+}
+
 export function Chatbot() {
   const idBase = useId();
   const [open, setOpen] = useState(false);
@@ -389,7 +397,7 @@ export function Chatbot() {
                         : 'rounded-bl-md bg-white text-slate-900 ring-1 ring-black/5 dark:bg-slate-950 dark:text-slate-100 dark:ring-white/10'
                     )}
                   >
-                    {m.content}
+                    {formatChatMessage(m.content)}
                   </div>
                 </div>
               ))}
