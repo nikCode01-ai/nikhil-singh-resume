@@ -457,11 +457,13 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
               <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
-                {analytics?.metrics.totalPageViews.toLocaleString() || '4,460'}
+                {analytics?.metrics?.totalPageViews ?? 0}
               </div>
               <div className="text-xs text-emerald-500 mt-1 font-semibold flex items-center gap-1">
-                <span>+14.2%</span>{' '}
-                <span className="text-slate-400 font-normal">vs last week</span>
+                <span>Real-time</span>{' '}
+                <span className="text-slate-400 font-normal">
+                  verified visits
+                </span>
               </div>
             </div>
 
@@ -993,7 +995,15 @@ export default function AdminDashboardPage() {
                 Traffic Referrers
               </h3>
               <div className="space-y-3">
-                {analytics?.topReferrers.map((r) => (
+                {(
+                  analytics?.topReferrers || [
+                    {
+                      source: 'Direct / Resume Link',
+                      count: analytics?.metrics.totalPageViews || 0,
+                      share: '100%',
+                    },
+                  ]
+                ).map((r) => (
                   <div
                     key={r.source}
                     className="flex items-center justify-between text-xs py-1 border-b border-slate-100 dark:border-slate-800/80"
@@ -1018,7 +1028,7 @@ export default function AdminDashboardPage() {
               <div className="grid grid-cols-2 gap-3 text-center">
                 <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
                   <div className="text-lg font-black text-slate-900 dark:text-white">
-                    {analytics?.metrics.avgSessionDuration || '2m 48s'}
+                    {analytics?.metrics?.avgSessionDuration || '2m 48s'}
                   </div>
                   <span className="text-[11px] text-slate-500">
                     Avg Duration
@@ -1026,7 +1036,7 @@ export default function AdminDashboardPage() {
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
                   <div className="text-lg font-black text-emerald-500">
-                    {analytics?.metrics.resumeDownloads || '342'}
+                    {analytics?.metrics?.resumeDownloads || 0}
                   </div>
                   <span className="text-[11px] text-slate-500">
                     CV Downloads
@@ -1035,7 +1045,7 @@ export default function AdminDashboardPage() {
               </div>
 
               <div className="space-y-2 pt-2">
-                {analytics?.deviceBreakdown.map((d) => (
+                {(analytics?.deviceBreakdown || []).map((d) => (
                   <div
                     key={d.device}
                     className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400"

@@ -61,7 +61,7 @@ export async function GET(request: Request) {
       timeframeMs === Infinity
         ? allMessages
         : allMessages.filter(
-            (m) => now - new Date(m.createdAt).getTime() <= timeframeMs
+            (m) => now - new Date(m.timestamp).getTime() <= timeframeMs
           );
 
     // Check Real Services

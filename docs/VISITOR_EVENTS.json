@@ -1,5 +1,19 @@
 [
   {
+    "id": "ev-1787138319301-247",
+    "timestamp": "2026-08-19T11:18:39.301Z",
+    "type": "pageview",
+    "path": "/",
+    "ip": "::1",
+    "city": "Local System",
+    "country": "Localhost (Dev)",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "details": {
+      "referrer": "http://localhost:3000/"
+    }
+  },
+  {
     "id": "ev-1787137846160-488",
     "timestamp": "2026-08-19T11:10:46.160Z",
     "type": "pageview",
