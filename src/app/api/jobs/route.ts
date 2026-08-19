@@ -1,6 +1,7 @@
 import { person, technicalSkills } from '@/lib/resume-data';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 function json(data: unknown, init: ResponseInit = {}) {
   const headers = new Headers(init.headers);

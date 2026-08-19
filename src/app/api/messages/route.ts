@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 interface Message {
   id: string;
@@ -81,10 +82,7 @@ export async function POST(req: NextRequest) {
     const adminToken = process.env.DASHBOARD_AUTH_TOKEN;
 
     if (!adminToken || authHeader !== `Bearer ${adminToken}`) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await req.json();
@@ -98,10 +96,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (content.length > 10000) {
-      return NextResponse.json(
-        { error: 'Content too long' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Content too long' }, { status: 400 });
     }
 
     let messages: Message[] = [];

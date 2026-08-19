@@ -5,8 +5,10 @@ import {
   technicalSkills,
 } from '@/lib/resume-data';
 import { getIssue, listIssues } from '@/lib/github';
+import { logVisitorEvent } from '@/lib/visitor-store';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 function json(data: unknown, init: ResponseInit = {}) {
   const headers = new Headers(init.headers);
@@ -391,14 +393,6 @@ export async function POST(request: Request) {
   const geminiKey = process.env.GEMINI_API_KEY;
   const openAIKey = process.env.OPENAI_API_KEY;
   const groqKey = process.env.GROQ_API_KEY;
-  if (!geminiKey && !openAIKey && !groqKey) {
-    return json(
-      {
-        error: 'No AI API key is configured',
-      },
-      { status: 500 }
-    );
-  }
 
   let body: unknown;
   try {
@@ -447,6 +441,22 @@ export async function POST(request: Request) {
     messages = [{ role: 'user', content: singleMessage.trim() }];
   } else {
     return json({ error: 'Missing messages' }, { status: 400 });
+  }
+
+  // Log real user query for Admin Analytics
+  const lastUserMsg = [...messages].reverse().find((m) => m.role === 'user');
+  if (lastUserMsg && lastUserMsg.content) {
+    try {
+      logVisitorEvent({
+        type: 'chat_query',
+        path: '/',
+        details: {
+          query: lastUserMsg.content.slice(0, 200),
+        },
+      });
+    } catch {
+      // ignore
+    }
   }
 
   function generateLocalFallbackReply(messages: ChatMessage[]): string {

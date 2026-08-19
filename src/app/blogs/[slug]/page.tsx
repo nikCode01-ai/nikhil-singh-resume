@@ -31,6 +31,8 @@ type PageProps = {
   }>;
 };
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   const { getBlogs } = await import('@/lib/strapi');
   let allSlugs: string[] = [];

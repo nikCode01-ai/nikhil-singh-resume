@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { addInboxMessage } from '@/lib/inbox-store';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 function escapeHtml(str: string): string {
   return str
     .replace(/&/g, '&amp;')

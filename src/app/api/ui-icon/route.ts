@@ -47,6 +47,7 @@ import {
 import type { LucideIcon } from 'lucide-react';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 const iconMap: Record<string, LucideIcon> = {
   ArrowRight,
