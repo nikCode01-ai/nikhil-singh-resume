@@ -142,17 +142,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 
+Button.displayName = 'Button';
+
 type ButtonLinkProps = ButtonStyleProps &
+  LinkProps &
   Omit<
-    HTMLMotionProps<'a'>,
-    keyof ButtonStyleProps | 'ref' | keyof LinkProps | 'children'
-  > &
-  LinkProps & {
+    React.AnchorHTMLAttributes<HTMLAnchorElement>,
+    keyof ButtonStyleProps | keyof LinkProps | 'children'
+  > & {
     className?: string;
     children?: React.ReactNode;
   };
-
-const MotionLink = motion.create(Link);
 
 export function ButtonLink({
   variant = 'primary',
@@ -165,15 +165,13 @@ export function ButtonLink({
   const { mouseX, mouseY, handleMouseMove } = useHoverPosition();
 
   return (
-    <MotionLink
-      whileTap={{ scale: 0.95 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+    <Link
       className={cn(buttonClassName({ variant, size, fullWidth }), className)}
       onMouseMove={handleMouseMove}
       {...props}
     >
       <ButtonGlow mouseX={mouseX} mouseY={mouseY} />
       <span className="relative z-10 flex items-center gap-2">{children}</span>
-    </MotionLink>
+    </Link>
   );
 }

@@ -24,29 +24,40 @@ async function fetchStrapi<T>(
     headers['Authorization'] = `Bearer ${STRAPI_TOKEN}`;
   }
 
-  const fetchOptions: RequestInit & { next?: { revalidate?: number } } = {
-    headers,
-    signal: AbortSignal.timeout(1500),
-  };
-  if (options?.next) {
-    fetchOptions.next = options.next;
-  }
-  if (options?.cache) {
-    fetchOptions.cache = options.cache as RequestCache;
-  }
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 1500);
 
-  const res = await fetch(url, fetchOptions);
+  try {
+    const fetchOptions: RequestInit & { next?: { revalidate?: number } } = {
+      headers,
+      signal: controller.signal,
+    };
+    if (options?.next) {
+      fetchOptions.next = options.next;
+    }
+    if (options?.cache) {
+      fetchOptions.cache = options.cache as RequestCache;
+    }
 
-  if (!res.ok) {
-    throw new Error(`Strapi API error: ${res.status} ${res.statusText}`);
+    const res = await fetch(url, fetchOptions);
+    clearTimeout(timer);
+
+    if (!res.ok) {
+      throw new Error(`Strapi API error: ${res.status} ${res.statusText}`);
+    }
+
+    const contentType = res.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      throw new Error(
+        `Invalid content-type: expected JSON, got ${contentType}`
+      );
+    }
+
+    return await res.json();
+  } catch (err) {
+    clearTimeout(timer);
+    throw err;
   }
-
-  const contentType = res.headers.get('content-type') || '';
-  if (!contentType.includes('application/json')) {
-    throw new Error(`Invalid content-type: expected JSON, got ${contentType}`);
-  }
-
-  return await res.json();
 }
 
 export type StrapiBlog = {
