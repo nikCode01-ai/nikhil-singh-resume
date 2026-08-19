@@ -177,3 +177,59 @@ Ensure the body contains at least 3-4 sections with detailed paragraphs and prac
     );
   }
 }
+
+export async function GET() {
+  try {
+    const filePath = path.join(process.cwd(), 'src/lib/generated-blogs.json');
+    let generatedBlogs = [];
+    if (fs.existsSync(filePath)) {
+      try {
+        const content = fs.readFileSync(filePath, 'utf-8');
+        generatedBlogs = JSON.parse(content);
+        if (!Array.isArray(generatedBlogs)) generatedBlogs = [];
+      } catch {
+        generatedBlogs = [];
+      }
+    }
+    return NextResponse.json({ blogs: generatedBlogs });
+  } catch {
+    return NextResponse.json(
+      { error: 'Failed to fetch blogs' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const slug = searchParams.get('slug');
+
+    if (!slug) {
+      return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
+    }
+
+    const filePath = path.join(process.cwd(), 'src/lib/generated-blogs.json');
+    if (fs.existsSync(filePath)) {
+      try {
+        const content = fs.readFileSync(filePath, 'utf-8');
+        let generatedBlogs = JSON.parse(content);
+        if (Array.isArray(generatedBlogs)) {
+          generatedBlogs = generatedBlogs.filter(
+            (b: { slug: string }) => b.slug !== slug
+          );
+          fs.writeFileSync(filePath, JSON.stringify(generatedBlogs, null, 2));
+        }
+      } catch (err) {
+        console.error('Failed to delete blog:', err);
+      }
+    }
+
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json(
+      { error: 'Failed to delete blog' },
+      { status: 500 }
+    );
+  }
+}
