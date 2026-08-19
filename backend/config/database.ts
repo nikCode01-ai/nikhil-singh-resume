@@ -19,6 +19,8 @@ const config = ({
             false
           ),
         },
+        keepAlive: true,
+        keepAliveInitialDelayMillis: 10000,
       }
     : {
         host: env('DATABASE_HOST', 'localhost'),
@@ -33,14 +35,21 @@ const config = ({
           ),
         },
         schema: env('DATABASE_SCHEMA', 'public'),
+        keepAlive: true,
+        keepAliveInitialDelayMillis: 10000,
       };
 
   const connections = {
     postgres: {
       connection: connectionConfig,
       pool: {
-        min: env.int('DATABASE_POOL_MIN', 2),
+        min: env.int('DATABASE_POOL_MIN', 0),
         max: env.int('DATABASE_POOL_MAX', 10),
+        idleTimeoutMillis: env.int('DATABASE_POOL_IDLE', 10000),
+        acquireTimeoutMillis: env.int('DATABASE_POOL_ACQUIRE', 30000),
+        createTimeoutMillis: env.int('DATABASE_POOL_CREATE', 30000),
+        reapIntervalMillis: 1000,
+        createRetryIntervalMillis: 200,
       },
     },
   };
