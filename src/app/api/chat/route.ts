@@ -448,6 +448,63 @@ export async function POST(request: Request) {
     return json({ error: 'Missing messages' }, { status: 400 });
   }
 
+  function generateLocalFallbackReply(messages: ChatMessage[]): string {
+    const lastUserMsg = [...messages].reverse().find((m) => m.role === 'user');
+    const userText = lastUserMsg ? lastUserMsg.content : '';
+    const q = userText.toLowerCase().trim();
+
+    // Greetings
+    if (
+      /^(hi|hello|hey|hola|namaste|greetings|good\s*(morning|afternoon|evening)|who\s*are\s*you)/i.test(
+        q
+      )
+    ) {
+      return `Hello! 👋 I am **${person.name}'s AI Portfolio Assistant**.\n\nNikhil is a **Senior Full-Stack Developer** with 4+ years of experience specializing in:\n- ✈️ **Airline NDC API Integrations** (American, United, Copa Airlines, AirGateway)\n- ⚡ **Next.js 16, React, Node.js, Fastify & TypeScript**\n- 🔄 **Real-Time Architectures** (WebSockets, SSE, Sub-30s Bookings)\n- 🤖 **GenAI / LLM Integration & RAG Solutions**\n\nHow can I help you today? You can ask about his **projects**, **skills**, **pricing**, or **contact details**!`;
+    }
+
+    // Skills & Technologies
+    if (
+      /skill|tech|stack|framework|language|tool|next|react|node|fastify|python|database|mongo|postgres|aws|docker/i.test(
+        q
+      )
+    ) {
+      return `### 🛠️ Nikhil's Core Technical Stack:\n\n- **Frontend**: React, Next.js (App Router), TypeScript, Tailwind CSS, Framer Motion\n- **Backend**: Node.js, Fastify, Express, REST APIs, GraphQL, Microservices\n- **Real-Time**: WebSockets, Server-Sent Events (SSE)\n- **Databases**: MongoDB, PostgreSQL, MySQL, Redis, BigQuery\n- **Cloud & DevOps**: AWS (EC2, S3, RDS, Lambda), Docker, CI/CD Pipelines, Nginx, PM2\n- **Aviation & Travel**: NDC APIs (American Airlines, United, Copa, 25+ airlines via AirGateway), GDS, Fare Engines\n- **GenAI / LLM**: LangChain, OpenAI API, Vector DBs, RAG Architectures\n\nWould you like more details on a specific project or technology?`;
+    }
+
+    // Projects
+    if (
+      /project|portfolio|work|built|experience|ndc|airline|kosher|fresh|cruise/i.test(
+        q
+      )
+    ) {
+      return `### 🚀 Featured Production Projects:\n\n1. **NDC Terminal & Airline Booking Engine**: Real-time multi-airline booking system integrating American Airlines, United, Copa, and AirGateway with sub-30s booking flow.\n2. **Panama Kosher Fest 2026**: High-scale international festival ticketing & event management platform.\n3. **Fresh Kosher Cruises**: Luxury cruise booking and marketing platform with interactive itinerary mapping.\n4. **AI-Powered Chatbots & RAG Systems**: Customer support automation with sentiment analysis and real-time streaming.\n\nYou can explore interactive live demos on the [Projects page](/projects).`;
+    }
+
+    // Contact, Hire, Email, Phone
+    if (
+      /contact|hire|email|phone|call|message|reach|location|talk|freelance|available/i.test(
+        q
+      )
+    ) {
+      return `### 📬 Get in Touch with Nikhil Singh:\n\n- 📧 **Email**: [${person.email}](mailto:${person.email})\n- 📱 **Phone**: [${person.phone}](tel:${person.phone})\n- 📍 **Location**: ${person.location || 'India'}\n- 💼 **LinkedIn**: [Nikhil Singh LinkedIn](${person.linkedinUrl})\n- 🦊 **GitLab**: [${person.gitlabHandle}](${person.gitlabUrl})\n\nYou can also submit your project requirements directly through the [Contact Form](/contact)!`;
+    }
+
+    // Pricing, Cost, Rates
+    if (
+      /price|pricing|rate|cost|hourly|package|retainer|charge|quote/i.test(q)
+    ) {
+      return `### 💼 Flexible Pricing Options:\n\n- **Hourly Model**: ₹500 / hour (Quick bug fixes, Next.js tweaks, API debugging)\n- **Monthly Retainer**: ₹45,000 / month (~80 dedicated hrs, feature delivery, AWS deployment)\n- **Quarterly Retainer**: ₹1,15,000 / quarter (End-to-end architecture, NDC integrations, performance tuning)\n\nCheck out the full breakdown on the [Pricing page](/price) or reach out for a custom project quote.`;
+    }
+
+    // Resume / CV
+    if (/resume|cv|download|experience\s*details/i.test(q)) {
+      return `📄 You can download Nikhil's resume directly in PDF or DOCX format:\n- [Download Resume (PDF)](/api/resume?template=1&format=pdf&disposition=attachment)\n- [Download Resume (DOCX)](/api/resume?template=1&format=docx&disposition=attachment)\n\nFeel free to ask if you have specific questions about his past roles or achievements!`;
+    }
+
+    // Default Fallback
+    return `Thank you for reaching out! Nikhil Singh is a **Senior Full-Stack & NDC Airline Integrations Developer** with over 4 years of experience delivering 30+ scalable production applications with 99.9% uptime.\n\nYou can explore:\n- 🚀 **Projects**: [View Projects](/projects)\n- 🛠️ **Skills & Tools**: [View Skills](/skills)\n- 💰 **Pricing & Rates**: [View Pricing](/price)\n- 📬 **Contact Nikhil**: [Get in Touch](/contact)\n\nHow else can I assist you with your project?`;
+  }
+
   try {
     const errors: string[] = [];
 
@@ -495,27 +552,12 @@ export async function POST(request: Request) {
       }
     }
 
-    if (errors.length > 0) {
-      return json(
-        { error: `All AI providers failed: ${errors.join('; ')}` },
-        { status: 500 }
-      );
-    }
-
-    return json({ error: 'No AI API key is configured' }, { status: 500 });
+    // Gracefully fallback to smart built-in portfolio assistant
+    const fallbackReply = generateLocalFallbackReply(messages);
+    return json({ reply: fallbackReply });
   } catch (error) {
-    console.error('Chat API error:', error);
-    const errorMessage =
-      error instanceof Error ? error.message : 'An error occurred';
-    if (
-      errorMessage.includes('image') &&
-      errorMessage.includes('not support')
-    ) {
-      return json(
-        { error: 'Image uploads are not supported. Please use text only.' },
-        { status: 400 }
-      );
-    }
-    return json({ error: errorMessage }, { status: 500 });
+    console.error('Chat API fallback error:', error);
+    const fallbackReply = generateLocalFallbackReply(messages);
+    return json({ reply: fallbackReply });
   }
 }

@@ -26,7 +26,7 @@ async function fetchStrapi<T>(
 
   const fetchOptions: RequestInit & { next?: { revalidate?: number } } = {
     headers,
-    signal: AbortSignal.timeout(5000),
+    signal: AbortSignal.timeout(1500),
   };
   if (options?.next) {
     fetchOptions.next = options.next;
